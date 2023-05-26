@@ -8,6 +8,10 @@ public class Player : MonoBehaviour
 
     [SerializeField]float moveSpeed = 10f;
 
+    [SerializeField] float paddingx = 0.2f;
+
+    [SerializeField] float paddingy = 0.2f;
+
     new Rigidbody2D rigidbody;
 
     void Awake()
@@ -39,16 +43,23 @@ public class Player : MonoBehaviour
         Vector2 moveAmount = moveInput * moveSpeed;
 
         rigidbody.velocity = moveAmount;
+        StartCoroutine(MovePositionLimitCoroutine());
     }
 
     void StopMove()
     {
         rigidbody.velocity = Vector2.zero;
+        StopCoroutine(MovePositionLimitCoroutine());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator MovePositionLimitCoroutine()
     {
-        
+        while (true)
+        {
+            transform.position = Viewport.Instance.PlayerMoveablePosition(transform.position,paddingx,paddingy);
+
+            yield return null;
+        }
+       
     }
 }
