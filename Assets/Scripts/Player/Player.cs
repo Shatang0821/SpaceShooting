@@ -6,13 +6,21 @@ public class Player : MonoBehaviour
 {
     [SerializeField]PlayerInput input;
 
-    [SerializeField]float moveSpeed = 10f;
+    [SerializeField] float moveSpeed = 10f;
+
+    [SerializeField] float accelerationTime = 3f;   //‰Á‘¬ŽžŠÔ
+
+    [SerializeField] float decelerationTime = 3f;   //Œ¸‘¬ŽžŠÔ
+
+    [SerializeField] float moveRotationAngle = 50f;
 
     [SerializeField] float paddingx = 0.2f;
 
     [SerializeField] float paddingy = 0.2f;
 
     new Rigidbody2D rigidbody;
+
+    Coroutine moveCoroutine;
 
     void Awake()
     {
@@ -40,17 +48,44 @@ public class Player : MonoBehaviour
 
     void Move(Vector2 moveInput)
     {
-        Vector2 moveAmount = moveInput * moveSpeed;
+        // Vector2 moveAmount = moveInput * moveSpeed;
+        // rigidbody.velocity = moveAmount;
+        if(moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+        }
 
-        rigidbody.velocity = moveAmount;
+        //Quaternion moveRotation = Quaternion.AngleAxis(moveRotationAngle * moveInput.y,Vector3.right);
+        moveCoroutine =  StartCoroutine(MoveCoroutine(accelerationTime,moveInput.normalized * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
         StartCoroutine(MovePositionLimitCoroutine());
     }
 
     void StopMove()
     {
-        rigidbody.velocity = Vector2.zero;
+        //rigidbody.velocity = Vector2.zero;
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+        }
+        moveCoroutine = StartCoroutine(MoveCoroutine(decelerationTime,Vector2.zero,Quaternion.identity));
         StopCoroutine(MovePositionLimitCoroutine());
     }
+
+    IEnumerator MoveCoroutine(float time ,Vector2 moveVelocity,Quaternion moveRotation)
+    {
+        float t = 0f;
+
+        while(t < time)
+        {
+            t += Time.fixedDeltaTime / decelerationTime;
+            rigidbody.velocity = Vector2.Lerp(rigidbody.velocity, moveVelocity, t / time);
+            transform.rotation = Quaternion.Lerp(transform.rotation, moveRotation, t / time);
+
+            yield return null;
+        }
+    }
+
+ 
 
     IEnumerator MovePositionLimitCoroutine()
     {
