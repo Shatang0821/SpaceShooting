@@ -154,13 +154,13 @@ public class Player : MonoBehaviour
                     PoolManager.Release(projectile1, muzzleMiddle.position);//’e‚ğ¶¬‚·‚é
                     break;
                 case 1:
-                    PoolManager.Release(projectile1, muzzleMiddle.position);//’e‚ğ¶¬‚·‚é
-                    PoolManager.Release(projectile1, muzzleMiddle.position);//’e‚ğ¶¬‚·‚é
+                    PoolManager.Release(projectile1, muzzleTop.position);//’e‚ğ¶¬‚·‚é
+                    PoolManager.Release(projectile1, muzzleBottom.position);//’e‚ğ¶¬‚·‚é
                     break;
                 case 2:
                     PoolManager.Release(projectile1, muzzleMiddle.position);//’e‚ğ¶¬‚·‚é
-                    PoolManager.Release(projectile2, muzzleMiddle.position);//’e‚ğ¶¬‚·‚é
-                    PoolManager.Release(projectile3, muzzleMiddle.position);//’e‚ğ¶¬‚·‚é
+                    PoolManager.Release(projectile2, muzzleTop.position);//’e‚ğ¶¬‚·‚é
+                    PoolManager.Release(projectile3, muzzleBottom.position);//’e‚ğ¶¬‚·‚é
                     break;
                 default:
                     break;
