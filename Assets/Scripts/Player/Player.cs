@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
@@ -18,6 +20,14 @@ public class Player : MonoBehaviour
 
     [SerializeField] float paddingy = 0.2f;
 
+    [SerializeField] GameObject projectile; //弾オブジェクト
+
+    [SerializeField] Transform muzzle;      //弾発射位置
+    [SerializeField] float fireInterval = 0.2f;    //弾発射間隔
+
+
+    WaitForSeconds waitForFireInterval;
+
     new Rigidbody2D rigidbody;
 
     Coroutine moveCoroutine;
@@ -31,21 +41,32 @@ public class Player : MonoBehaviour
     {
         input.onMove += Move;
         input.onStopMove += StopMove;
+
+        input.onFire += Fire;
+        input.onStopFire += StopFire;
     }
 
     void OnDisable()
     {
         input.onMove -= Move;
         input.onStopMove -= StopMove;
+
+        input.onFire -= Fire;
+        input.onStopFire -= StopFire;
     }
     // Start is called before the first frame update
     void Start()
     {
+        //もしこれからこの発射間隔をゲーム内に編集するなら関数を作って間隔を変えるときに
+        //以下の文を関数内に置くことにより、毎回編集するときが新しく作ります。
+        waitForFireInterval = new WaitForSeconds(fireInterval);
+
         rigidbody.gravityScale = 0f;//重力を0
 
         input.EnableGameplayInput();
     }
 
+    #region MOVE
     void Move(Vector2 moveInput)
     {
         // Vector2 moveAmount = moveInput * moveSpeed;
@@ -97,4 +118,29 @@ public class Player : MonoBehaviour
         }
        
     }
+    #endregion
+
+    #region FIRE
+    
+    void Fire()
+    {
+        StartCoroutine(nameof(FireCoroutine));
+    }
+
+    void StopFire()
+    {
+        //StopCoroutine(FireCoroutine());//作用しない
+        StopCoroutine(nameof(FireCoroutine));
+    }
+
+    IEnumerator FireCoroutine()
+    {
+        while (true)
+        {
+            Instantiate(projectile, muzzle.position, Quaternion.identity);  //弾を生成する
+
+            yield return waitForFireInterval;
+        }
+    }
+    #endregion
 }
