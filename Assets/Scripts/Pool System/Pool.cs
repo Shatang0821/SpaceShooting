@@ -1,50 +1,65 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 
+[System.Serializable]
 public class Pool
 {
-    [SerializeField]GameObject prefab;
+    // プレハブへの参照を外部から取得するためのプロパティ
+    public GameObject Prefab => prefab;
 
-    [SerializeField]int size = 1;
+    // サイズを外部から取得するためのプロパティ
+    public int Size => size;
 
-    //オブジェクトプール
-    Queue<GameObject> queue;
+    // 実行時のキューのサイズを取得するためのプロパティ
+    public int RuntimeSize => queue.Count;
+
+    [SerializeField]
+    private GameObject prefab; // このプールに格納するゲームオブジェクトのプレハブ
+
+    [SerializeField]
+    private int size = 1; // プールの初期サイズ
+
+    // ゲームオブジェクトを保持するためのキュー
+    private Queue<GameObject> queue;
+
+    // ゲームオブジェクトがインスタンス化されるときの親オブジェクト
+    private Transform parent;
 
     /// <summary>
-    /// キューの初期化
+    /// キューの初期化し、指定された数のゲームオブジェクトをキューに追加する
     /// </summary>
-    public void Initialize()
+    public void Initialize(Transform parent)
     {
-        queue = new Queue<GameObject>();//初期化
+        queue = new Queue<GameObject>();
+        this.parent = parent;
 
-        for(var i = 0;i<size;i++)
+        for (var i = 0; i < size; i++)
         {
-            queue.Enqueue(Copy());//オブジェクトを末尾に入れる
+            queue.Enqueue(Copy());
         }
     }
 
     /// <summary>
-    /// プレハブを事前に作成して非アクティブ状態にする
+    /// プレハブからゲームオブジェクトを作成し、非アクティブ状態にする
     /// </summary>
-    GameObject Copy()
+    private GameObject Copy()
     {
-        var copy = GameObject.Instantiate(prefab);
+        var copy = GameObject.Instantiate(prefab, parent);
         copy.SetActive(false);
-
         return copy;
     }
 
     /// <summary>
-    /// キューの先頭から取り出す
+    /// 利用可能なオブジェクトをキューから取得する。
+    /// もしキューが空の場合は新しいオブジェクトを生成する。
     /// </summary>
-    /// <returns></returns>
-    GameObject AvailableObject()
+    private GameObject AvailableObject()
     {
-        GameObject availableobject = null;//初期化
+        GameObject availableobject = null;
 
-        if(queue.Count > 0 && queue.Peek().activeSelf)//キューの先頭を返す、出すじゃなくて
+        // キューが空でなく、先頭のオブジェクトが非アクティブな場合
+        if (queue.Count > 0 && !queue.Peek().activeSelf)
         {
             availableobject = queue.Dequeue();
         }
@@ -53,28 +68,26 @@ public class Pool
             availableobject = Copy();
         }
 
+        // オブジェクトを再びキューに追加する
         queue.Enqueue(availableobject);
 
         return availableobject;
     }
 
     /// <summary>
-    /// 利用可能なオブジェクトを返す
+    /// 利用可能なゲームオブジェクトを取得してアクティブ化する
     /// </summary>
-    /// <returns></returns>
     public GameObject preparedObject()
     {
         GameObject preparedobject = AvailableObject();
-
         preparedobject.SetActive(true);
-
         return preparedobject;
     }
 
     /// <summary>
     /// 特定の位置を基に生成
     /// </summary>
-    /// <param name="position"></param>
+    /// <param name="position">特定の位置</param>
     /// <returns></returns>
     public GameObject preparedObject(Vector3 position)
     {
@@ -89,8 +102,8 @@ public class Pool
     /// <summary>
     /// 特定の位置と回転を基に生成
     /// </summary>
-    /// <param name="position"></param>
-    /// <param name="rotation"></param>
+    /// <param name="position">特定の位置</param>
+    /// <param name="rotation">特定の回転</param>
     /// <returns></returns>
     public GameObject preparedObject(Vector3 position,Quaternion rotation)
     {
@@ -106,9 +119,9 @@ public class Pool
     /// <summary>
     /// 特定の位置と回転と拡大を基に生成
     /// </summary>
-    /// <param name="position"></param>
-    /// <param name="rotation"></param>
-    /// <param name="localScale"></param>
+    /// <param name="position">特定の位置</param>
+    /// <param name="rotation">特定の回転</param>
+    /// <param name="localScale">特定の拡大・縮小</param>
     /// <returns></returns>
     public GameObject preparedObject(Vector3 position, Quaternion rotation,Vector3 localScale)
     {

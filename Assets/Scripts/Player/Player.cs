@@ -20,9 +20,20 @@ public class Player : MonoBehaviour
 
     [SerializeField] float paddingy = 0.2f;
 
-    [SerializeField] GameObject projectile; //弾オブジェクト
+    [SerializeField] GameObject projectile1; //弾オブジェクト
 
-    [SerializeField] Transform muzzle;      //弾発射位置
+    [SerializeField] GameObject projectile2; //弾オブジェクト
+
+    [SerializeField] GameObject projectile3; //弾オブジェクト
+
+    [SerializeField] Transform muzzleMiddle;      //弾発射位置
+
+    [SerializeField] Transform muzzleTop;      //弾発射位置
+
+    [SerializeField] Transform muzzleBottom;      //弾発射位置
+
+    [SerializeField,Range(0,2)] int weaponPower = 0;
+
     [SerializeField] float fireInterval = 0.2f;    //弾発射間隔
 
 
@@ -137,7 +148,24 @@ public class Player : MonoBehaviour
     {
         while (true)
         {
-            Instantiate(projectile, muzzle.position, Quaternion.identity);  //弾を生成する
+            switch (weaponPower)
+            {
+                case 0:
+                    PoolManager.Release(projectile1, muzzleMiddle.position);//弾を生成する
+                    break;
+                case 1:
+                    PoolManager.Release(projectile1, muzzleMiddle.position);//弾を生成する
+                    PoolManager.Release(projectile1, muzzleMiddle.position);//弾を生成する
+                    break;
+                case 2:
+                    PoolManager.Release(projectile1, muzzleMiddle.position);//弾を生成する
+                    PoolManager.Release(projectile2, muzzleMiddle.position);//弾を生成する
+                    PoolManager.Release(projectile3, muzzleMiddle.position);//弾を生成する
+                    break;
+                default:
+                    break;
+
+            }
 
             yield return waitForFireInterval;
         }

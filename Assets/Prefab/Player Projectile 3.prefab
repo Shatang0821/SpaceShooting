@@ -4954,7 +4954,7 @@ GameObject:
   - component: {fileID: 8510276924167900826}
   - component: {fileID: 970545738572022482}
   m_Layer: 0
-  m_Name: Player Projectile
+  m_Name: Player Projectile 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4989,7 +4989,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 15
-  moveDirection: {x: 1, y: 0}
+  moveDirection: {x: 1, y: -0.05}
 --- !u!114 &970545738572022482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5002,5 +5002,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8721e4c79860ce24f9e9e743f6e82931, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyGameObject: 1
+  destroyGameObject: 0
   lifetime: 3
