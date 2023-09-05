@@ -25,10 +25,12 @@ public class AutoDeactivate : MonoBehaviour
     {
         yield return waitLifetime;
 
+        //もしtrueだったらオブジェクトをシーンから削除
         if(destroyGameObject)
         {
             Destroy(gameObject);
         }
+        //非アクティブ化にする、すなわち、オブジェクトプールのため
         else
         {
             gameObject.SetActive(false);

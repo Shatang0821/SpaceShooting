@@ -6,41 +6,53 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-    [SerializeField]PlayerInput input;
+    #region PlayerAttributes
 
+    [SerializeField] PlayerInput input;
+
+    [Tooltip("これはキャラクターの最大速度です。")]
     [SerializeField] float moveSpeed = 10f;
 
+    [Tooltip("これはキャラクターの加速時間です。")]
     [SerializeField] float accelerationTime = 3f;   //加速時間
 
+    [Tooltip("これはキャラクターの減速時間です。")]
     [SerializeField] float decelerationTime = 3f;   //減速時間
 
+    [Tooltip("これはキャラクターの上下移動角度です。")]
     [SerializeField] float moveRotationAngle = 50f;
 
+    [Tooltip("これはキャラクターのｘ端の数値です。")]
     [SerializeField] float paddingx = 0.2f;
 
+    [Tooltip("これはキャラクターのｙ端の数値です。")]
     [SerializeField] float paddingy = 0.2f;
 
+    #endregion
+
+    #region ProjectileAttributes
+
+    [Tooltip("これはキャラクターの弾オブジェクトです。")]
     [SerializeField] GameObject projectile1; //弾オブジェクト
-
     [SerializeField] GameObject projectile2; //弾オブジェクト
-
     [SerializeField] GameObject projectile3; //弾オブジェクト
 
+    [Tooltip("これはキャラクターの弾発射位置です。")]
     [SerializeField] Transform muzzleMiddle;      //弾発射位置
-
     [SerializeField] Transform muzzleTop;      //弾発射位置
-
     [SerializeField] Transform muzzleBottom;      //弾発射位置
 
-    [SerializeField,Range(0,2)] int weaponPower = 0;
+    [Tooltip("これはキャラクターのパワーです。")]
+    [SerializeField, Range(0, 2)] int weaponPower = 0;
 
+    [Tooltip("これはキャラクターの弾発射間隔です。")]
     [SerializeField] float fireInterval = 0.2f;    //弾発射間隔
-
 
     WaitForSeconds waitForFireInterval;
 
-    new Rigidbody2D rigidbody;
+    #endregion
 
+    new Rigidbody2D rigidbody;
     Coroutine moveCoroutine;
 
     void Awake()

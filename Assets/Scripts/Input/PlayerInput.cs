@@ -53,7 +53,7 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions
     {
         if(context.phase == InputActionPhase.Performed)
         {
-                onMove.Invoke(context.ReadValue<Vector2>());
+            onMove.Invoke(context.ReadValue<Vector2>());
         }
 
         if(context.phase == InputActionPhase.Canceled)
@@ -62,7 +62,7 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions
         }
     }
 
-    // 発射アクションがトリガーされた時に呼ばれるメソッド。まだ実装されていません。
+    // 発射アクションがトリガーされた時に呼ばれるメソッド。
     public void OnFire(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)

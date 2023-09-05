@@ -325,8 +325,8 @@ MonoBehaviour:
   accelerationTime: 0.2
   decelerationTime: 0.2
   moveRotationAngle: 28
-  paddingx: 0.8
-  paddingy: 0.22
+  paddingx: 1.12
+  paddingy: 0.7
   projectile1: {fileID: 8510276924167900824, guid: be785fbc04c807948967104b1ef8b643, type: 3}
   projectile2: {fileID: 8510276924167900824, guid: 319f56ea354bc9546ba8687e31a52308, type: 3}
   projectile3: {fileID: 8510276924167900824, guid: 85a7ee1013457754a92cff805a7b06ad, type: 3}
