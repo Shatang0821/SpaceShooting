@@ -7,7 +7,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     #region PlayerAttributes
-
+    [Header("--- PlayerAttributes ---")]
     [SerializeField] PlayerInput input;
 
     [Tooltip("これはキャラクターの最大速度です。")]
@@ -27,11 +27,11 @@ public class Player : MonoBehaviour
 
     [Tooltip("これはキャラクターのｙ端の数値です。")]
     [SerializeField] float paddingy = 0.2f;
-
     #endregion
 
     #region ProjectileAttributes
 
+    [Header("--- ProjectileAttributes ---")]
     [Tooltip("これはキャラクターの弾オブジェクトです。")]
     [SerializeField] GameObject projectile1; //弾オブジェクト
     [SerializeField] GameObject projectile2; //弾オブジェクト
@@ -49,7 +49,6 @@ public class Player : MonoBehaviour
     [SerializeField] float fireInterval = 0.2f;    //弾発射間隔
 
     WaitForSeconds waitForFireInterval;
-
     #endregion
 
     new Rigidbody2D rigidbody;

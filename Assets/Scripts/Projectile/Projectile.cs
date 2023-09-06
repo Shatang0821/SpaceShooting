@@ -6,7 +6,7 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField]float moveSpeed = 10f;      //弾の初期速度
 
-    [SerializeField] Vector2 moveDirection;      //弾の移動方向
+    [SerializeField] protected Vector2 moveDirection;      //弾の移動方向
 
     private void OnEnable()                     //この関数はオブジェクトが有効
                                                 //アクティブになったときに呼び出されます

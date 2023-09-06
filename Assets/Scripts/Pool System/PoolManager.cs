@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    [SerializeField] Pool[] playerProjectilePools; // [SerializeField] はUnityエディタから直接値を設定できるようにするための属性。この場合、プールの配列を設定できる。
+    // [SerializeField] はUnityエディタから直接値を設定できるようにするための属性。この場合、プールの配列を設定できる。
+    [SerializeField] Pool[] playerProjectilePools; //プールの配列を設定できる。
+
+    [SerializeField] Pool[] enemyProjectilePools;
 
     static Dictionary<GameObject, Pool> dictionary; // 各プレハブとそれに関連するオブジェクトプールを関連付けるための辞書。
 
     void Start()
     {
         dictionary = new Dictionary<GameObject, Pool>();
+        
         Initialize(playerProjectilePools);
+        Initialize(enemyProjectilePools);
     }
 
     // UNITY_EDITORディレクティブは、Unityエディタ環境内でのみコードを実行するためのもの。
@@ -21,6 +26,7 @@ public class PoolManager : MonoBehaviour
     {
         //プールサイズが正しいかをチェックする
         CheckPoolSize(playerProjectilePools);
+        CheckPoolSize(enemyProjectilePools);
     }
 #endif
 
