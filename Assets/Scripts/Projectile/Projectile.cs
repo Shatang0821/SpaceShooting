@@ -8,7 +8,9 @@ public class Projectile : MonoBehaviour
 
     [SerializeField] protected Vector2 moveDirection;      //弾の移動方向
 
-    private void OnEnable()                     //この関数はオブジェクトが有効
+    protected GameObject target;
+
+    protected virtual void OnEnable()                     //この関数はオブジェクトが有効
                                                 //アクティブになったときに呼び出されます
     {
         StartCoroutine(MoveDirectly());

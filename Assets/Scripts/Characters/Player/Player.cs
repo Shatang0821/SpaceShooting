@@ -4,12 +4,24 @@ using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour
+public class Player : Character
 {
+    //回復スイッチ
+    [SerializeField] bool regenerateHealth = true;
+
+    //回復までの時間
+    [SerializeField] float healthRegenerateTime;
+
+    //回復パーセント
+    [SerializeField,Range(0f, 1f)] float healthRegeneratePercent;
+
     #region PlayerAttributes
-    [Header("--- PlayerAttributes ---")]
+
+    [Header("---- INPUT ----")]
     [SerializeField] PlayerInput input;
 
+    [Header("---- PlayerAttributes ----")]
+    
     [Tooltip("これはキャラクターの最大速度です。")]
     [SerializeField] float moveSpeed = 10f;
 
@@ -31,7 +43,7 @@ public class Player : MonoBehaviour
 
     #region ProjectileAttributes
 
-    [Header("--- ProjectileAttributes ---")]
+    [Header("---- ProjectileAttributes ----")]
     [Tooltip("これはキャラクターの弾オブジェクトです。")]
     [SerializeField] GameObject projectile1; //弾オブジェクト
     [SerializeField] GameObject projectile2; //弾オブジェクト
@@ -47,20 +59,30 @@ public class Player : MonoBehaviour
 
     [Tooltip("これはキャラクターの弾発射間隔です。")]
     [SerializeField] float fireInterval = 0.2f;    //弾発射間隔
-
-    WaitForSeconds waitForFireInterval;
+    
     #endregion
 
+    WaitForSeconds waitForFireInterval;
+
+    //HP自動回復時間
+    WaitForSeconds waitHealthRegenerateTime;
+
     new Rigidbody2D rigidbody;
+
     Coroutine moveCoroutine;
+
+    //HealthRegenerateCoroutineを中止するための入れ物
+    Coroutine healthRegenerateCoroutine;
 
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+
         input.onMove += Move;
         input.onStopMove += StopMove;
 
@@ -83,9 +105,32 @@ public class Player : MonoBehaviour
         //以下の文を関数内に置くことにより、毎回編集するときが新しく作ります。
         waitForFireInterval = new WaitForSeconds(fireInterval);
 
+        waitHealthRegenerateTime = new WaitForSeconds(healthRegenerateTime);
+
         rigidbody.gravityScale = 0f;//重力を0
 
         input.EnableGameplayInput();
+
+    }
+
+
+    public override void TakenDamage(float damage)
+    {
+        base.TakenDamage(damage);
+
+        //アクティブ状態なっている時
+        if(gameObject.activeSelf)
+        {
+            if (regenerateHealth)
+            {
+                //もしコルーチンが始まった時でもダメージを受けるとリセットさせます
+                if(healthRegenerateCoroutine != null)
+                {
+                    StopCoroutine(healthRegenerateCoroutine);
+                }
+               healthRegenerateCoroutine = StartCoroutine(HealthRegenerateCoroutine(waitHealthRegenerateTime, healthRegeneratePercent));
+            }
+        }
     }
 
     #region MOVE
