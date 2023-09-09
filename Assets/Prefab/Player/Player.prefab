@@ -29121,6 +29121,7 @@ GameObject:
   - component: {fileID: 6435389010079767248}
   - component: {fileID: 468755508}
   - component: {fileID: 468755506}
+  - component: {fileID: 1310601406}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -29167,7 +29168,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &468755506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29180,7 +29181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cda4bbad1b70f9a4594a163b7ec6b6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathVFX: {fileID: 0}
+  deathVFX: {fileID: 1587261729604890, guid: 600ec83cba1cec448bf41a6607229741, type: 3}
   maxHealth: 100
   health: 0
   regenerateHealth: 1
@@ -29201,6 +29202,22 @@ MonoBehaviour:
   muzzleBottom: {fileID: 867358383}
   weaponPower: 1
   fireInterval: 0.12
+--- !u!70 &1310601406
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435389010079767255}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.03, y: -0.04}
+  m_Size: {x: 1, y: 0.42}
+  m_Direction: 1
 --- !u!1 &6758096032694626173
 GameObject:
   m_ObjectHideFlags: 0

@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 468755506, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+      propertyPath: weaponPower
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6435389010079767248, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -280,22 +284,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1717458527, guid: c09767a80c39dca498c95b2e5be1afd8, type: 3}
-      propertyPath: projectiles.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1717458527, guid: c09767a80c39dca498c95b2e5be1afd8, type: 3}
-      propertyPath: projectiles.Array.data[0]
-      value: 
-      objectReference: {fileID: 3738076239146580, guid: f411cc22a7eb9a5449a381e41c849ca4, type: 3}
-    - target: {fileID: 1717458527, guid: c09767a80c39dca498c95b2e5be1afd8, type: 3}
-      propertyPath: projectiles.Array.data[1]
-      value: 
-      objectReference: {fileID: 3738076239146580, guid: effe737a2911abc44b247e79ba738d2e, type: 3}
-    - target: {fileID: 1717458527, guid: c09767a80c39dca498c95b2e5be1afd8, type: 3}
-      propertyPath: projectiles.Array.data[2]
-      value: 
-      objectReference: {fileID: 3738076239146580, guid: dc2fb2d051da38f4fa4fb9efcc53cbf5, type: 3}
     - target: {fileID: 578449712315536098, guid: c09767a80c39dca498c95b2e5be1afd8, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -343,14 +331,6 @@ PrefabInstance:
     - target: {fileID: 578449712315536124, guid: c09767a80c39dca498c95b2e5be1afd8, type: 3}
       propertyPath: m_Name
       value: Enemy03
-      objectReference: {fileID: 0}
-    - target: {fileID: 578449712315536124, guid: c09767a80c39dca498c95b2e5be1afd8, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 578449712315536124, guid: c09767a80c39dca498c95b2e5be1afd8, type: 3}
-      propertyPath: m_TagString
-      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c09767a80c39dca498c95b2e5be1afd8, type: 3}
@@ -408,14 +388,6 @@ PrefabInstance:
     - target: {fileID: 214778051926960383, guid: a624a0e3000461e4286965f8a65aedb6, type: 3}
       propertyPath: m_Name
       value: Enemy01
-      objectReference: {fileID: 0}
-    - target: {fileID: 214778051926960383, guid: a624a0e3000461e4286965f8a65aedb6, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 214778051926960383, guid: a624a0e3000461e4286965f8a65aedb6, type: 3}
-      propertyPath: m_TagString
-      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a624a0e3000461e4286965f8a65aedb6, type: 3}
@@ -589,26 +561,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1982125628, guid: 2ab3ff156c8f1c149a4d4fe513936685, type: 3}
-      propertyPath: maxFireInterval
-      value: 3.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1982125628, guid: 2ab3ff156c8f1c149a4d4fe513936685, type: 3}
-      propertyPath: minFireInterval
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1982125628, guid: 2ab3ff156c8f1c149a4d4fe513936685, type: 3}
-      propertyPath: projectiles.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1982125628, guid: 2ab3ff156c8f1c149a4d4fe513936685, type: 3}
-      propertyPath: projectiles.Array.data[0]
-      value: 
-      objectReference: {fileID: 3738076239146580, guid: a23ccf84dc7885c4299abad3e127ac44, type: 3}
-    - target: {fileID: 2064246448, guid: 2ab3ff156c8f1c149a4d4fe513936685, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.059
-      objectReference: {fileID: 0}
     - target: {fileID: 8921546478736950316, guid: 2ab3ff156c8f1c149a4d4fe513936685, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -656,14 +608,6 @@ PrefabInstance:
     - target: {fileID: 8921546478736950322, guid: 2ab3ff156c8f1c149a4d4fe513936685, type: 3}
       propertyPath: m_Name
       value: Enemy02
-      objectReference: {fileID: 0}
-    - target: {fileID: 8921546478736950322, guid: 2ab3ff156c8f1c149a4d4fe513936685, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8921546478736950322, guid: 2ab3ff156c8f1c149a4d4fe513936685, type: 3}
-      propertyPath: m_TagString
-      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ab3ff156c8f1c149a4d4fe513936685, type: 3}
@@ -714,6 +658,15 @@ MonoBehaviour:
     size: 10
   - prefab: {fileID: 3738076239146580, guid: a23ccf84dc7885c4299abad3e127ac44, type: 3}
     size: 10
+  vFXPools:
+  - prefab: {fileID: 1587261729604890, guid: 600ec83cba1cec448bf41a6607229741, type: 3}
+    size: 1
+  - prefab: {fileID: 2342042931496088306, guid: 97b415311529fa145aacd3eedaac728e, type: 3}
+    size: 3
+  - prefab: {fileID: 5060298685065931927, guid: 6775c68a79b34db4fa2fd4db2a4cdf74, type: 3}
+    size: 25
+  - prefab: {fileID: 4801493125213720806, guid: 94d3dff6247d98e4cb4d8d6f0be5e291, type: 3}
+    size: 2
 --- !u!4 &1499901095
 Transform:
   m_ObjectHideFlags: 0

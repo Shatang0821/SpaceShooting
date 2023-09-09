@@ -1,22 +1,19 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AutoDeactivate : MonoBehaviour
 {
-
     [SerializeField] bool destroyGameObject;
-
     [SerializeField] float lifetime = 3f;
 
     WaitForSeconds waitLifetime;
 
-    private void Awake()
+    void Awake()
     {
         waitLifetime = new WaitForSeconds(lifetime);
     }
 
-    private void OnEnable()
+    void OnEnable()
     {
         StartCoroutine(DeactivateCoroutine());
     }
@@ -25,13 +22,11 @@ public class AutoDeactivate : MonoBehaviour
     {
         yield return waitLifetime;
 
-        //もしtrueだったらオブジェクトをシーンから削除
-        if(destroyGameObject)
+        if (destroyGameObject)
         {
             Destroy(gameObject);
         }
-        //非アクティブ化にする、すなわち、オブジェクトプールのため
-        else
+        else 
         {
             gameObject.SetActive(false);
         }

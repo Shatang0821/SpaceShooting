@@ -9,6 +9,8 @@ public class PoolManager : MonoBehaviour
 
     [SerializeField] Pool[] enemyProjectilePools;
 
+    [SerializeField] Pool[] vFXPools;
+
     static Dictionary<GameObject, Pool> dictionary; // 各プレハブとそれに関連するオブジェクトプールを関連付けるための辞書。
 
     void Start()
@@ -17,6 +19,7 @@ public class PoolManager : MonoBehaviour
         
         Initialize(playerProjectilePools);
         Initialize(enemyProjectilePools);
+        Initialize(vFXPools);
     }
 
     // UNITY_EDITORディレクティブは、Unityエディタ環境内でのみコードを実行するためのもの。
@@ -27,6 +30,7 @@ public class PoolManager : MonoBehaviour
         //プールサイズが正しいかをチェックする
         CheckPoolSize(playerProjectilePools);
         CheckPoolSize(enemyProjectilePools);
+        CheckPoolSize(vFXPools);
     }
 #endif
 
