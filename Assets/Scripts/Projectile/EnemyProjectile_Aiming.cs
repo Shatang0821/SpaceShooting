@@ -18,9 +18,6 @@ public class EnemyProjectile_Aiming : Projectile
     //1フレームを待って、正確な値を与えるようにするため
     IEnumerator MoveDirectionCoroutine()
     {
-        Debug.Log("Target Position: " + target.transform.position);
-        Debug.Log("Current Position: " + transform.position);
-        Debug.Log("Move Direction: " + moveDirection);
         yield return null;
 
         if (target.activeSelf)

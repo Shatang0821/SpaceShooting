@@ -12,16 +12,46 @@ public class Character : MonoBehaviour
 
     [SerializeField] protected float health;
 
+    [SerializeField] bool showOnHeadHealthBar = true;
+
+    [SerializeField] StatsBar onHeadHealtherBar;
+
     //protected 継承した先でもこれをアクセスできる
     //virtual オーバーライトできる
     protected virtual void OnEnable()
     {
         health = maxHealth;
+
+        if(showOnHeadHealthBar)
+        {
+            ShowOnHeadHealthBar();
+        }
+        else
+        {
+            HideOnHeadHealthBar();
+        }
+    }
+
+    public void ShowOnHeadHealthBar()
+    {
+        onHeadHealtherBar.gameObject.SetActive(true);
+        onHeadHealtherBar.Initialize(health, maxHealth);
+    }
+
+    public void HideOnHeadHealthBar()
+    {
+        onHeadHealtherBar.gameObject.SetActive(false);
     }
 
     public virtual void TakenDamage(float damage)
     {
         health -= damage;
+
+        if (showOnHeadHealthBar)
+        {
+            onHeadHealtherBar.UpdateStats(health, maxHealth);
+        }
+            
 
         if (health <= 0f)
         {
@@ -48,6 +78,10 @@ public class Character : MonoBehaviour
             //この区間に越えないこと
             //health + value が0からmaxHealthの区間にあること
             health = Mathf.Clamp(health + value, 0f, maxHealth);
+        }
+        if(showOnHeadHealthBar)
+        {
+            onHeadHealtherBar.UpdateStats(health, maxHealth);
         }
     }
 

@@ -6,6 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : Character
 {
+    [SerializeField] StatsBar_HUD statsBar_HUD;
+
     //回復スイッチ
     [SerializeField] bool regenerateHealth = true;
 
@@ -104,8 +106,9 @@ public class Player : Character
         //もしこれからこの発射間隔をゲーム内に編集するなら関数を作って間隔を変えるときに
         //以下の文を関数内に置くことにより、毎回編集するときが新しく作ります。
         waitForFireInterval = new WaitForSeconds(fireInterval);
-
         waitHealthRegenerateTime = new WaitForSeconds(healthRegenerateTime);
+
+        statsBar_HUD.Initialize(health, maxHealth);
 
         rigidbody.gravityScale = 0f;//重力を0
 
@@ -117,6 +120,7 @@ public class Player : Character
     public override void TakenDamage(float damage)
     {
         base.TakenDamage(damage);
+        statsBar_HUD.UpdateStats(health, maxHealth);
 
         //アクティブ状態なっている時
         if(gameObject.activeSelf)
@@ -131,6 +135,18 @@ public class Player : Character
                healthRegenerateCoroutine = StartCoroutine(HealthRegenerateCoroutine(waitHealthRegenerateTime, healthRegeneratePercent));
             }
         }
+    }
+
+    public override void RestoreHealth(float value)
+    {
+        base.RestoreHealth(value);
+        statsBar_HUD.UpdateStats(health, maxHealth);
+    }
+
+    public override void Die()
+    {
+        statsBar_HUD.UpdateStats(0f, maxHealth);
+        base.Die();
     }
 
     #region MOVE
