@@ -29120,8 +29120,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6435389010079767248}
   - component: {fileID: 468755508}
-  - component: {fileID: 468755506}
   - component: {fileID: 1310601406}
+  - component: {fileID: 468755506}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -29170,6 +29170,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!70 &1310601406
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435389010079767255}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.03, y: -0.04}
+  m_Size: {x: 1, y: 0.42}
+  m_Direction: 1
 --- !u!114 &468755506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29187,6 +29203,7 @@ MonoBehaviour:
   health: 0
   showOnHeadHealthBar: 1
   onHeadHealtherBar: {fileID: 7591900319798524091}
+  statsBar_HUD: {fileID: 0}
   regenerateHealth: 1
   healthRegenerateTime: 12
   healthRegeneratePercent: 0.02
@@ -29205,22 +29222,6 @@ MonoBehaviour:
   muzzleBottom: {fileID: 867358383}
   weaponPower: 2
   fireInterval: 0.12
---- !u!70 &1310601406
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6435389010079767255}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.03, y: -0.04}
-  m_Size: {x: 1, y: 0.42}
-  m_Direction: 1
 --- !u!1 &6758096032694626173
 GameObject:
   m_ObjectHideFlags: 0
