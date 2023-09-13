@@ -51,7 +51,7 @@ public class Character : MonoBehaviour
         }
     }
 
-    //コメントまだ
+    //パーセント回復
     protected IEnumerator HealthRegenerateCoroutine(WaitForSeconds waitTime,float percent)
     {
         while(health<maxHealth)
@@ -62,6 +62,7 @@ public class Character : MonoBehaviour
         }
     }
 
+    //持続ダメージ
     protected IEnumerator DamegeOverTimeCoroutine(WaitForSeconds waitTime, float percent)
     {
         while (health > 0f)
