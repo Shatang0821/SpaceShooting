@@ -222,8 +222,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 468755506, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+      propertyPath: maxRoll
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 468755506, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
       propertyPath: weaponPower
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 468755506, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+      propertyPath: dodgeScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 468755506, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+      propertyPath: dodgeScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 468755506, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+      propertyPath: dodgeScale.z
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 468755506, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
       propertyPath: statsBar_HUD

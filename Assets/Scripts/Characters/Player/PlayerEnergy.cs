@@ -19,15 +19,16 @@ public class PlayerEnergy : Singleton<PlayerEnergy>
     private void Start()
     {
         energyBar.Initialize(energy, MAX);
+        Obtain(MAX);
     }
 
     //エネルギーチャージ
     public void Obtain(int value)
     {
-        if (value == MAX) return;
+        if (energy == MAX) return;
 
         //エネルギーの範囲を制限する
-        energy = Mathf.Clamp(energy += value, 0, MAX);
+        energy = Mathf.Clamp(energy + value, 0, MAX);
         energyBar.UpdateStats(energy, MAX);
     }
 

@@ -15,7 +15,7 @@ public class Player : Character
     [SerializeField] float healthRegenerateTime;
 
     //回復パーセント
-    [SerializeField,Range(0f, 1f)] float healthRegeneratePercent;
+    [SerializeField, Range(0f, 1f)] float healthRegeneratePercent;
 
     #region PlayerAttributes
 
@@ -23,7 +23,7 @@ public class Player : Character
     [SerializeField] PlayerInput input;
 
     [Header("---- PlayerAttributes ----")]
-    
+
     [Tooltip("これはキャラクターの最大速度です。")]
     [SerializeField] float moveSpeed = 10f;
 
@@ -61,7 +61,26 @@ public class Player : Character
 
     [Tooltip("これはキャラクターの弾発射間隔です。")]
     [SerializeField] float fireInterval = 0.2f;    //弾発射間隔
-    
+
+
+
+    #endregion
+
+    #region PlayerDodge
+    [Header("----- DODGE -----")]
+    [Tooltip("これはキャラクターのエネルギー消耗量です。")]
+    [SerializeField,Range(0,100)] int dodgeEnergyCost = 25;
+
+    [SerializeField] float maxRoll = 720f;
+
+    [SerializeField] float rollSpeed = 360f;
+    [SerializeField] Vector3 dodgeScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+    bool isDodging = false;
+
+    float currentRoll;
+
+    float dodgeDuration;
     #endregion
 
     WaitForSeconds waitForFireInterval;
@@ -71,14 +90,19 @@ public class Player : Character
 
     new Rigidbody2D rigidbody;
 
-    Coroutine moveCoroutine;
+    new Collider2D collider;
 
+
+    Coroutine moveCoroutine;
     //HealthRegenerateCoroutineを中止するための入れ物
     Coroutine healthRegenerateCoroutine;
 
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        collider = GetComponent<Collider2D>();
+
+        dodgeDuration = maxRoll / rollSpeed;
     }
 
     protected override void OnEnable()
@@ -90,6 +114,7 @@ public class Player : Character
 
         input.onFire += Fire;
         input.onStopFire += StopFire;
+        input.onDodge += Dodge;
     }
 
     void OnDisable()
@@ -99,6 +124,7 @@ public class Player : Character
 
         input.onFire -= Fire;
         input.onStopFire -= StopFire;
+        input.onDodge -= Dodge;
     }
     // Start is called before the first frame update
     void Start()
@@ -123,16 +149,16 @@ public class Player : Character
         statsBar_HUD.UpdateStats(health, maxHealth);
 
         //アクティブ状態なっている時
-        if(gameObject.activeSelf)
+        if (gameObject.activeSelf)
         {
             if (regenerateHealth)
             {
                 //もしコルーチンが始まった時でもダメージを受けるとリセットさせます
-                if(healthRegenerateCoroutine != null)
+                if (healthRegenerateCoroutine != null)
                 {
                     StopCoroutine(healthRegenerateCoroutine);
                 }
-               healthRegenerateCoroutine = StartCoroutine(HealthRegenerateCoroutine(waitHealthRegenerateTime, healthRegeneratePercent));
+                healthRegenerateCoroutine = StartCoroutine(HealthRegenerateCoroutine(waitHealthRegenerateTime, healthRegeneratePercent));
             }
         }
     }
@@ -154,13 +180,13 @@ public class Player : Character
     {
         // Vector2 moveAmount = moveInput * moveSpeed;
         // rigidbody.velocity = moveAmount;
-        if(moveCoroutine != null)
+        if (moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
         }
 
         //Quaternion moveRotation = Quaternion.AngleAxis(moveRotationAngle * moveInput.y,Vector3.right);
-        moveCoroutine =  StartCoroutine(MoveCoroutine(accelerationTime,moveInput.normalized * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
+        moveCoroutine = StartCoroutine(MoveCoroutine(accelerationTime, moveInput.normalized * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
         StartCoroutine(MovePositionLimitCoroutine());
     }
 
@@ -171,15 +197,15 @@ public class Player : Character
         {
             StopCoroutine(moveCoroutine);
         }
-        moveCoroutine = StartCoroutine(MoveCoroutine(decelerationTime,Vector2.zero,Quaternion.identity));
+        moveCoroutine = StartCoroutine(MoveCoroutine(decelerationTime, Vector2.zero, Quaternion.identity));
         StopCoroutine(MovePositionLimitCoroutine());
     }
 
-    IEnumerator MoveCoroutine(float time ,Vector2 moveVelocity,Quaternion moveRotation)
+    IEnumerator MoveCoroutine(float time, Vector2 moveVelocity, Quaternion moveRotation)
     {
         float t = 0f;
 
-        while(t < 1f)
+        while (t < 1f)
         {
             t += Time.fixedDeltaTime / time;
             rigidbody.velocity = Vector2.Lerp(rigidbody.velocity, moveVelocity, t);
@@ -189,22 +215,22 @@ public class Player : Character
         }
     }
 
- 
+
 
     IEnumerator MovePositionLimitCoroutine()
     {
         while (true)
         {
-            transform.position = Viewport.Instance.PlayerMoveablePosition(transform.position,paddingx,paddingy);
+            transform.position = Viewport.Instance.PlayerMoveablePosition(transform.position, paddingx, paddingy);
 
             yield return null;
         }
-       
+
     }
     #endregion
 
     #region FIRE
-    
+
     void Fire()
     {
         StartCoroutine(nameof(FireCoroutine));
@@ -241,6 +267,57 @@ public class Player : Character
 
             yield return waitForFireInterval;
         }
+    }
+    #endregion
+
+    #region DODGE
+    void Dodge()
+    {
+        if (isDodging || !PlayerEnergy.Instance.IsEnough(dodgeEnergyCost)) return;
+        StartCoroutine(nameof(DodgeCoroutine));
+        // Change Player's scale
+    }
+
+    IEnumerator DodgeCoroutine()
+    {
+        isDodging = true;
+        // Cost energy
+        PlayerEnergy.Instance.Use(dodgeEnergyCost);
+
+        //Make player invincibal
+        collider.isTrigger = true;
+
+        // Make player rotate along x axis
+        currentRoll = 0f;
+
+        //var scale = transform.localScale;
+
+        while (currentRoll < maxRoll)
+        {
+            currentRoll += rollSpeed * Time.deltaTime;
+            transform.rotation = Quaternion.AngleAxis(currentRoll, Vector3.right);
+
+            /*
+             if (currentRoll < maxRoll / 2f)
+            {
+                scale.x = Mathf.Clamp(scale.x - Time.deltaTime / dodgeDuration,dodgeScale.x,1f);
+                scale.y = Mathf.Clamp(scale.y - Time.deltaTime / dodgeDuration, dodgeScale.y, 1f);
+                scale.z = Mathf.Clamp(scale.z - Time.deltaTime / dodgeDuration, dodgeScale.z, 1f);
+            }
+            else
+            {
+                scale.x = Mathf.Clamp(scale.x + Time.deltaTime / dodgeDuration, dodgeScale.x, 1f);
+                scale.y = Mathf.Clamp(scale.y + Time.deltaTime / dodgeDuration, dodgeScale.y, 1f);
+                scale.z = Mathf.Clamp(scale.z + Time.deltaTime / dodgeDuration, dodgeScale.z, 1f);
+            }
+             */
+
+            transform.localScale = BezierCurve.QuadraticPoint(Vector3.one, Vector3.one, dodgeScale, currentRoll / maxRoll);
+            yield return null;
+        }
+
+        collider.isTrigger = false;
+        isDodging = false;
     }
     #endregion
 }
