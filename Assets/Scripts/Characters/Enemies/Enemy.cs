@@ -9,6 +9,8 @@ public class Enemy : Character
     public override void Die()
     {
         PlayerEnergy.Instance.Obtain(deathEnergyBonus);
+        //list ‚©‚ç©•ª‚ğíœ
+        EnemyManager.Instance.RemoveFromList(gameObject);
         base.Die();
     }
 }

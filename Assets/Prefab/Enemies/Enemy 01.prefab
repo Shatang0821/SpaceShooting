@@ -118,10 +118,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathVFX: {fileID: 2342042931496088306, guid: 97b415311529fa145aacd3eedaac728e, type: 3}
-  maxHealth: 50
+  maxHealth: 10
   health: 0
   showOnHeadHealthBar: 1
   onHeadHealtherBar: {fileID: 2314797840852339710}
+  deathEnergyBonus: 5
 --- !u!114 &598706668
 MonoBehaviour:
   m_ObjectHideFlags: 0

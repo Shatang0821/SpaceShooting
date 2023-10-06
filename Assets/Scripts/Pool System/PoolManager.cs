@@ -5,6 +5,8 @@ using UnityEngine;
 public class PoolManager : MonoBehaviour
 {
     // [SerializeField] はUnityエディタから直接値を設定できるようにするための属性。この場合、プールの配列を設定できる。
+    [SerializeField] Pool[] enemyPools;
+    
     [SerializeField] Pool[] playerProjectilePools; //プールの配列を設定できる。
 
     [SerializeField] Pool[] enemyProjectilePools;
@@ -13,10 +15,11 @@ public class PoolManager : MonoBehaviour
 
     static Dictionary<GameObject, Pool> dictionary; // 各プレハブとそれに関連するオブジェクトプールを関連付けるための辞書。
 
-    void Start()
+    void Awake()
     {
         dictionary = new Dictionary<GameObject, Pool>();
-        
+
+        Initialize(enemyPools);
         Initialize(playerProjectilePools);
         Initialize(enemyProjectilePools);
         Initialize(vFXPools);
@@ -28,6 +31,7 @@ public class PoolManager : MonoBehaviour
     void OnDestroy()
     {
         //プールサイズが正しいかをチェックする
+        CheckPoolSize(enemyPools);
         CheckPoolSize(playerProjectilePools);
         CheckPoolSize(enemyProjectilePools);
         CheckPoolSize(vFXPools);
@@ -88,7 +92,7 @@ public class PoolManager : MonoBehaviour
     public static GameObject Release(GameObject prefab)
     {
         #if UNITY_EDITOR
-        if(dictionary.ContainsKey(prefab))
+        if(!dictionary.ContainsKey(prefab))
         {
             Debug.LogError("pool Manager could NOT find prefab : " + prefab.name);
 
