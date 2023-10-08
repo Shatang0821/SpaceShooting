@@ -14703,6 +14703,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI Health Bar On Head  Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 7911190822454805903, guid: bf45240b423cf1f4bb91c351e6966cca, type: 3}
+      propertyPath: fillSpeed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8454184100992127543, guid: bf45240b423cf1f4bb91c351e6966cca, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

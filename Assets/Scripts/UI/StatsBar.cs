@@ -19,6 +19,8 @@ public class StatsBar : MonoBehaviour
 
     protected float targetFillAmout;
 
+    float previousFillAmount;
+
     float t;
 
     WaitForSeconds waitForeDelayFill;
@@ -84,12 +86,13 @@ public class StatsBar : MonoBehaviour
         {
             yield return waitForeDelayFill;
         }
+        previousFillAmount = currentFillAmout;
         t = 0;
 
         while(t < 1f)
         {
             t += Time.deltaTime * fillSpeed;
-            currentFillAmout = Mathf.Lerp(currentFillAmout, targetFillAmout, t);
+            currentFillAmout = Mathf.Lerp(previousFillAmount, targetFillAmout, t);
             image.fillAmount = currentFillAmout;
 
             yield return null;
