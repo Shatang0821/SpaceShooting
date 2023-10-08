@@ -19,6 +19,7 @@ public class EnemyController : MonoBehaviour
     [Header("---- FIRE ----")]
     //弾のオブジェクト
     [SerializeField] GameObject[] projectiles;
+    [SerializeField] AudioData[] projectileLaunchSFX;
 
     //銃口位置
     [SerializeField] Transform muzzle;
@@ -78,6 +79,8 @@ public class EnemyController : MonoBehaviour
             {
                 PoolManager.Release(projectile, muzzle.position);
             }
+
+            AudioManager.Instance.PlayRandomSFX(projectileLaunchSFX);
         }
     }
 }

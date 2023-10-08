@@ -118,6 +118,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathVFX: {fileID: 2342042931496088306, guid: 97b415311529fa145aacd3eedaac728e, type: 3}
+  deathSFX:
+  - audioClip: {fileID: 8300000, guid: 9314f85ef4c5ea04a87a0323c78fdd2e, type: 3}
+    volueme: 1
+  - audioClip: {fileID: 8300000, guid: 0f2184b0c1d094741b11e8f4077c52e9, type: 3}
+    volueme: 1
   maxHealth: 10
   health: 0
   showOnHeadHealthBar: 1
@@ -143,6 +148,9 @@ MonoBehaviour:
   - {fileID: 3738076239146580, guid: f411cc22a7eb9a5449a381e41c849ca4, type: 3}
   - {fileID: 3738076239146580, guid: effe737a2911abc44b247e79ba738d2e, type: 3}
   - {fileID: 3738076239146580, guid: dc2fb2d051da38f4fa4fb9efcc53cbf5, type: 3}
+  projectileLaunchSFX:
+  - audioClip: {fileID: 8300000, guid: 35644134c067099459f55ecfa2efd85d, type: 3}
+    volueme: 0.5
   muzzle: {fileID: 1228549439}
   minFireInterval: 2
   maxFireInterval: 4

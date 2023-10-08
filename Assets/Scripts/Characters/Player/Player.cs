@@ -22,7 +22,7 @@ public class Player : Character
     [Header("---- INPUT ----")]
     [SerializeField] PlayerInput input;
 
-    [Header("---- PlayerAttributes ----")]
+    [Header("---- MOVE ----")]
 
     [Tooltip("これはキャラクターの最大速度です。")]
     [SerializeField] float moveSpeed = 10f;
@@ -45,7 +45,7 @@ public class Player : Character
 
     #region ProjectileAttributes
 
-    [Header("---- ProjectileAttributes ----")]
+    [Header("---- FIRE ----")]
     [Tooltip("これはキャラクターの弾オブジェクトです。")]
     [SerializeField] GameObject projectile1; //弾オブジェクト
     [SerializeField] GameObject projectile2; //弾オブジェクト
@@ -55,6 +55,8 @@ public class Player : Character
     [SerializeField] Transform muzzleMiddle;      //弾発射位置
     [SerializeField] Transform muzzleTop;      //弾発射位置
     [SerializeField] Transform muzzleBottom;      //弾発射位置
+
+    [SerializeField] AudioData projectileLaunchSFX;   //発射効果音
 
     [Tooltip("これはキャラクターのパワーです。")]
     [SerializeField, Range(0, 2)] int weaponPower = 0;
@@ -68,6 +70,9 @@ public class Player : Character
 
     #region PlayerDodge
     [Header("----- DODGE -----")]
+
+    [SerializeField] AudioData dodgeSFX;
+
     [Tooltip("これはキャラクターのエネルギー消耗量です。")]
     [SerializeField,Range(0,100)] int dodgeEnergyCost = 25;
 
@@ -265,6 +270,7 @@ public class Player : Character
 
             }
 
+            AudioManager.Instance.PlayRandomSFX(projectileLaunchSFX);
             yield return waitForFireInterval;
         }
     }
@@ -281,6 +287,7 @@ public class Player : Character
     IEnumerator DodgeCoroutine()
     {
         isDodging = true;
+        AudioManager.Instance.PlayRandomSFX(dodgeSFX);
         // Cost energy
         PlayerEnergy.Instance.Use(dodgeEnergyCost);
 
