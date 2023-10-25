@@ -17,7 +17,11 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions
 
     public event UnityAction onStopFire = delegate { };
 
+    //回避するのためのイベントです
     public event UnityAction onDodge = delegate { };
+
+    //爆発のためのイベントです
+    public event UnityAction onOverdrive = delegate { };
 
     // 新しいInput Systemのアクションへの参照。
     InputActions inputActions;
@@ -83,6 +87,14 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions
        if(context.performed)
         {
             onDodge.Invoke();
+        }
+    }
+
+    public void OnOverdrive(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            onOverdrive.Invoke();
         }
     }
 }

@@ -88,12 +88,26 @@ public class Player : Character
     float dodgeDuration;
     #endregion
 
+    #region Overdrive
+
+    bool isOverdriving = false;
+
+    [SerializeField] int overdriveDodgeFactor = 2;
+
+    [SerializeField] float overdriveSpeedFactor = 1.2f;
+
+    [SerializeField] float overdriveFireFactor = 1.2f;
+    #endregion
+
     float t;                        //used for MoveCoroutine
     Vector2 previousVelocity;       //used for MoveCoroutine
     Quaternion previousRotation;    //used for MoveCoroutine
 
 
     WaitForSeconds waitForFireInterval;
+
+    WaitForSeconds waitForOverdriveFireInterval;
+
     //HP自動回復時間
     WaitForSeconds waitHealthRegenerateTime;
 
@@ -113,6 +127,10 @@ public class Player : Character
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
 
+        waitForFireInterval = new WaitForSeconds(fireInterval);
+        waitForOverdriveFireInterval = new WaitForSeconds(fireInterval /= overdriveFireFactor);
+        waitHealthRegenerateTime = new WaitForSeconds(healthRegenerateTime);
+
         dodgeDuration = maxRoll / rollSpeed;
     }
 
@@ -126,6 +144,10 @@ public class Player : Character
         input.onFire += Fire;
         input.onStopFire += StopFire;
         input.onDodge += Dodge;
+        input.onOverdrive += Overdrive;
+
+        PlayerOverdrive.on += OverdriveOn;
+        PlayerOverdrive.off += OverdriveOff;
     }
 
     void OnDisable()
@@ -136,14 +158,17 @@ public class Player : Character
         input.onFire -= Fire;
         input.onStopFire -= StopFire;
         input.onDodge -= Dodge;
+        input.onOverdrive -= Overdrive;
+
+        PlayerOverdrive.on -= OverdriveOn;
+        PlayerOverdrive.off -= OverdriveOff;
     }
     // Start is called before the first frame update
     void Start()
     {
         //もしこれからこの発射間隔をゲーム内に編集するなら関数を作って間隔を変えるときに
         //以下の文を関数内に置くことにより、毎回編集するときが新しく作ります。
-        waitForFireInterval = new WaitForSeconds(fireInterval);
-        waitHealthRegenerateTime = new WaitForSeconds(healthRegenerateTime);
+        
 
         statsBar_HUD.Initialize(health, maxHealth);
 
@@ -279,7 +304,8 @@ public class Player : Character
             }
 
             AudioManager.Instance.PlayRandomSFX(projectileLaunchSFX);
-            yield return waitForFireInterval;
+            yield return isOverdriving ? waitForOverdriveFireInterval : waitForFireInterval;
+            
         }
     }
     #endregion
@@ -333,6 +359,31 @@ public class Player : Character
 
         collider.isTrigger = false;
         isDodging = false;
+    }
+    #endregion
+
+    #region OVERDRIVE
+    void Overdrive()
+    {
+        Debug.Log("yes");
+        if (!PlayerEnergy.Instance.IsEnough(PlayerEnergy.MAX)) return;
+
+        PlayerOverdrive.on.Invoke();
+    }
+
+    void OverdriveOn()
+    {
+        
+        isOverdriving = true;
+        dodgeEnergyCost *= overdriveDodgeFactor;
+        moveSpeed *= overdriveSpeedFactor;
+    }
+
+    void OverdriveOff()
+    {
+        isOverdriving = false;
+        dodgeEnergyCost /= overdriveDodgeFactor;
+        moveSpeed /= overdriveSpeedFactor;
     }
     #endregion
 }

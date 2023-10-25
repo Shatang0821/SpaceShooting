@@ -27,6 +27,14 @@ public class EnemyController : MonoBehaviour
     //ç≈è¨çUåÇä‘äuÅEç≈ëÂçUåÇä‘äu
     [SerializeField] float minFireInterval;
     [SerializeField] float maxFireInterval;
+
+    float maxMoveDistancePerFrame; //à⁄ìÆêÊÇÃà⁄ìÆãóó£
+
+    WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+    private void Awake()
+    {
+        maxMoveDistancePerFrame = moveSpeed * Time.fixedDeltaTime;
+    }
     //poolÇ…ì¸ÇÍÇÈÇΩÇﬂÉAÉNÉeÉBÉuèÛë‘Ç…Ç»Ç¡ÇΩÇÁäJén
     void OnEnable()
     {
@@ -50,10 +58,10 @@ public class EnemyController : MonoBehaviour
         while(gameObject.activeSelf)
         {
             //if has not arrived targetPostion
-            if(Vector3.Distance(transform.position,targetPosition) > Mathf.Epsilon)//Mathf.EpsilonÅ@0Ç…å¿ÇËÇ»Ç≠ãﬂÇ√Ç≠floatå^êîÇ≈Ç∑
+            if(Vector3.Distance(transform.position,targetPosition) >= maxMoveDistancePerFrame)//Mathf.EpsilonÅ@0Ç…å¿ÇËÇ»Ç≠ãﬂÇ√Ç≠floatå^êîÇ≈Ç∑
             {
                 //keep moving to targetPosition
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, maxMoveDistancePerFrame);
                 
                 //ìGÇ™à⁄ìÆÇµÇƒÇ¢ÇÈÇ∆Ç´ÇÃxâÒì]Ç≥ÇπÇÈ
                 transform.rotation = Quaternion.AngleAxis((targetPosition - transform.position).normalized.y * moveRotationAngele, Vector3.right);
@@ -65,7 +73,7 @@ public class EnemyController : MonoBehaviour
             }
 
 
-            yield return null;
+            yield return waitForFixedUpdate;
         }
     }
 

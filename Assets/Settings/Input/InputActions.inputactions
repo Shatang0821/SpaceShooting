@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Overdrive",
+                    "type": "Button",
+                    "id": "e41aab7b-29af-485f-8eb0-84b6d29f3d5f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -168,6 +177,17 @@
                 },
                 {
                     "name": "",
+                    "id": "b4c8cf7c-ebb9-4c2d-aaea-2eba5033896d",
+                    "path": "<Joystick>/stick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "af57f938-6217-4559-ba3c-5c3936af5f9f",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
@@ -207,6 +227,28 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "Dodge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6a73ced0-58cb-43fd-8621-1d8425fd8ce8",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Overdrive",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4172b93-c41e-4154-beda-2ce38cd1e690",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Overdrive",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
