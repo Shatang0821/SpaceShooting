@@ -14657,10 +14657,11 @@ MonoBehaviour:
     volueme: 1
   - audioClip: {fileID: 8300000, guid: 0f2184b0c1d094741b11e8f4077c52e9, type: 3}
     volueme: 1
-  maxHealth: 10
+  maxHealth: 40
   health: 0
   showOnHeadHealthBar: 1
   onHeadHealtherBar: {fileID: 6033765804434036984}
+  scorePoint: 100
   deathEnergyBonus: 4
 --- !u!114 &1982125628
 MonoBehaviour:

@@ -89,7 +89,7 @@ public class PlayerEnergy : Singleton<PlayerEnergy>
             yield return waitForOverdriveInterval;
 
             //0.1s 1% 1S 10% 10S 100%
-            Use(PERCENT);
+            Use(PERCENT * 2);
         }
     }
 }

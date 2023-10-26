@@ -26,4 +26,6 @@ public class PlayerProjectile : Projectile
         base.OnCollisionEnter2D(collision);
         PlayerEnergy.Instance.Obtain(PlayerEnergy.PERCENT);
     }
+
+
 }

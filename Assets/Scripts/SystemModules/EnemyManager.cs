@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
+    public GameObject RandomEnemy => enemyList.Count == 0 ? null : enemyList[Random.Range(0, enemyList.Count)];
+
     public int WaveNumber => waveNumber;
 
     public float TimeBetweenWaves => timeBetweenWaves;

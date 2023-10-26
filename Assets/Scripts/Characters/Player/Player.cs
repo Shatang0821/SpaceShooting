@@ -50,6 +50,7 @@ public class Player : Character
     [SerializeField] GameObject projectile1; //弾オブジェクト
     [SerializeField] GameObject projectile2; //弾オブジェクト
     [SerializeField] GameObject projectile3; //弾オブジェクト
+    [SerializeField] GameObject projectileOverdrive;
 
     [Tooltip("これはキャラクターの弾発射位置です。")]
     [SerializeField] Transform muzzleMiddle;      //弾発射位置
@@ -223,7 +224,6 @@ public class Player : Character
 
         //Quaternion moveRotation = Quaternion.AngleAxis(moveRotationAngle * moveInput.y,Vector3.right);
         moveCoroutine = StartCoroutine(MoveCoroutine(accelerationTime, moveInput.normalized * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
-        StartCoroutine(nameof(MovePositionLimitCoroutine));
     }
 
     void StopMove()
@@ -234,7 +234,6 @@ public class Player : Character
             StopCoroutine(moveCoroutine);
         }
         moveCoroutine = StartCoroutine(MoveCoroutine(decelerationTime, Vector2.zero, Quaternion.identity));
-        StopCoroutine(nameof(MovePositionLimitCoroutine));
     }
 
     IEnumerator MoveCoroutine(float time, Vector2 moveVelocity, Quaternion moveRotation)
@@ -253,17 +252,9 @@ public class Player : Character
         }
     }
 
-
-
-    IEnumerator MovePositionLimitCoroutine()
+    private void Update()
     {
-        while (true)
-        {
-            transform.position = Viewport.Instance.PlayerMoveablePosition(transform.position, paddingx, paddingy);
-
-            yield return null;
-        }
-
+        transform.position = Viewport.Instance.PlayerMoveablePosition(transform.position, paddingx, paddingy);
     }
     #endregion
 
@@ -287,16 +278,16 @@ public class Player : Character
             switch (weaponPower)
             {
                 case 0:
-                    PoolManager.Release(projectile1, muzzleMiddle.position);//弾を生成する
+                    PoolManager.Release(isOverdriving ? projectileOverdrive : projectile1, muzzleMiddle.position);//弾を生成する
                     break;
                 case 1:
-                    PoolManager.Release(projectile1, muzzleTop.position);//弾を生成する
-                    PoolManager.Release(projectile1, muzzleBottom.position);//弾を生成する
+                    PoolManager.Release(isOverdriving ? projectileOverdrive : projectile1, muzzleTop.position);//弾を生成する
+                    PoolManager.Release(isOverdriving ? projectileOverdrive : projectile1, muzzleBottom.position);//弾を生成する
                     break;
                 case 2:
-                    PoolManager.Release(projectile1, muzzleMiddle.position);//弾を生成する
-                    PoolManager.Release(projectile2, muzzleTop.position);//弾を生成する
-                    PoolManager.Release(projectile3, muzzleBottom.position);//弾を生成する
+                    PoolManager.Release(isOverdriving ? projectileOverdrive : projectile1, muzzleMiddle.position);//弾を生成する
+                    PoolManager.Release(isOverdriving ? projectileOverdrive : projectile2, muzzleTop.position);//弾を生成する
+                    PoolManager.Release(isOverdriving ? projectileOverdrive : projectile3, muzzleBottom.position);//弾を生成する
                     break;
                 default:
                     break;

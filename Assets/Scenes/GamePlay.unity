@@ -352,6 +352,18 @@ PrefabInstance:
       propertyPath: statsBar_HUD
       value: 
       objectReference: {fileID: 4683171310775562469}
+    - target: {fileID: 468755506, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+      propertyPath: projectileOverdrive
+      value: 
+      objectReference: {fileID: 8510276924167900824, guid: 64b8a03681c976d42bc77c2fb19d551b, type: 3}
+    - target: {fileID: 686012227, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 867358383, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 982463773, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
       propertyPath: energyBar
       value: 
@@ -889,7 +901,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &532102380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1969,6 +1981,8 @@ MonoBehaviour:
     size: 25
   - prefab: {fileID: 8510276924167900824, guid: 85a7ee1013457754a92cff805a7b06ad, type: 3}
     size: 25
+  - prefab: {fileID: 8510276924167900824, guid: 64b8a03681c976d42bc77c2fb19d551b, type: 3}
+    size: 90
   enemyProjectilePools:
   - prefab: {fileID: 3738076239146580, guid: 3d7b4711312b26048954dca1819b6bc7, type: 3}
     size: 10
@@ -1987,6 +2001,8 @@ MonoBehaviour:
     size: 10
   - prefab: {fileID: 5060298685065931927, guid: 6775c68a79b34db4fa2fd4db2a4cdf74, type: 3}
     size: 25
+  - prefab: {fileID: 5060298685065931927, guid: 47d06c449f361a1469546c31bb70dded, type: 3}
+    size: 20
   - prefab: {fileID: 4801493125213720806, guid: 94d3dff6247d98e4cb4d8d6f0be5e291, type: 3}
     size: 5
 --- !u!4 &1499901095

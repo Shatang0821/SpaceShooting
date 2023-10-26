@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3488799984586971651}
   - component: {fileID: 6182393277995536946}
   m_Layer: 0
-  m_Name: VFX_PlayerProjectileHit
+  m_Name: VFX_PlayerProjectileHitOverdrive
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4817,7 +4817,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cc88b8dfa2e9689449b97f40c5c76952, type: 2}
+  - {fileID: 2100000, guid: e7a3ab089ec0f0944bafa61ada7c47f2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
