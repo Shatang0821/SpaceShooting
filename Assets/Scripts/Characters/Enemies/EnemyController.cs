@@ -6,9 +6,9 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [Header("---- MOVE ----")]
-    [SerializeField] float paddingX;
+    float paddingX;
 
-    [SerializeField] float paddingY;
+    float paddingY;
 
     //移動速度
     [SerializeField] float moveSpeed = 2f;
@@ -28,12 +28,13 @@ public class EnemyController : MonoBehaviour
     [SerializeField] float minFireInterval;
     [SerializeField] float maxFireInterval;
 
-    float maxMoveDistancePerFrame; //移動先の移動距離
-
     WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+
     private void Awake()
     {
-        maxMoveDistancePerFrame = moveSpeed * Time.fixedDeltaTime;
+        var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
+        paddingX = size.x / 2f;
+        paddingY = size.y / 2f;
     }
     //poolに入れるためアクティブ状態になったら開始
     void OnEnable()
@@ -58,10 +59,10 @@ public class EnemyController : MonoBehaviour
         while(gameObject.activeSelf)
         {
             //if has not arrived targetPostion
-            if(Vector3.Distance(transform.position,targetPosition) >= maxMoveDistancePerFrame)//Mathf.Epsilon　0に限りなく近づくfloat型数です
+            if(Vector3.Distance(transform.position,targetPosition) >= moveSpeed * Time.fixedDeltaTime)//Mathf.Epsilon　0に限りなく近づくfloat型数です
             {
                 //keep moving to targetPosition
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, maxMoveDistancePerFrame);
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime);
                 
                 //敵が移動しているときのx回転させる
                 transform.rotation = Quaternion.AngleAxis((targetPosition - transform.position).normalized.y * moveRotationAngele, Vector3.right);

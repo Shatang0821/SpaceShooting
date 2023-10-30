@@ -14,9 +14,13 @@ public class BackgroundScroller : MonoBehaviour
         material =GetComponent<Renderer>().material;
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator Start()
     {
-        material.mainTextureOffset += scrollVelocity * Time.deltaTime;
+        while(true)
+        {
+            material.mainTextureOffset += scrollVelocity * Time.deltaTime;
+
+            yield return null;
+        }    
     }
 }

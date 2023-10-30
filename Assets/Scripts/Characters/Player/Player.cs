@@ -36,11 +36,8 @@ public class Player : Character
     [Tooltip("これはキャラクターの上下移動角度です。")]
     [SerializeField] float moveRotationAngle = 50f;
 
-    [Tooltip("これはキャラクターのｘ端の数値です。")]
-    [SerializeField] float paddingx = 0.2f;
-
-    [Tooltip("これはキャラクターのｙ端の数値です。")]
-    [SerializeField] float paddingy = 0.2f;
+    float paddingX;
+    float paddingY;
     #endregion
 
     #region ProjectileAttributes
@@ -87,6 +84,8 @@ public class Player : Character
     float currentRoll;
 
     float dodgeDuration;
+
+    readonly float slowMotionDuration = 1f;//バレットタイムslowout時間
     #endregion
 
     #region Overdrive
@@ -112,6 +111,8 @@ public class Player : Character
     //HP自動回復時間
     WaitForSeconds waitHealthRegenerateTime;
 
+    WaitForSeconds waitDecelerationTime;//減速時間
+
     WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();   //used for MoveCoroutine
 
     new Rigidbody2D rigidbody;
@@ -128,9 +129,14 @@ public class Player : Character
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
 
+        var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
+        paddingX = size.x / 2f;
+        paddingY = size.y / 2f;
+
         waitForFireInterval = new WaitForSeconds(fireInterval);
         waitForOverdriveFireInterval = new WaitForSeconds(fireInterval /= overdriveFireFactor);
         waitHealthRegenerateTime = new WaitForSeconds(healthRegenerateTime);
+        waitDecelerationTime = new WaitForSeconds(decelerationTime);
 
         dodgeDuration = maxRoll / rollSpeed;
     }
@@ -169,14 +175,11 @@ public class Player : Character
     {
         //もしこれからこの発射間隔をゲーム内に編集するなら関数を作って間隔を変えるときに
         //以下の文を関数内に置くことにより、毎回編集するときが新しく作ります。
-        
-
         statsBar_HUD.Initialize(health, maxHealth);
 
         rigidbody.gravityScale = 0f;//重力を0
 
         input.EnableGameplayInput();
-
     }
 
 
@@ -224,6 +227,8 @@ public class Player : Character
 
         //Quaternion moveRotation = Quaternion.AngleAxis(moveRotationAngle * moveInput.y,Vector3.right);
         moveCoroutine = StartCoroutine(MoveCoroutine(accelerationTime, moveInput.normalized * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
+        StopCoroutine(nameof(DecelerationCoroutine));
+        StartCoroutine(nameof(MoveRangeLimatationCoroutine));
     }
 
     void StopMove()
@@ -234,6 +239,7 @@ public class Player : Character
             StopCoroutine(moveCoroutine);
         }
         moveCoroutine = StartCoroutine(MoveCoroutine(decelerationTime, Vector2.zero, Quaternion.identity));
+        StartCoroutine(nameof(DecelerationCoroutine));
     }
 
     IEnumerator MoveCoroutine(float time, Vector2 moveVelocity, Quaternion moveRotation)
@@ -252,9 +258,20 @@ public class Player : Character
         }
     }
 
-    private void Update()
+    IEnumerator MoveRangeLimatationCoroutine()
     {
-        transform.position = Viewport.Instance.PlayerMoveablePosition(transform.position, paddingx, paddingy);
+        while(true)
+        {
+            transform.position = Viewport.Instance.PlayerMoveablePosition(transform.position, paddingX, paddingY);
+            yield return null;
+        }    
+    }
+
+    IEnumerator DecelerationCoroutine()
+    {
+        yield return waitDecelerationTime;
+
+        StopCoroutine(MoveRangeLimatationCoroutine());
     }
     #endregion
 
@@ -323,6 +340,8 @@ public class Player : Character
         currentRoll = 0f;
 
         //var scale = transform.localScale;
+
+        TimeController.Instance.BulletTime(slowMotionDuration, slowMotionDuration);
 
         while (currentRoll < maxRoll)
         {
