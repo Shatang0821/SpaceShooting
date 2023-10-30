@@ -47,5 +47,6 @@ public class Projectile : MonoBehaviour
 
     protected void SetTarget(GameObject target) => this.target = target;
 
+    //オブジェクトのローカル前方向を基づいて移動する。ローカル方向のz軸は前を意味するため,z軸変えると進行方向も変わる
     public void Move() => transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
 }

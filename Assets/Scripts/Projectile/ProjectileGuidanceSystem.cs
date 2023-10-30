@@ -24,6 +24,7 @@ public class ProjectileGuidanceSystem : MonoBehaviour
                 // rotate to target
                 //var angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
                 transform.rotation = Quaternion.AngleAxis(Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg, Vector3.forward);
+                //Šp“x‚ğ­‚µ‚¸‚Â•â³‚µ‚Ä‚¢‚­Œø‰Ê
                 transform.rotation *= Quaternion.Euler(0f, 0f, ballisticAngle);
                 projectile.Move();
             }
