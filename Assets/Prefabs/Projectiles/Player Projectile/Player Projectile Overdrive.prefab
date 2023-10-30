@@ -5012,7 +5012,7 @@ MonoBehaviour:
     volueme: 0.3
   damage: 2
   moveSpeed: 20
-  moveDirection: {x: 0.5, y: 0}
+  moveDirection: {x: 1, y: 0}
   guidanceSystem: {fileID: 6450503791504021272}
 --- !u!114 &970545738572022482
 MonoBehaviour:
@@ -5041,5 +5041,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectile: {fileID: 8537692706336430154}
-  minBallisticAngle: 50
-  maxBallisticAngle: 75
+  minBallisticAngle: 75
+  maxBallisticAngle: -75
