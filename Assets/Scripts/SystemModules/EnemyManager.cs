@@ -55,8 +55,6 @@ public class EnemyManager : Singleton<EnemyManager>
         //enemyがなくなるまで待機して、そして生成させる。初期listは敵入っていないから直接コルーチンが始まる
         while(spawnEnemy)
         {
-            yield return waitUntilNoEnemy;
-
             waveUI.SetActive(true);
 
             yield return waitTimeBetweenWaves;
@@ -78,6 +76,8 @@ public class EnemyManager : Singleton<EnemyManager>
 
             yield return waitTimeBetweenSpawns;
         }
+
+        yield return waitUntilNoEnemy;
 
         waveNumber++;
     }

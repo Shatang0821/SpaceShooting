@@ -8,11 +8,24 @@ public class TimeController : Singleton<TimeController>
 
     float defaultFixedDeltaTime;                                //元のFixedDeltaTime;
 
+    float timeScaleBeforePause;
+
     float t;                                                    //lerpの第三引数
     protected override void Awake()
     {
         base.Awake();
         defaultFixedDeltaTime = Time.fixedDeltaTime;
+    }
+
+    public void Pause()
+    {
+        timeScaleBeforePause = Time.timeScale;
+        Time.timeScale = 0f;
+    }
+
+    public void UnPause()
+    {
+        Time.timeScale = timeScaleBeforePause;
     }
 
     /// <summary>
@@ -84,11 +97,13 @@ public class TimeController : Singleton<TimeController>
 
         while (t < 1f)
         {
-            //Time.deltaTimeは timescale変わるときも変わるから使えない
-            t += Time.unscaledDeltaTime / duration;
-            Time.timeScale = Mathf.Lerp(1f, bulletTimeScale, t);
-            Time.fixedDeltaTime = defaultFixedDeltaTime * Time.timeScale;
-
+            if(GameManager.GameState != GameState.Paused )
+            {
+                //Time.deltaTimeは timescale変わるときも変わるから使えない
+                t += Time.unscaledDeltaTime / duration;
+                Time.timeScale = Mathf.Lerp(1f, bulletTimeScale, t);
+                Time.fixedDeltaTime = defaultFixedDeltaTime * Time.timeScale;
+            }
             yield return null;
         }
     }
@@ -104,11 +119,13 @@ public class TimeController : Singleton<TimeController>
 
         while(t < 1f)
         {
-            //Time.deltaTimeは timescale変わるときも変わるから使えない
-            t += Time.unscaledDeltaTime / duration;
-            Time.timeScale = Mathf.Lerp(bulletTimeScale, 1f, t);
-            Time.fixedDeltaTime = defaultFixedDeltaTime * Time.timeScale;
-
+            if(GameManager.GameState != GameState.Paused)
+            {
+                //Time.deltaTimeは timescale変わるときも変わるから使えない
+                t += Time.unscaledDeltaTime / duration;
+                Time.timeScale = Mathf.Lerp(bulletTimeScale, 1f, t);
+                Time.fixedDeltaTime = defaultFixedDeltaTime * Time.timeScale;
+            }
             yield return null;
         }
     }
