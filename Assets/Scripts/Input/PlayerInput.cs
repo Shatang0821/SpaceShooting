@@ -49,6 +49,11 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions,Input
         DisableAllInputs();
     }
 
+    /// <summary>
+    /// 有効actionmapを変わり
+    /// </summary>
+    /// <param name="actionMap">変えたいactionMap</param>
+    /// <param name="isUIInput">UIの選択か</param>
     void SwitchActionMap(InputActionMap actionMap, bool isUIInput)
     {
         inputActions.Disable();
@@ -56,13 +61,13 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions,Input
 
         if(isUIInput)
         {
-            Cursor.visible = true;                     // マウスカーソルを不可視にします。
-            Cursor.lockState = CursorLockMode.None;   // マウスカーソルを不可視にします。
+            Cursor.visible = true;                     // マウスカーソルを可視にします。
+            Cursor.lockState = CursorLockMode.None;    // マウスカーソルをロックしない。
         }
         else
         {
             Cursor.visible = false;                     // マウスカーソルを不可視にします。
-            Cursor.lockState = CursorLockMode.Locked;   // マウスカーソルを不可視にします。
+            Cursor.lockState = CursorLockMode.Locked;   // マウスカーソルをロックする。
         }
     }
 
@@ -71,8 +76,14 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions,Input
         UpdateModeが In Fixed Updateだから入力が無効になる
         それを防ぐため、一時停止の時をUpdateModeを変える
      */
+    /// <summary>
+    /// 入力をProcessEventsInDynamicUpdateに変える
+    /// </summary>
     public void SwitchToDynamicUpdateMode() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
-    
+
+    /// <summary>
+    /// 入力をProcessEventsInFixedUpdateに変える
+    /// </summary>
     public void SwitchToFixedUpdateMode() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInFixedUpdate;
     
     //入力を無効化する

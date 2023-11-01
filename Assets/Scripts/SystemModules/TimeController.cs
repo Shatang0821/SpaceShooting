@@ -17,17 +17,24 @@ public class TimeController : Singleton<TimeController>
         defaultFixedDeltaTime = Time.fixedDeltaTime;
     }
 
+    /// <summary>
+    /// timeScaleを0にする
+    /// </summary>
     public void Pause()
     {
         timeScaleBeforePause = Time.timeScale;
         Time.timeScale = 0f;
     }
 
+    /// <summary>
+    /// Pause開始時のtimeScaleに戻る
+    /// </summary>
     public void UnPause()
     {
         Time.timeScale = timeScaleBeforePause;
     }
 
+    #region BULLET TIME
     /// <summary>
     /// バレットタイムスタートさせる
     /// </summary>
@@ -129,4 +136,5 @@ public class TimeController : Singleton<TimeController>
             yield return null;
         }
     }
+    #endregion
 }

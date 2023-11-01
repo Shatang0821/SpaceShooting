@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-                                             //マウスカーソルがボタン範囲内にいるかをチェック
+                                             
 public class UIEventTrigger : 
     MonoBehaviour, 
-    IPointerEnterHandler,
-    IPointerDownHandler,
-    ISelectHandler,
-    ISubmitHandler
+    IPointerEnterHandler,   //マウスカーソルがボタン範囲内にいるかをチェック
+    IPointerDownHandler,    //マウスで提出したら呼び出す
+    ISelectHandler,         //キーボードやゲームパッドで選択したら
+    ISubmitHandler          //キーボードやゲームパッドなどで提出したら呼び出す
 {
     [SerializeField] AudioData selectSFX;
     [SerializeField] AudioData submitSFX;

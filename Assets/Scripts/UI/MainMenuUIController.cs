@@ -5,25 +5,59 @@ using UnityEngine.UI;
 
 public class MainMenuUIController : MonoBehaviour
 {
-    [SerializeField] Button buttonStartGame;
+    [Header("==== CANVAS ====")]
+    [SerializeField] Canvas mainMenuCanvas;
+
+    [Header("==== BUTTONS ====")]
+    [SerializeField] Button buttonStart;
+    [SerializeField] Button buttonOptions;
+    [SerializeField] Button buttonQuit;
+
 
     private void OnEnable()
     {
-        buttonStartGame.onClick.AddListener(OnStartGameButtonClick);
+        ButtonPressedBehavior.buttonFunctionTable.Add(buttonStart.gameObject.name,OnButtonStartClicked);
+        ButtonPressedBehavior.buttonFunctionTable.Add(buttonOptions.gameObject.name, OnButtonOptionsClicked);
+        ButtonPressedBehavior.buttonFunctionTable.Add(buttonQuit.gameObject.name, OnButtonQuitClicked);
     }
 
     private void OnDisable()
     {
-        buttonStartGame.onClick.RemoveAllListeners();
+        ButtonPressedBehavior.buttonFunctionTable.Clear();
     }
 
     private void Start()
     {
         Time.timeScale = 1f;
         GameManager.GameState = GameState.Playing;
+        UIInput.Instance.SelectUI(buttonStart);
     }
-    void OnStartGameButtonClick()
+    /// <summary>
+    /// メニュー画面を消して、ゲームシーンに遷移
+    /// </summary>
+    void OnButtonStartClicked()
     {
+        mainMenuCanvas.enabled = false;
         SceneLoader.Instance.LoadGamePlayScene();
+    }
+
+    /// <summary>
+    /// オプション画面を開く
+    /// </summary>
+    void OnButtonOptionsClicked()
+    {
+        UIInput.Instance.SelectUI(buttonOptions);
+    }
+
+    /// <summary>
+    /// ゲームを終了
+    /// </summary>
+    void OnButtonQuitClicked()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }
