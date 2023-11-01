@@ -29,6 +29,8 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions,Input
     //開始のためのイベントです
     public event UnityAction onUnpause = delegate { };
 
+    public event UnityAction onLaunchMissile = delegate { };
+
     // 新しいInput Systemのアクションへの参照。
     InputActions inputActions;
 
@@ -143,6 +145,14 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions,Input
         if(context.performed)
         {
             onUnpause.Invoke();
+        }
+    }
+
+    public void OnLaunchMissile(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            onLaunchMissile.Invoke();
         }
     }
 }

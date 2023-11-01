@@ -54,7 +54,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686012226}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.95, y: 0.2, z: 0}
+  m_LocalPosition: {x: 0.95, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6435389010079767248}
@@ -84,7 +84,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 867358382}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.95, y: -0.2, z: 0}
+  m_LocalPosition: {x: 0.95, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6435389010079767248}
@@ -29124,6 +29124,7 @@ GameObject:
   - component: {fileID: 468755506}
   - component: {fileID: 982463773}
   - component: {fileID: 5470325219722810831}
+  - component: {fileID: 43259335}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -29219,11 +29220,10 @@ MonoBehaviour:
   accelerationTime: 0.35
   decelerationTime: 0.75
   moveRotationAngle: 28
-  paddingx: 1.12
-  paddingy: 0.7
   projectile1: {fileID: 8510276924167900824, guid: be785fbc04c807948967104b1ef8b643, type: 3}
   projectile2: {fileID: 8510276924167900824, guid: 319f56ea354bc9546ba8687e31a52308, type: 3}
   projectile3: {fileID: 8510276924167900824, guid: 85a7ee1013457754a92cff805a7b06ad, type: 3}
+  projectileOverdrive: {fileID: 8510276924167900824, guid: 64b8a03681c976d42bc77c2fb19d551b, type: 3}
   muzzleMiddle: {fileID: 316763256}
   muzzleTop: {fileID: 686012227}
   muzzleBottom: {fileID: 867358383}
@@ -29268,15 +29268,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4838690e2be99641aaeb96b4b11d8ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerVFX: {fileID: 1628744458893394, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
-  engineVFXNormal: {fileID: 0}
-  engineVFXOverdrive: {fileID: 0}
+  triggerVFX: {fileID: 3100152339907579367}
+  engineVFXNormal: {fileID: 6435389009007492521}
+  engineVFXOverdrive: {fileID: 4053534937716202839}
   onSFX:
-    audioClip: {fileID: 0}
-    volueme: 0
+    audioClip: {fileID: 8300000, guid: 62c5fc7ce12def64a84582fcf54974a1, type: 3}
+    volueme: 3
   offSFX:
-    audioClip: {fileID: 0}
-    volueme: 0
+    audioClip: {fileID: 8300000, guid: af7991e526977a144b102a04e5366c12, type: 3}
+    volueme: 3
+--- !u!114 &43259335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435389010079767255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d9e1b47b7af52e4bbd03e58d96bc4c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultAmount: 5
+  cooldownTime: 3
+  missilePrefab: {fileID: 2523096243714385163, guid: 1b2c3ab1e0e61914ba3e10d026ca3023, type: 3}
+  launchSFX:
+    audioClip: {fileID: 8300000, guid: 99331d0df4c708149b69b11b5a64d2f4, type: 3}
+    volueme: 1
 --- !u!1 &6758096032694626173
 GameObject:
   m_ObjectHideFlags: 0
@@ -43904,6 +43922,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+--- !u!1 &4053534937716202839 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2832587655287487448, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+  m_PrefabInstance: {fileID: 2237818399728379535}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4053534937716202836 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2832587655287487451, guid: f0943553854878d44988f105f0edaa1f, type: 3}
@@ -43922,7 +43945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1628744458893394, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4400389479008290, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
       propertyPath: m_RootOrder
@@ -43970,6 +43993,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
+--- !u!1 &3100152339907579367 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1628744458893394, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
+  m_PrefabInstance: {fileID: 3098544117008790965}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3102873854174461335 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4400389479008290, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}

@@ -119,6 +119,7 @@ public class Player : Character
 
     new Collider2D collider;
 
+    MissileSystem missile;
 
     Coroutine moveCoroutine;
     //HealthRegenerateCoroutine‚ð’†Ž~‚·‚é‚½‚ß‚Ì“ü‚ê•¨
@@ -128,6 +129,7 @@ public class Player : Character
     {
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
+        missile = GetComponent<MissileSystem>();
 
         var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
         paddingX = size.x / 2f;
@@ -147,11 +149,11 @@ public class Player : Character
 
         input.onMove += Move;
         input.onStopMove += StopMove;
-
         input.onFire += Fire;
         input.onStopFire += StopFire;
         input.onDodge += Dodge;
         input.onOverdrive += Overdrive;
+        input.onLaunchMissile += LaunchMissile;
 
         PlayerOverdrive.on += OverdriveOn;
         PlayerOverdrive.off += OverdriveOff;
@@ -161,11 +163,11 @@ public class Player : Character
     {
         input.onMove -= Move;
         input.onStopMove -= StopMove;
-
         input.onFire -= Fire;
         input.onStopFire -= StopFire;
         input.onDodge -= Dodge;
         input.onOverdrive -= Overdrive;
+        input.onLaunchMissile -= LaunchMissile;
 
         PlayerOverdrive.on -= OverdriveOn;
         PlayerOverdrive.off -= OverdriveOff;
@@ -397,4 +399,9 @@ public class Player : Character
         moveSpeed /= overdriveSpeedFactor;
     }
     #endregion
+
+    void LaunchMissile()
+    {
+        missile.Launch(muzzleMiddle);
+    }
 }
