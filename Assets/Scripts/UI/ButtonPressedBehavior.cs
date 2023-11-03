@@ -6,7 +6,7 @@ public class ButtonPressedBehavior : StateMachineBehaviour
 {
     /* 
      ボタンをsubmitするとこのスクリプトが呼び出して、
-    まずEnter処理で他のUIを無効かするそしてアニメーションを流す
+    まずOnStateEnter処理で他のUIを無効かするそしてアニメーションを流す
     そのあとExit処理の入る
     入るanimatorを持っているオブジェクトの名前を取得して対応の処理を引き起こす
     辞書を使ってその名前とあっているActionを引き起こす

@@ -213,6 +213,8 @@ public class Player : Character
 
     public override void Die()
     {
+        //GameManager.onGameOver‚ªnull‚Å‚È‚¢ê‡‚Ì‚İInvoke‚ğŒÄ‚Ño‚·
+        GameManager.onGameOver?.Invoke();
         GameManager.GameState = GameState.GameOver;
         statsBar_HUD.UpdateStats(0f, maxHealth);
         base.Die();

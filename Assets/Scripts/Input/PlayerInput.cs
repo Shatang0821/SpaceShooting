@@ -5,7 +5,11 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(menuName = "Player Input")]
-public class PlayerInput : ScriptableObject, InputActions.IGameplayActions,InputActions.IPauseMenuActions
+public class PlayerInput : 
+    ScriptableObject, 
+    InputActions.IGameplayActions,
+    InputActions.IPauseMenuActions,
+    InputActions.IGameOverScreenActions
 {
     // 移動アクションのためのイベントです。
     public event UnityAction<Vector2> onMove = delegate { };
@@ -31,6 +35,8 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions,Input
 
     public event UnityAction onLaunchMissile = delegate { };
 
+    public event UnityAction onConfirmGameOver = delegate { };
+
     // 新しいInput Systemのアクションへの参照。
     InputActions inputActions;
 
@@ -41,6 +47,8 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions,Input
 
         inputActions.Gameplay.SetCallbacks(this);
         inputActions.PauseMenu.SetCallbacks(this);
+        inputActions.GameOverScreen.SetCallbacks(this);
+
     }
 
     // 無効にされた時に呼ばれるメソッド。
@@ -85,8 +93,10 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions,Input
     /// 入力をProcessEventsInFixedUpdateに変える
     /// </summary>
     public void SwitchToFixedUpdateMode() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInFixedUpdate;
-    
-    //入力を無効化する
+
+    /// <summary>
+    /// 入力を無効化する
+    /// </summary>
     public void DisableAllInputs()　=> inputActions.Disable();
 
     /// <summary>
@@ -98,6 +108,11 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions,Input
     /// 一時停止画面内の入力を有効化するメソッド
     /// </summary>
     public void EnablePauseMenuiInput() => SwitchActionMap(inputActions.PauseMenu, true);
+
+    /// <summary>
+    /// ゲームオーバー時の入力
+    /// </summary>
+    public void EnableGameOverScreenInput() => SwitchActionMap(inputActions.GameOverScreen, true);
 
     // 移動アクションがトリガーされた時に呼ばれるメソッド。
     public void OnMove(InputAction.CallbackContext context)
@@ -164,6 +179,14 @@ public class PlayerInput : ScriptableObject, InputActions.IGameplayActions,Input
         if(context.performed)
         {
             onLaunchMissile.Invoke();
+        }
+    }
+
+    public void OnConfirmGameOver(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            onConfirmGameOver.Invoke();
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class SceneLoader : PersistentSingleton<SceneLoader>
 
     const string GAMEPLAY = "Gameplay";
     const string MAIN_MENU = "MainMenu";
+    const string SCORING = "Scoring";
 
     void Load(string sceneName)
     {
@@ -61,6 +63,13 @@ public class SceneLoader : PersistentSingleton<SceneLoader>
 
     public void LoadMainMenuScene()
     {
+        StopAllCoroutines();
         StartCoroutine(LoadingCoroutine(MAIN_MENU));
+    }
+
+    public void LoadScoringScene()
+    {
+        StopAllCoroutines();
+        StartCoroutine(LoadingCoroutine(SCORING));
     }
 }
