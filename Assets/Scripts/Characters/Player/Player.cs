@@ -38,6 +38,8 @@ public class Player : Character
 
     float paddingX;
     float paddingY;
+
+    Vector2 moveDirection;
     #endregion
 
     #region ProjectileAttributes
@@ -193,6 +195,7 @@ public class Player : Character
         //アクティブ状態なっている時
         if (gameObject.activeSelf)
         {
+            Move(moveDirection);
             if (regenerateHealth)
             {
                 //もしコルーチンが始まった時でもダメージを受けるとリセットさせます
@@ -230,8 +233,9 @@ public class Player : Character
             StopCoroutine(moveCoroutine);
         }
 
+        moveDirection = moveInput.normalized;
         //Quaternion moveRotation = Quaternion.AngleAxis(moveRotationAngle * moveInput.y,Vector3.right);
-        moveCoroutine = StartCoroutine(MoveCoroutine(accelerationTime, moveInput.normalized * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
+        moveCoroutine = StartCoroutine(MoveCoroutine(accelerationTime, moveDirection * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
         StopCoroutine(nameof(DecelerationCoroutine));
         StartCoroutine(nameof(MoveRangeLimatationCoroutine));
     }
