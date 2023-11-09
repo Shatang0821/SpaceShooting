@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 public class PlayerOverdrive : MonoBehaviour
 {
+    //こう定義すると複数のイベントがサブスクライブができます
+    //PlayerEnergy.cs      Player.cs      this
+    //PlayerOverdriveOn()  OverdriveOn()  On()三つのイベントがあります
     public static UnityAction on = delegate { };
 
     public static UnityAction off = delegate { };

@@ -39,6 +39,7 @@ public class Player : Character
     float paddingX;
     float paddingY;
 
+    //入力した移動方向
     Vector2 moveDirection;
     #endregion
 
@@ -71,34 +72,34 @@ public class Player : Character
     #region PlayerDodge
     [Header("----- DODGE -----")]
 
-    [SerializeField] AudioData dodgeSFX;
+    [SerializeField] AudioData dodgeSFX;//効果音
 
     [Tooltip("これはキャラクターのエネルギー消耗量です。")]
     [SerializeField,Range(0,100)] int dodgeEnergyCost = 25;
 
-    [SerializeField] float maxRoll = 720f;
+    [SerializeField] float maxRoll = 720f;//最大回転角度
 
-    [SerializeField] float rollSpeed = 360f;
-    [SerializeField] Vector3 dodgeScale = new Vector3(0.5f, 0.5f, 0.5f);
+    [SerializeField] float rollSpeed = 360f;//回転速度
+    [SerializeField] Vector3 dodgeScale = new Vector3(0.5f, 0.5f, 0.5f);//スケール変化
 
-    bool isDodging = false;
+    bool isDodging = false; //ダッジ　躱すかわす
 
-    float currentRoll;
+    float currentRoll;//現在回転値
 
-    float dodgeDuration;
+    float dodgeDuration;//ダッジ持続時間
 
     readonly float slowMotionDuration = 1f;//バレットタイムslowout時間
     #endregion
 
-    #region Overdrive
-
+    #region Overdrive　
+    //限界突破
     bool isOverdriving = false;
 
-    [SerializeField] int overdriveDodgeFactor = 2;
+    [SerializeField] int overdriveDodgeFactor = 2;  //ダッジ消耗を２倍を増やす
 
-    [SerializeField] float overdriveSpeedFactor = 1.2f;
+    [SerializeField] float overdriveSpeedFactor = 1.2f;//スピードを1.2倍
 
-    [SerializeField] float overdriveFireFactor = 1.2f;
+    [SerializeField] float overdriveFireFactor = 1.2f;//攻撃間隔1.2倍縮む
     #endregion
 
     float t;                        //used for MoveCoroutine
@@ -106,9 +107,9 @@ public class Player : Character
     Quaternion previousRotation;    //used for MoveCoroutine
 
 
-    WaitForSeconds waitForFireInterval;
+    WaitForSeconds waitForFireInterval;//攻撃間隔
 
-    WaitForSeconds waitForOverdriveFireInterval;
+    WaitForSeconds waitForOverdriveFireInterval;//オーバードライブの攻撃間隔
 
     //HP自動回復時間
     WaitForSeconds waitHealthRegenerateTime;
@@ -124,15 +125,18 @@ public class Player : Character
     MissileSystem missile;
 
     Coroutine moveCoroutine;
+
     //HealthRegenerateCoroutineを中止するための入れ物
     Coroutine healthRegenerateCoroutine;
 
     void Awake()
     {
+        // コンポーネントの取得と初期化
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
         missile = GetComponent<MissileSystem>();
 
+        //サイズ取得
         var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
         paddingX = size.x / 2f;
         paddingY = size.y / 2f;
@@ -142,13 +146,14 @@ public class Player : Character
         waitHealthRegenerateTime = new WaitForSeconds(healthRegenerateTime);
         waitDecelerationTime = new WaitForSeconds(decelerationTime);
 
-        dodgeDuration = maxRoll / rollSpeed;
+        dodgeDuration = maxRoll / rollSpeed;//最大回転角度/回転速度 = 時間
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
 
+        //イベントのサブスクライブ
         input.onMove += Move;
         input.onStopMove += StopMove;
         input.onFire += Fire;
@@ -163,6 +168,7 @@ public class Player : Character
 
     void OnDisable()
     {
+        //イベントのアンサブスクライブ
         input.onMove -= Move;
         input.onStopMove -= StopMove;
         input.onFire -= Fire;
@@ -177,8 +183,6 @@ public class Player : Character
     // Start is called before the first frame update
     void Start()
     {
-        //もしこれからこの発射間隔をゲーム内に編集するなら関数を作って間隔を変えるときに
-        //以下の文を関数内に置くことにより、毎回編集するときが新しく作ります。
         statsBar_HUD.Initialize(health, maxHealth);
 
         rigidbody.gravityScale = 0f;//重力を0
@@ -186,16 +190,22 @@ public class Player : Character
         input.EnableGameplayInput();
     }
 
-
+    /// <summary>
+    /// ダメージを受ける処理
+    /// </summary>
+    /// <param name="damage">ダメージ量</param>
     public override void TakenDamage(float damage)
     {
         base.TakenDamage(damage);
+        //バーを更新
         statsBar_HUD.UpdateStats(health, maxHealth);
 
         //アクティブ状態なっている時
         if (gameObject.activeSelf)
         {
+            //弾とぶつかると止まるときがあり、それを防ぐために入力があるなら動かせる
             Move(moveDirection);
+            //もし回復中であれば
             if (regenerateHealth)
             {
                 //もしコルーチンが始まった時でもダメージを受けるとリセットさせます
@@ -211,12 +221,14 @@ public class Player : Character
     public override void RestoreHealth(float value)
     {
         base.RestoreHealth(value);
+        //バーを更新する
         statsBar_HUD.UpdateStats(health, maxHealth);
     }
 
     public override void Die()
     {
         //GameManager.onGameOverがnullでない場合のみInvokeを呼び出す
+        //?はnull条件演算子
         GameManager.onGameOver?.Invoke();
         GameManager.GameState = GameState.GameOver;
         statsBar_HUD.UpdateStats(0f, maxHealth);
@@ -228,29 +240,41 @@ public class Player : Character
     {
         // Vector2 moveAmount = moveInput * moveSpeed;
         // rigidbody.velocity = moveAmount;
+        //移動コルーチンがnullではない場合停止させる
         if (moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
         }
-
+        //キーのvalueを正規化させて1か-1にする
         moveDirection = moveInput.normalized;
         //Quaternion moveRotation = Quaternion.AngleAxis(moveRotationAngle * moveInput.y,Vector3.right);
         moveCoroutine = StartCoroutine(MoveCoroutine(accelerationTime, moveDirection * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
+        //移動させるであれば減速コルーチンを止める
         StopCoroutine(nameof(DecelerationCoroutine));
+        //画面制限を始まる
         StartCoroutine(nameof(MoveRangeLimatationCoroutine));
     }
 
     void StopMove()
     {
         //rigidbody.velocity = Vector2.zero;
+        //移動コルーチンがnullではない場合停止させる
         if (moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
         }
+        //速度と回転を減速時間によって徐々に初期に戻る
         moveCoroutine = StartCoroutine(MoveCoroutine(decelerationTime, Vector2.zero, Quaternion.identity));
+        //減速時間を終わると画面制限を止める,,移動していないため画面外に出ることない
         StartCoroutine(nameof(DecelerationCoroutine));
     }
-
+    /// <summary>
+    ///  速度変更させる
+    /// </summary>
+    /// <param name="time">変更時間</param>
+    /// <param name="moveVelocity">移動速度</param>
+    /// <param name="moveRotation">回転情報</param>
+    /// <returns></returns>
     IEnumerator MoveCoroutine(float time, Vector2 moveVelocity, Quaternion moveRotation)
     {
         t = 0f;
@@ -260,13 +284,20 @@ public class Player : Character
         while (t < 1f)
         {
             t += Time.fixedDeltaTime / time;
+            //tが0から1の間にvelocityを補正させるtが1になると最大速度に達します
             rigidbody.velocity = Vector2.Lerp(previousVelocity, moveVelocity, t);
+            //上と同じこと
             transform.rotation = Quaternion.Lerp(previousRotation, moveRotation, t);
 
+            //物理演算させるからFixedUpdate使って精度を上げる
             yield return waitForFixedUpdate;
         }
     }
 
+    /// <summary>
+    /// 移動範囲を画面内に制限させる
+    /// </summary>
+    /// <returns></returns>
     IEnumerator MoveRangeLimatationCoroutine()
     {
         while(true)
@@ -286,17 +317,22 @@ public class Player : Character
 
     #region FIRE
 
+    //イベントを実行したらこれを呼び出す
     void Fire()
     {
         StartCoroutine(nameof(FireCoroutine));
     }
-
+    //キーを話したら止まる
     void StopFire()
     {
         //StopCoroutine(FireCoroutine());//作用しない
         StopCoroutine(nameof(FireCoroutine));
     }
 
+    /// <summary>
+    //   攻撃コルーチン
+    /// </summary>
+    /// <returns></returns>
     IEnumerator FireCoroutine()
     {
         while (true)
@@ -321,6 +357,7 @@ public class Player : Character
             }
 
             AudioManager.Instance.PlayRandomSFX(projectileLaunchSFX);
+            //オーバードライブ状態ならその攻撃速度
             yield return isOverdriving ? waitForOverdriveFireInterval : waitForFireInterval;
             
         }
@@ -330,31 +367,37 @@ public class Player : Character
     #region DODGE
     void Dodge()
     {
+        //もしダッジ中であれば処理させないまた、エネルギーが足りないときも同様
         if (isDodging || !PlayerEnergy.Instance.IsEnough(dodgeEnergyCost)) return;
+        //そうでなければ処理に入る
         StartCoroutine(nameof(DodgeCoroutine));
         // Change Player's scale
     }
-
+    /// <summary>
+    /// ダッジ実行コルーチン
+    /// </summary>
+    /// <returns></returns>
     IEnumerator DodgeCoroutine()
     {
         isDodging = true;
         AudioManager.Instance.PlayRandomSFX(dodgeSFX);
-        // Cost energy
+        // エネルギーを消耗
         PlayerEnergy.Instance.Use(dodgeEnergyCost);
 
-        //Make player invincibal
+        //物体と通過できるようにする
         collider.isTrigger = true;
 
-        // Make player rotate along x axis
+        // 初期回転を0にする
         currentRoll = 0f;
 
-        //var scale = transform.localScale;
-
+        //バレットタイムを開始
         TimeController.Instance.BulletTime(slowMotionDuration, slowMotionDuration);
 
+        //現在回転が最大回転より小さい場合ループさせる
         while (currentRoll < maxRoll)
         {
             currentRoll += rollSpeed * Time.deltaTime;
+            //回転させる
             transform.rotation = Quaternion.AngleAxis(currentRoll, Vector3.right);
 
             /*
@@ -371,7 +414,7 @@ public class Player : Character
                 scale.z = Mathf.Clamp(scale.z + Time.deltaTime / dodgeDuration, dodgeScale.z, 1f);
             }
              */
-
+            //これ意味不明の参考ベジェ曲線を使って動きをなめらかにする
             transform.localScale = BezierCurve.QuadraticPoint(Vector3.one, Vector3.one, dodgeScale, currentRoll / maxRoll);
             yield return null;
         }
@@ -384,7 +427,7 @@ public class Player : Character
     #region OVERDRIVE
     void Overdrive()
     {
-        Debug.Log("yes");
+        //エネルギーが足りない場合処理させない
         if (!PlayerEnergy.Instance.IsEnough(PlayerEnergy.MAX)) return;
 
         PlayerOverdrive.on.Invoke();

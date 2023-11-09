@@ -44,7 +44,7 @@ public class Viewport : Singleton<Viewport>
     }
 
     /// <summary>
-    /// 敵生成位置をMaxXとランダムのY軸で生成させる
+    /// 敵生成位置を画面外とランダムのY軸で生成させる
     /// </summary>
     /// <param name="paddingX">敵のX幅</param>
     /// <param name="paddingY">敵のY幅</param>
@@ -53,6 +53,7 @@ public class Viewport : Singleton<Viewport>
     {
         Vector3 position = Vector3.zero;
 
+        //画面のmaxX+自身サイズの半分にすれば画面外で生成させる
         position.x = maxX + paddingX;
         position.y = Random.Range(minY + paddingY, maxY - paddingY);
 

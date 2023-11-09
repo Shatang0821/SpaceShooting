@@ -8,7 +8,7 @@ public class PlayerEnergy : Singleton<PlayerEnergy>
 
     [SerializeField] EnergyBar energyBar;
 
-    [SerializeField] float overdriveInterval = 0.1f;
+    [SerializeField] float overdriveInterval = 0.1f;//エネルギーが消耗間隔
 
     bool available = true;
 
@@ -82,6 +82,10 @@ public class PlayerEnergy : Singleton<PlayerEnergy>
         StopCoroutine(nameof(KeepUsingCoroutine));
     }
 
+    /// <summary>
+    /// エネルギーが持続で消耗される
+    /// </summary>
+    /// <returns></returns>
     IEnumerator KeepUsingCoroutine()
     {
         while (gameObject.activeSelf && energy > 0)

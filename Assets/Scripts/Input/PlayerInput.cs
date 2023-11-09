@@ -11,7 +11,7 @@ public class PlayerInput :
     InputActions.IPauseMenuActions,
     InputActions.IGameOverScreenActions
 {
-    // 移動アクションのためのイベントです。
+    // 移動アクションのためにイベントを作成して
     public event UnityAction<Vector2> onMove = delegate { };
 
     public event UnityAction onStopMove = delegate { };
@@ -82,7 +82,7 @@ public class PlayerInput :
     /*
         Time.timeScaleが0になるときInputSystemの
         UpdateModeが In Fixed Updateだから入力が無効になる
-        それを防ぐため、一時停止の時をUpdateModeを変える
+        それを防ぐため、一時停止の時をUpdateModeをDynamicUpdate変える
      */
     /// <summary>
     /// 入力をProcessEventsInDynamicUpdateに変える
@@ -119,6 +119,7 @@ public class PlayerInput :
     {
         if(context.performed)
         {
+            //イベントの実行
             onMove.Invoke(context.ReadValue<Vector2>());
         }
 

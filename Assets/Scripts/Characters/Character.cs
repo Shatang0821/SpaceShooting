@@ -71,6 +71,10 @@ public class Character : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// HPを回復させる
+    /// </summary>
+    /// <param name="value">回復量</param>
     public virtual void RestoreHealth(float value)
     {
         if(health<=maxHealth)
@@ -88,7 +92,12 @@ public class Character : MonoBehaviour
         }
     }
 
-    //パーセント回復
+    /// <summary>
+    /// 一定時間を待ってから回復させる
+    /// </summary>
+    /// <param name="waitTime">待つ時間</param>
+    /// <param name="percent">回復パーセント</param>
+    /// <returns></returns>
     protected IEnumerator HealthRegenerateCoroutine(WaitForSeconds waitTime,float percent)
     {
         while(health<maxHealth)
