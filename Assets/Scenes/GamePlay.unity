@@ -364,6 +364,14 @@ PrefabInstance:
       propertyPath: energyBar
       value: 
       objectReference: {fileID: 804686999}
+    - target: {fileID: 580588673470457455, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.535
+      objectReference: {fileID: 0}
+    - target: {fileID: 4053534937716202839, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6435389010079767248, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
       propertyPath: m_RootOrder
       value: 2
