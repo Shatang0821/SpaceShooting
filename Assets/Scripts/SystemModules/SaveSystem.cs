@@ -5,11 +5,14 @@ public static class SaveSystem
 {
     public static void Save(string saveFileName, object data)
     {
+        //dateをJSONデータに変える
         var json = JsonUtility.ToJson(data);
+                              //プラットフォームによってパスを変える
         var path = Path.Combine(Application.persistentDataPath, saveFileName);
 
         try
         {
+            //jsonをpath先のファイルに書き込む
             File.WriteAllText(path, json);
 
 #if UNITY_EDITOR
@@ -30,6 +33,7 @@ public static class SaveSystem
 
         try
         {
+            //データを読み込む
             var json = File.ReadAllText(path);
             var data = JsonUtility.FromJson<T>(json);
 

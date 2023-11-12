@@ -4,7 +4,6 @@ public class BezierCurve
 {
     /// <summary>
     /// Return a point of quadratic Bezier curve.
-    /// 返回二次贝塞尔曲线上的点。
     /// </summary>
     public static Vector3 QuadraticPoint(Vector3 startPoint, Vector3 endPoint, Vector3 controlPoint, float by)
     {

@@ -414,7 +414,8 @@ public class Player : Character
                 scale.z = Mathf.Clamp(scale.z + Time.deltaTime / dodgeDuration, dodgeScale.z, 1f);
             }
              */
-            //これ意味不明の参考ベジェ曲線を使って動きをなめらかにする
+            //ベジェ曲線を使って動きをなめらかにする
+            //scaleを1から0.5また1に戻るようにする
             transform.localScale = BezierCurve.QuadraticPoint(Vector3.one, Vector3.one, dodgeScale, currentRoll / maxRoll);
             yield return null;
         }

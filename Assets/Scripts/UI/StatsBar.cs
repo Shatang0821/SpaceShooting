@@ -4,17 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class StatsBar : MonoBehaviour
-{
+{ 
+    //画像
     [SerializeField] Image fillImageBack;
-
     [SerializeField] Image fillImageFront;
 
+    //
     [SerializeField] bool delayFille = true;
 
+    //fillDelay時間の後から変化開始
     [SerializeField] float fillDelay = 0.5f;
-
+    //変化速度
     [SerializeField] float fillSpeed = 0.1f;
 
+    //計算用
     float currentFillAmout;
 
     protected float targetFillAmout;
@@ -23,7 +26,7 @@ public class StatsBar : MonoBehaviour
 
     float t;
 
-    WaitForSeconds waitForeDelayFill;
+    WaitForSeconds waitForDelayFill;
 
     Coroutine bufferedFillingCoroutine;
 
@@ -36,7 +39,7 @@ public class StatsBar : MonoBehaviour
         {
             canvas.worldCamera = Camera.main;
         }
-        waitForeDelayFill = new WaitForSeconds(fillDelay);
+        waitForDelayFill = new WaitForSeconds(fillDelay);
     }
 
     private void OnDisable()
@@ -86,7 +89,7 @@ public class StatsBar : MonoBehaviour
     {
         if(delayFille)
         {
-            yield return waitForeDelayFill;
+            yield return waitForDelayFill;
         }
         previousFillAmount = currentFillAmout;
         t = 0;

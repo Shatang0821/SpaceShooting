@@ -12,6 +12,7 @@ public class ScoringUIController : MonoBehaviour
     [SerializeField] Text playerScoreText;
     [SerializeField] Button buttonMainMenu;
 
+    //Score Containerの子オブジェクトを取得するための
     [SerializeField] Transform highScoreLeaderboardContainer;
 
     [Header("==== HIGHT SCORE SCREEN ====")]

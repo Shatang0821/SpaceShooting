@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class PlayerEnergy : Singleton<PlayerEnergy>
 {
-
+    
     [SerializeField] EnergyBar energyBar;
 
     [SerializeField] float overdriveInterval = 0.1f;//エネルギーが消耗間隔
 
+    //オーバードライブでエネルギーの回復を制御する
     bool available = true;
 
     //エネルギー最大値
@@ -17,9 +18,10 @@ public class PlayerEnergy : Singleton<PlayerEnergy>
 
     //パーセント
     public const int PERCENT = 1;
-
+    //現在エネルギー
     int energy;
 
+    //消耗間隔
     WaitForSeconds waitForOverdriveInterval;
 
     protected override void Awake()
@@ -42,6 +44,7 @@ public class PlayerEnergy : Singleton<PlayerEnergy>
     private void Start()
     {
         energyBar.Initialize(energy, MAX);
+        //初期でMaxを追加する
         Obtain(MAX);
     }
 
@@ -52,6 +55,7 @@ public class PlayerEnergy : Singleton<PlayerEnergy>
 
         //エネルギーの範囲を制限する
         energy = Mathf.Clamp(energy + value, 0, MAX);
+        //ここで少しずつ増えていく
         energyBar.UpdateStats(energy, MAX);
     }
 

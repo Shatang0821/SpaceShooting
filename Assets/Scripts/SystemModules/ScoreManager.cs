@@ -42,7 +42,8 @@ public class ScoreManager : PersistentSingleton<ScoreManager>
 
     #region HIGH SCORE SYSTEM
 
-    [System.Serializable] public class PlayerScore
+    [System.Serializable] 
+    public class PlayerScore
     {
         public int score;
 
@@ -69,6 +70,7 @@ public class ScoreManager : PersistentSingleton<ScoreManager>
     {
         playerName = newName;
     }
+
     public void SavePlayerScoreData()
     {
         var playerScoreData = LoadPlayerScoreData();
