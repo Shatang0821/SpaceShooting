@@ -244,6 +244,7 @@ public class Player : Character
         if (moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
+            
         }
         //キーのvalueを正規化させて1か-1にする
         moveDirection = moveInput.normalized;
@@ -263,6 +264,7 @@ public class Player : Character
         {
             StopCoroutine(moveCoroutine);
         }
+        moveDirection = Vector2.zero;
         //速度と回転を減速時間によって徐々に初期に戻る
         moveCoroutine = StartCoroutine(MoveCoroutine(decelerationTime, Vector2.zero, Quaternion.identity));
         //減速時間を終わると画面制限を止める,,移動していないため画面外に出ることない
