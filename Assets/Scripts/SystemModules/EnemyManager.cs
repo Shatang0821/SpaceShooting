@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
+    /// <summary>
+    /// 敵をランダムに一つを取り出す
+    /// </summary>
     public GameObject RandomEnemy => enemyList.Count == 0 ? null : enemyList[Random.Range(0, enemyList.Count)];
 
     public int WaveNumber => waveNumber;
@@ -14,13 +17,13 @@ public class EnemyManager : Singleton<EnemyManager>
     [SerializeField] bool spawnEnemy = true;
     [SerializeField] GameObject waveUI;
 
-    [SerializeField] GameObject[] enemyPrefabs;     //Enemy Prefabs
+    [SerializeField] GameObject[] enemyPrefabs;     //Enemy 敵の配列
 
     //敵の生成間隔
-    [SerializeField] float timeBetweenSpawns = 1f;  //Enemy Spawn interval
+    [SerializeField] float timeBetweenSpawns = 1f;  //敵ごと生成間隔
 
     //wave始まる前の準備時間
-    [SerializeField] float timeBetweenWaves = 1f;
+    [SerializeField] float timeBetweenWaves = 1f;　//ウェーブ間隔
 
     [SerializeField] int minEnemyAmout = 4;
 
@@ -45,11 +48,13 @@ public class EnemyManager : Singleton<EnemyManager>
         waitTimeBetweenSpawns = new WaitForSeconds(timeBetweenSpawns);
         waitTimeBetweenWaves = new WaitForSeconds(timeBetweenWaves);
         //waitUntilNoEnemy = new WaitUntil(NoEnemy);
+        //コルーチンをboolで終わらせる
         waitUntilNoEnemy = new WaitUntil(() => enemyList.Count == 0);
     }
 
     //bool NoEnemy() => enemyList.Count == 0;
 
+    //ゲーム開始時自動的に実行するコルーチン
     IEnumerator Start()
     {
         //enemyがなくなるまで待機して、そして生成させる。初期listは敵入っていないから直接コルーチンが始まる

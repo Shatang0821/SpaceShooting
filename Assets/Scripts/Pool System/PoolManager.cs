@@ -60,6 +60,7 @@ public class PoolManager : MonoBehaviour
         foreach (var pool in pools)
         {
 #if UNITY_EDITOR    
+            //“¯‚¶‚à‚Ì‚ª‚ ‚éê‡ƒGƒ‰[‚ª•\¦‚·‚é
             if (dictionary.ContainsKey(pool.Prefab))
             {
                 Debug.LogError("Same prefab in multiple pools! prefab:" + pool.Prefab.name);

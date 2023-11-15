@@ -57,7 +57,7 @@ public class SceneLoader : PersistentSingleton<SceneLoader>
 
     public void LoadGamePlayScene()
     {
-        StopAllCoroutines();
+        StopAllCoroutines();    
         StartCoroutine(LoadingCoroutine(GAMEPLAY));
     }
 
