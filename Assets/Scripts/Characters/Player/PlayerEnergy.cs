@@ -10,7 +10,7 @@ public class PlayerEnergy : Singleton<PlayerEnergy>
 
     [SerializeField] float overdriveInterval = 0.1f;//エネルギーが消耗間隔
 
-    //オーバードライブでエネルギーの回復を制御する
+    //オーバードライブでエネルギーの回復可能かを示す
     bool available = true;
 
     //エネルギー最大値

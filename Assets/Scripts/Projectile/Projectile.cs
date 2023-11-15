@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] GameObject hitVFX;
-    [SerializeField] AudioData[] hitSFX;
+    [SerializeField] GameObject hitVFX; //ヒットエフェクト
+    [SerializeField] AudioData[] hitSFX;//ヒットサウンド
 
-    [SerializeField] float damage;
+    [SerializeField] float damage;  //ダメージ
 
     [SerializeField] protected float moveSpeed = 10f;      //弾の初期速度
 
     [SerializeField] protected Vector2 moveDirection;      //弾の移動方向
 
-    protected GameObject target;
+    protected GameObject target;    //追尾弾なら使う
 
     protected virtual void OnEnable()                     //この関数はオブジェクトが有効
                                                 //アクティブになったときに呼び出されます
