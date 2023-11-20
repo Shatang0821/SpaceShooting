@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : PersistentSingleton<GameManager>
-{
+{ 
+    //プレイヤーが死亡したときイベントを実行する
     public static System.Action onGameOver;
     
     public static GameState GameState { get => Instance.gameState; set => Instance.gameState = value; }

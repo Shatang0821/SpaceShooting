@@ -9,7 +9,7 @@ public class StatsBar : MonoBehaviour
     [SerializeField] Image fillImageBack;
     [SerializeField] Image fillImageFront;
 
-    //
+    //遅れてからフィル値を変化させる
     [SerializeField] bool delayFille = true;
 
     //fillDelay時間の後から変化開始
@@ -20,8 +20,10 @@ public class StatsBar : MonoBehaviour
     //計算用
     float currentFillAmout;
 
+    //目標フィル値
     protected float targetFillAmout;
 
+    //現在フィル値
     float previousFillAmount;
 
     float t;
@@ -49,7 +51,8 @@ public class StatsBar : MonoBehaviour
 
     public virtual void Initialize(float currentValue,float maxValue)
     {
-        //例えば HP この式でパーセントで表せます
+        //例えば この式でパーセントで表せます
+        //100/100 = 1つまり100%
         currentFillAmout = currentValue / maxValue;
         targetFillAmout = currentFillAmout;
         fillImageBack.fillAmount = currentFillAmout;
@@ -58,45 +61,57 @@ public class StatsBar : MonoBehaviour
 
     public void UpdateStats(float currentValue, float maxValue)
     {
+        //パーセント式に直す
         targetFillAmout = currentValue / maxValue;
 
+        //コルーチンが実行している時止める
         if(bufferedFillingCoroutine != null)
         {
             StopCoroutine(bufferedFillingCoroutine);
         }
-        // if stats reduce
+        // 目標値より大きい場合
         if(currentFillAmout > targetFillAmout)
         {
-            // fill image front = target fill amout
+            //前のフィル値を目標フィル値に直す
             fillImageFront.fillAmount = targetFillAmout;
-            // slowly reduce fill image back's fill amout
+            // コルーチンを使って裏画像少しずつ変化させる
             bufferedFillingCoroutine = StartCoroutine(BufferedFillingCoroutine(fillImageBack));
 
             return;
         }
-        // if stats increase
+        // 目標値より小さい場合
         if(currentFillAmout < targetFillAmout)
         {
-            // fill image back's amout = target fill amout
+            // 裏のフィル値を目標フィル値に直す
             fillImageBack.fillAmount = targetFillAmout;
-            // slowly increase fill image front's fill amout
+            // コルーチンを使って前画像少しずつ変化させる
             bufferedFillingCoroutine = StartCoroutine(BufferedFillingCoroutine(fillImageFront));
         }
 
     }
 
+    /// <summary>
+    /// フィル値を変化させるコルーチン
+    /// </summary>
+    /// <param name="image">変化させる画像</param>
+    /// <returns></returns>
     protected virtual IEnumerator BufferedFillingCoroutine(Image image)
     {
+        //待機時間あるなら
         if(delayFille)
         {
+            //待つ
             yield return waitForDelayFill;
         }
+        //今のフィル値を更新して、もし途中でコルーチンを止めた場合でも
+        //正しいフィル値から計算し始める
         previousFillAmount = currentFillAmout;
         t = 0;
 
         while(t < 1f)
         {
             t += Time.deltaTime * fillSpeed;
+            //lerp使て線形補間させる
             currentFillAmout = Mathf.Lerp(previousFillAmount, targetFillAmout, t);
             image.fillAmount = currentFillAmout;
 

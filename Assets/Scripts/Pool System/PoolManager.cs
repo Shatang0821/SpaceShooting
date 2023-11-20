@@ -4,19 +4,22 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    // [SerializeField] はUnityエディタから直接値を設定できるようにするための属性。この場合、プールの配列を設定できる。
+    // Unity Inspectorで設定可能な、
+    // 敵、プレイヤーのプロジェクタイル、敵のプロジェクタイル、エフェクトの各プール配列。
     [SerializeField] Pool[] enemyPools;
     
-    [SerializeField] Pool[] playerProjectilePools; //プールの配列を設定できる。
+    [SerializeField] Pool[] playerProjectilePools;
 
     [SerializeField] Pool[] enemyProjectilePools;
 
     [SerializeField] Pool[] vFXPools;
 
-    static Dictionary<GameObject, Pool> dictionary; // 各プレハブとそれに関連するオブジェクトプールを関連付けるための辞書。
+    // プレハブとそれに対応するプールのリファレンスを格納する辞書
+    static Dictionary<GameObject, Pool> dictionary;
 
     void Awake()
     {
+        // 辞書の初期化と各プールの初期化。
         dictionary = new Dictionary<GameObject, Pool>();
 
         Initialize(enemyPools);
@@ -25,7 +28,7 @@ public class PoolManager : MonoBehaviour
         Initialize(vFXPools);
     }
 
-    // UNITY_EDITORディレクティブは、Unityエディタ環境内でのみコードを実行するためのもの。
+    // Unityエディタでのみ実行されるデストラクタ。各プールのサイズを検証。
     // 実際のゲームプレイでは実行されない。
 #if UNITY_EDITOR
     void OnDestroy()
@@ -38,7 +41,7 @@ public class PoolManager : MonoBehaviour
     }
 #endif
 
-    // 各プールのランタイム時のサイズを確認し、初期設定よりも大きい場合は警告を表示する。
+    // 各プールが指定されたサイズを超えていないかを確認し、超過している場合は警告を表示
     void CheckPoolSize(Pool[] pools)
     {
         foreach (var pool in pools)
@@ -54,22 +57,30 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    // プールを初期化し、それぞれのプールを辞書に追加する。
+    /// <summary>
+    /// プールを初期化し、それぞれのプールを辞書に追加する。
+    /// </summary>
+    /// <param name="pools">プレハブの配列</param>
     void Initialize(Pool[] pools)
     {
+        //同じプールに異なるものが入っているため、それぞれを取り出す
         foreach (var pool in pools)
         {
 #if UNITY_EDITOR    
             //同じものがある場合エラーが表示する
             if (dictionary.ContainsKey(pool.Prefab))
             {
+                //プレハブが同じプールがある場合エラーを表示させる
                 Debug.LogError("Same prefab in multiple pools! prefab:" + pool.Prefab.name);
                 continue;
             }
 #endif
+            //例で説明するとわかりやすい
+            //例えば、Enemy PoolsにEnemy01,02,03がある
+            //01をキーとしてその対応のプールを指す
             dictionary.Add(pool.Prefab, pool);
 
-            // Hierarchyビューで見やすくするために新しいGameObjectを作成して、その子としてプールオブジェクトを持つ。
+            // プールをHierarchyビューで見やすくするために新しいGameObjectを作成して、その子としてプールオブジェクトを持つ。
             Transform poolParent = new GameObject("Pool:" + pool.Prefab.name).transform;
             poolParent.parent = transform;
 

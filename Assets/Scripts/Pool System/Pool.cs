@@ -25,15 +25,19 @@ public class Pool
 
     // ゲームオブジェクトがインスタンス化されるときの親オブジェクト
     private Transform parent;
-
+    #region 初期化関連
     /// <summary>
     /// キューの初期化し、指定された数のゲームオブジェクトをキューに追加する
     /// </summary>
+    /// <param name="parent">親オブジェクトのTransform</param>
     public void Initialize(Transform parent)
     {
+        //キューの初期化
         queue = new Queue<GameObject>();
+        //親オブジェクトを生成してそれの下にオブジェクトを生成する
         this.parent = parent;
 
+        //サイズ分のオブジェクトをキューに入れる
         for (var i = 0; i < size; i++)
         {
             queue.Enqueue(Copy());
@@ -45,11 +49,16 @@ public class Pool
     /// </summary>
     private GameObject Copy()
     {
+        //作成したオブジェクトをparentの子オブジェクトにする
         var copy = GameObject.Instantiate(prefab, parent);
+        //初期非アクティブ化にする
         copy.SetActive(false);
+        //作成したオブジェクトを返す
         return copy;
     }
+    #endregion
 
+    #region オブジェクトを生成
     /// <summary>
     /// 利用可能なオブジェクトをキューから取得する。
     /// もしキューが空の場合は新しいオブジェクトを生成する。
@@ -61,29 +70,37 @@ public class Pool
         // キューが空でなく、先頭のオブジェクトが非アクティブな場合
         if (queue.Count > 0 && !queue.Peek().activeSelf)
         {
+            //Dequeueはキューの先頭からオブジェクトを取り出すことができるため
+            //先頭のオブジェクトが使っている時取り出さない
             availableobject = queue.Dequeue();
         }
         else
         {
+            //利用可能なオブジェクトがないから
+            //新しいオブジェクトを作って、返す
             availableobject = Copy();
         }
-
+        
         // オブジェクトを再びキューに追加する
+        //先頭から取り出したオブジェクトを末に追加する
+        //循環させるため
         queue.Enqueue(availableobject);
 
         return availableobject;
     }
-
+    #region オーバーロード
     /// <summary>
     /// 利用可能なゲームオブジェクトを取得してアクティブ化する
     /// </summary>
     public GameObject preparedObject()
     {
+        //オブジェクトを生成する時
         GameObject preparedobject = AvailableObject();
+        //アクティブ化する
         preparedobject.SetActive(true);
         return preparedobject;
     }
-
+    
     /// <summary>
     /// 特定の位置を基に生成
     /// </summary>
@@ -134,6 +151,6 @@ public class Pool
 
         return preparedobject;
     }
-
-
+    #endregion
+    #endregion
 }

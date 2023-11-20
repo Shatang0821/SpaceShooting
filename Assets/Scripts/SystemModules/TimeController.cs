@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class TimeController : Singleton<TimeController>
 {
+    /// <summary>
+    /// 一番遅くなる時間
+    /// </summary>
     [SerializeField,Range(0,1f)] float bulletTimeScale = 0.1f;  //バレットタイム
 
     float defaultFixedDeltaTime;                                //元のFixedDeltaTime;
 
-    float timeScaleBeforePause;
+    float timeScaleBeforePause;//バレットタイム時にPauseに入り、ゲームに戻る時元のスケールに戻るため
 
     float t;                                                    //lerpの第三引数
     protected override void Awake()
@@ -60,6 +63,7 @@ public class TimeController : Singleton<TimeController>
         StartCoroutine(SlowInKeepAndOutDuration(inDuration,keepingDuration,outDuration));
     }
 
+
     public void SlowIn(float duration)
     {
         StartCoroutine(SlowInCoroutine(duration));
@@ -107,8 +111,13 @@ public class TimeController : Singleton<TimeController>
             if(GameManager.GameState != GameState.Paused )
             {
                 //Time.deltaTimeは timescale変わるときも変わるから使えない
+                //Time.unscaledDeltaTimeはscaleの変更によって影響が出ない
+                //時間経過にtを0から1に徐々に増加させる
                 t += Time.unscaledDeltaTime / duration;
+                //引数tの最大値は1なのでもしdurationが1より大きい時それを割合で計算する
                 Time.timeScale = Mathf.Lerp(1f, bulletTimeScale, t);
+                //ゲームの時間のスケールに合わせて物理の更新間隔を調整するため
+                //これによりscaleが変化しても物理計算が正しく行われる
                 Time.fixedDeltaTime = defaultFixedDeltaTime * Time.timeScale;
             }
             yield return null;
