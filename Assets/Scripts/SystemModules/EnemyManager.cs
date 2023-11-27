@@ -58,7 +58,7 @@ public class EnemyManager : Singleton<EnemyManager>
     IEnumerator Start()
     {
         //enemyがなくなるまで待機して、そして生成させる。初期listは敵入っていないから直接コルーチンが始まる
-        while(spawnEnemy)
+        while(spawnEnemy && GameManager.GameState != GameState.GameOver)
         {
             waveUI.SetActive(true);
 

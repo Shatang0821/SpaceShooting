@@ -20,25 +20,26 @@ public class EnemyController : MonoBehaviour
 
     [Header("---- FIRE ----")]
     //弾のオブジェクト
-    [SerializeField] GameObject[] projectiles;
-    [SerializeField] AudioData[] projectileLaunchSFX;
+    [SerializeField] protected GameObject[] projectiles;
+    [SerializeField] protected AudioData[] projectileLaunchSFX;
 
     //銃口位置
-    [SerializeField] Transform muzzle;
+    [SerializeField] protected Transform muzzle;
 
     //最小攻撃間隔・最大攻撃間隔
-    [SerializeField] float minFireInterval;
-    [SerializeField] float maxFireInterval;
+    [SerializeField] protected float minFireInterval;
+    [SerializeField] protected float maxFireInterval;
 
     WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
 
-    private void Awake()
+    protected virtual void Awake()
     {
         // 敵のコライダーからパディングを計算                     boundsからオブジェクトのサイズを取得する
         var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
         paddingX = size.x / 2f;
         paddingY = size.y / 2f;
     }
+
     //poolに入れるためアクティブ状態になったら開始
     void OnEnable()
     {
@@ -96,7 +97,7 @@ public class EnemyController : MonoBehaviour
     /// 攻撃間隔設定
     /// </summary>
     /// <returns></returns>
-    IEnumerator RandomlyFireCoroutine()
+    protected virtual IEnumerator RandomlyFireCoroutine()
     {
         while(gameObject.activeSelf)
         {

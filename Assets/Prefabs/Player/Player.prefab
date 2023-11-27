@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 316763256}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Muzzle Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 686012227}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Muzzle Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 867358383}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Muzzle Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 6970530514149009432}
   - component: {fileID: 5796412890333829044}
   - component: {fileID: 5876278061311250163}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Engine Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4975,7 +4975,7 @@ GameObject:
   - component: {fileID: 1281738268536560605}
   - component: {fileID: 1376393799410436297}
   - component: {fileID: 1377647496936559839}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Engine Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9847,7 +9847,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1285621323550890897}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player Engine VFX M
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9882,7 +9882,7 @@ GameObject:
   - component: {fileID: 1285409510105127801}
   - component: {fileID: 1376246695710668665}
   - component: {fileID: 1376888606040552125}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Engine Flame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14554,7 +14554,7 @@ GameObject:
   - component: {fileID: 6490469541439119234}
   - component: {fileID: 7700722064607420462}
   - component: {fileID: 7719786559566199145}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Engine Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19426,7 +19426,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3132810935329942539}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player Engine VFX L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19461,7 +19461,7 @@ GameObject:
   - component: {fileID: 3132317421455437027}
   - component: {fileID: 3006119942954434787}
   - component: {fileID: 3005374153817818407}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Engine Flame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24133,7 +24133,7 @@ GameObject:
   - component: {fileID: 3127518016363998279}
   - component: {fileID: 3005983310411153235}
   - component: {fileID: 3004156191526609733}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Engine Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29007,7 +29007,7 @@ GameObject:
   - component: {fileID: 6133238386599142654}
   - component: {fileID: 6154065988265800376}
   - component: {fileID: 6144712877496195444}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29086,7 +29086,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6435389009007492522}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: VFX_PlayerEngineNormal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29125,7 +29125,7 @@ GameObject:
   - component: {fileID: 982463773}
   - component: {fileID: 5470325219722810831}
   - component: {fileID: 43259335}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -29209,7 +29209,7 @@ MonoBehaviour:
     volueme: 1
   maxHealth: 100
   health: 0
-  showOnHeadHealthBar: 1
+  showOnHeadHealthBar: 0
   onHeadHealtherBar: {fileID: 7591900319798524091}
   statsBar_HUD: {fileID: 0}
   regenerateHealth: 1
@@ -29295,6 +29295,9 @@ MonoBehaviour:
   launchSFX:
     audioClip: {fileID: 8300000, guid: 99331d0df4c708149b69b11b5a64d2f4, type: 3}
     volueme: 1
+  NoneAmount:
+    audioClip: {fileID: 8300000, guid: 0ec937ee239f44744afb44d9af23ac6d, type: 3}
+    volueme: 5
 --- !u!1 &6758096032694626173
 GameObject:
   m_ObjectHideFlags: 0
@@ -29304,7 +29307,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6755641327759177271}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player Engine VFX R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29339,7 +29342,7 @@ GameObject:
   - component: {fileID: 6755710695093450463}
   - component: {fileID: 6849626647490992863}
   - component: {fileID: 6848878624728669979}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Engine Flame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34011,7 +34014,7 @@ GameObject:
   - component: {fileID: 6763857008744920699}
   - component: {fileID: 6849487850225493359}
   - component: {fileID: 6848225914552039801}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Engine Fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38885,7 +38888,7 @@ GameObject:
   - component: {fileID: 1586794969360445988}
   - component: {fileID: 2795011179814292872}
   - component: {fileID: 2825334556874544335}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Engine Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43755,9 +43758,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6435389010079767248}
     m_Modifications:
+    - target: {fileID: 681926695460817084, guid: fdf00bfd83510d847bd1cdd74478536b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 909517598166506331, guid: fdf00bfd83510d847bd1cdd74478536b, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.535
+      objectReference: {fileID: 0}
+    - target: {fileID: 1581451285224641170, guid: fdf00bfd83510d847bd1cdd74478536b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5655645029345217769, guid: fdf00bfd83510d847bd1cdd74478536b, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5807555070492020207, guid: fdf00bfd83510d847bd1cdd74478536b, type: 3}
       propertyPath: m_Name
       value: UI Health Bar On Head Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5807555070492020207, guid: fdf00bfd83510d847bd1cdd74478536b, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7911190822454805903, guid: fdf00bfd83510d847bd1cdd74478536b, type: 3}
       propertyPath: fillSpeed
@@ -43872,9 +43895,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6435389010079767248}
     m_Modifications:
+    - target: {fileID: 1759090485591688278, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2578759056877366264, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2578825130334773516, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2579174816367591444, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2832587655287487448, guid: f0943553854878d44988f105f0edaa1f, type: 3}
       propertyPath: m_Name
       value: VFX_PlayerEngineOverdrive
+      objectReference: {fileID: 0}
+    - target: {fileID: 2832587655287487448, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 2832587655287487451, guid: f0943553854878d44988f105f0edaa1f, type: 3}
       propertyPath: m_RootOrder
@@ -43920,6 +43963,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6088340360370973168, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156621622837735876, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156687626334124848, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6157037347809335848, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7985069563759959658, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8060524014400630194, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8060948028382283358, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8061014506640755882, guid: f0943553854878d44988f105f0edaa1f, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0943553854878d44988f105f0edaa1f, type: 3}
 --- !u!1 &4053534937716202839 stripped
@@ -43939,13 +44014,33 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6435389010079767248}
     m_Modifications:
+    - target: {fileID: 1292367524867958, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1330171071359998, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 1628744458893394, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
       propertyPath: m_Name
       value: VFX_OverdriveTrigger
       objectReference: {fileID: 0}
     - target: {fileID: 1628744458893394, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1628744458893394, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653756684822256, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990437335500316, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4400389479008290, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
       propertyPath: m_RootOrder
@@ -43990,6 +44085,18 @@ PrefabInstance:
     - target: {fileID: 4400389479008290, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5067120353873697737, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5067120353873697741, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5067120353873697743, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81d4a791378c9f94aab765ad78151dbf, type: 3}

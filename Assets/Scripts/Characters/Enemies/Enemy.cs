@@ -7,7 +7,7 @@ public class Enemy : Character
     [SerializeField] int scorePoint = 100;          // 倒す際にプレイヤーに与えるスコアポイント
     [SerializeField] int deathEnergyBonus = 3;      // 倒す際にプレイヤーに与えるエネルギーボーナス
 
-    private void OnCollisionEnter2D(Collision2D other)
+    protected virtual void OnCollisionEnter2D(Collision2D other)
     {
         // 倒す際にプレイヤーに与えるエネルギーボーナス
         if (other.gameObject.TryGetComponent<Player>(out Player player))

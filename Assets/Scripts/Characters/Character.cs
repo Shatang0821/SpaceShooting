@@ -48,9 +48,10 @@ public class Character : MonoBehaviour
 
     public virtual void TakenDamage(float damage)
     {
+        if (health == 0f) return;
         health -= damage;
 
-        if (showOnHeadHealthBar && gameObject.activeSelf)
+        if (showOnHeadHealthBar)
         {
             onHeadHealtherBar.UpdateStats(health, maxHealth);
         }
