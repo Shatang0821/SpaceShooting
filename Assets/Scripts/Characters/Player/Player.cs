@@ -17,31 +17,8 @@ public class Player : Character
     //回復パーセント
     [SerializeField, Range(0f, 1f)] float healthRegeneratePercent;
 
-    #region PlayerAttributes
-
     [Header("---- INPUT ----")]
-    [SerializeField] PlayerInput input;
-
-    [Header("---- MOVE ----")]
-
-    [Tooltip("これはキャラクターの最大速度です。")]
-    [SerializeField] float moveSpeed = 10f;
-
-    [Tooltip("これはキャラクターの加速時間です。")]
-    [SerializeField] float accelerationTime = 3f;   //加速時間
-
-    [Tooltip("これはキャラクターの減速時間です。")]
-    [SerializeField] float decelerationTime = 3f;   //減速時間
-
-    [Tooltip("これはキャラクターの上下移動角度です。")]
-    [SerializeField] float moveRotationAngle = 50f;
-
-    float paddingX;
-    float paddingY;
-
-    //入力した移動方向
-    Vector2 moveDirection;
-    #endregion
+    public PlayerInput input;
 
     #region ProjectileAttributes
 
@@ -97,14 +74,11 @@ public class Player : Character
 
     [SerializeField] int overdriveDodgeFactor = 2;  //ダッジ消耗を２倍を増やす
 
-    [SerializeField] float overdriveSpeedFactor = 1.2f;//スピードを1.2倍
+    //[SerializeField] float overdriveSpeedFactor = 1.2f;//スピードを1.2倍
 
     [SerializeField] float overdriveFireFactor = 1.2f;//攻撃間隔1.2倍縮む
     #endregion
 
-    float t;                        //used for MoveCoroutine
-    Vector2 previousVelocity;       //used for MoveCoroutine
-    Quaternion previousRotation;    //used for MoveCoroutine
 
 
     WaitForSeconds waitForFireInterval;//攻撃間隔
@@ -114,37 +88,29 @@ public class Player : Character
     //HP自動回復時間
     WaitForSeconds waitHealthRegenerateTime;
 
-    WaitForSeconds waitDecelerationTime;//減速時間
 
     WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();   //used for MoveCoroutine
 
-    new Rigidbody2D rigidbody;
 
     new Collider2D collider;
 
     MissileSystem missile;
 
-    Coroutine moveCoroutine;
+//    Coroutine moveCoroutine;
 
     //HealthRegenerateCoroutineを中止するための入れ物
     Coroutine healthRegenerateCoroutine;
 
     void Awake()
     {
-        // コンポーネントの取得と初期化
-        rigidbody = GetComponent<Rigidbody2D>();
+
         collider = GetComponent<Collider2D>();
         missile = GetComponent<MissileSystem>();
 
-        //サイズ取得
-        var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
-        paddingX = size.x / 2f;
-        paddingY = size.y / 2f;
 
         waitForFireInterval = new WaitForSeconds(fireInterval);
         waitForOverdriveFireInterval = new WaitForSeconds(fireInterval /= overdriveFireFactor);
         waitHealthRegenerateTime = new WaitForSeconds(healthRegenerateTime);
-        waitDecelerationTime = new WaitForSeconds(decelerationTime);
 
         dodgeDuration = maxRoll / rollSpeed;//最大回転角度/回転速度 = 時間
     }
@@ -154,8 +120,7 @@ public class Player : Character
         base.OnEnable();
 
         //イベントのサブスクライブ
-        input.onMove += Move;
-        input.onStopMove += StopMove;
+
         input.onFire += Fire;
         input.onStopFire += StopFire;
         input.onDodge += Dodge;
@@ -169,8 +134,7 @@ public class Player : Character
     void OnDisable()
     {
         //イベントのアンサブスクライブ
-        input.onMove -= Move;
-        input.onStopMove -= StopMove;
+
         input.onFire -= Fire;
         input.onStopFire -= StopFire;
         input.onDodge -= Dodge;
@@ -184,8 +148,6 @@ public class Player : Character
     void Start()
     {
         statsBar_HUD.Initialize(health, maxHealth);
-
-        rigidbody.gravityScale = 0f;//重力を0
 
         input.EnableGameplayInput();
     }
@@ -204,7 +166,9 @@ public class Player : Character
         if (gameObject.activeSelf)
         {
             //弾とぶつかると止まるときがあり、それを防ぐために入力があるなら動かせる
-            Move(moveDirection);
+            //Move(moveDirection);
+            //
+            
             //もし回復中であれば
             if (regenerateHealth)
             {
@@ -234,88 +198,6 @@ public class Player : Character
         statsBar_HUD.UpdateStats(0f, maxHealth);
         base.Die();
     }
-
-    #region MOVE
-    void Move(Vector2 moveInput)
-    {
-        // Vector2 moveAmount = moveInput * moveSpeed;
-        // rigidbody.velocity = moveAmount;
-        //移動コルーチンがnullではない場合停止させる
-        if (moveCoroutine != null)
-        {
-            StopCoroutine(moveCoroutine);
-            
-        }
-        //キーのvalueを正規化させて1か-1にする
-        moveDirection = moveInput.normalized;
-        //Quaternion moveRotation = Quaternion.AngleAxis(moveRotationAngle * moveInput.y,Vector3.right);
-        moveCoroutine = StartCoroutine(MoveCoroutine(accelerationTime, moveDirection * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
-        //移動させるであれば減速コルーチンを止める
-        StopCoroutine(nameof(DecelerationCoroutine));
-        //画面制限を始まる
-        StartCoroutine(nameof(MoveRangeLimatationCoroutine));
-    }
-
-    void StopMove()
-    {
-        //rigidbody.velocity = Vector2.zero;
-        //移動コルーチンがnullではない場合停止させる
-        if (moveCoroutine != null)
-        {
-            StopCoroutine(moveCoroutine);
-        }
-        moveDirection = Vector2.zero;
-        //速度と回転を減速時間によって徐々に初期に戻る
-        moveCoroutine = StartCoroutine(MoveCoroutine(decelerationTime, Vector2.zero, Quaternion.identity));
-        //減速時間を終わると画面制限を止める,,移動していないため画面外に出ることない
-        StartCoroutine(nameof(DecelerationCoroutine));
-    }
-    /// <summary>
-    ///  速度変更させる
-    /// </summary>
-    /// <param name="time">変更時間</param>
-    /// <param name="moveVelocity">移動速度</param>
-    /// <param name="moveRotation">回転情報</param>
-    /// <returns></returns>
-    IEnumerator MoveCoroutine(float time, Vector2 moveVelocity, Quaternion moveRotation)
-    {
-        t = 0f;
-        previousVelocity = rigidbody.velocity;
-        previousRotation = transform.rotation;
-
-        while (t < 1f)
-        {
-            t += Time.fixedDeltaTime / time;
-            //tが0から1の間にvelocityを補正させるtが1になると最大速度に達します
-            rigidbody.velocity = Vector2.Lerp(previousVelocity, moveVelocity, t);
-            //上と同じこと
-            transform.rotation = Quaternion.Lerp(previousRotation, moveRotation, t);
-
-            //物理演算させるからFixedUpdate使って精度を上げる
-            yield return waitForFixedUpdate;
-        }
-    }
-
-    /// <summary>
-    /// 移動範囲を画面内に制限させる
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator MoveRangeLimatationCoroutine()
-    {
-        while(true)
-        {
-            transform.position = Viewport.Instance.PlayerMoveablePosition(transform.position, paddingX, paddingY);
-            yield return null;
-        }    
-    }
-
-    IEnumerator DecelerationCoroutine()
-    {
-        yield return waitDecelerationTime;
-
-        StopCoroutine(MoveRangeLimatationCoroutine());
-    }
-    #endregion
 
     #region FIRE
 
@@ -441,14 +323,14 @@ public class Player : Character
         
         isOverdriving = true;
         dodgeEnergyCost *= overdriveDodgeFactor;
-        moveSpeed *= overdriveSpeedFactor;
+        //moveSpeed *= overdriveSpeedFactor;
     }
 
     void OverdriveOff()
     {
         isOverdriving = false;
         dodgeEnergyCost /= overdriveDodgeFactor;
-        moveSpeed /= overdriveSpeedFactor;
+        //moveSpeed /= overdriveSpeedFactor;
     }
     #endregion
 

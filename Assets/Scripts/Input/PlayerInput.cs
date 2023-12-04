@@ -12,9 +12,9 @@ public class PlayerInput :
     InputActions.IGameOverScreenActions
 {
     // 移動アクションのためにイベントを作成して
-    public event UnityAction<Vector2> onMove = delegate { };
+    //public event UnityAction<Vector2> onMove = delegate { };
 
-    public event UnityAction onStopMove = delegate { };
+    //public event UnityAction onStopMove = delegate { };
 
     //発射アクションのためのイベントです
     public event UnityAction onFire = delegate { };
@@ -119,13 +119,14 @@ public class PlayerInput :
     {
         if(context.performed)
         {
+            EventCenter.TriggerEvent("Move", context.ReadValue<Vector2>());
             //イベントの実行
-            onMove.Invoke(context.ReadValue<Vector2>());
+            //onMove.Invoke(context.ReadValue<Vector2>());
         }
 
         if(context.canceled)
         {
-            onStopMove.Invoke();
+            EventCenter.TriggerEvent("stopMove");
         }
     }
 
