@@ -16,14 +16,14 @@ public class OverdriveMaterialController : MonoBehaviour
     
     void OnEnable()
     {
-        PlayerOverdrive.on += PlayerOverdriveOn;
-        PlayerOverdrive.off += PlayerOverdriveOff;
+        EventCenter.Subscribe(EventNames.PlayerOverDriveOn, PlayerOverdriveOn);
+        EventCenter.Subscribe(EventNames.OverDriveOff, PlayerOverdriveOff);
     }
 
     void OnDisable()
     {
-        PlayerOverdrive.on -= PlayerOverdriveOn;
-        PlayerOverdrive.off -= PlayerOverdriveOff;     
+        EventCenter.Unsubscribe(EventNames.PlayerOverDriveOn, PlayerOverdriveOn);
+        EventCenter.Unsubscribe(EventNames.OverDriveOff, PlayerOverdriveOff);     
     }
 
     void PlayerOverdriveOn() => renderer.material = overdriveMaterial;

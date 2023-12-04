@@ -12,6 +12,9 @@ public class PlayerDodge : MonoBehaviour
     [Tooltip("これはキャラクターのエネルギー消耗量です。")]
     [SerializeField, Range(0, 100)] int dodgeEnergyCost = 25;
 
+    [Tooltip("これはキャラクターの特殊状態エネルギー消耗量です。")]
+    [SerializeField] int overdriveDodgeFactor = 2;  //ダッジ消耗を２倍を増やす
+
     [SerializeField] float maxRoll = 720f;//最大回転角度
 
     [SerializeField] float rollSpeed = 360f;//回転速度
@@ -38,11 +41,19 @@ public class PlayerDodge : MonoBehaviour
     private void OnEnable()
     {
         EventCenter.Subscribe(EventNames.Dodge, Dodge);
+
+        EventCenter.Subscribe(EventNames.PlayerOverDriveOn, OverDriveOn);
+
+        EventCenter.Subscribe(EventNames.OverDriveOff, OverDriveOff);
     }
 
     private void OnDisable()
     {
         EventCenter.Unsubscribe(EventNames.Dodge, Dodge);
+
+        EventCenter.Unsubscribe(EventNames.PlayerOverDriveOn, OverDriveOn);
+
+        EventCenter.Unsubscribe(EventNames.OverDriveOff, OverDriveOff);
     }
     #region DODGE
     void Dodge()
@@ -92,4 +103,13 @@ public class PlayerDodge : MonoBehaviour
     }
     #endregion
 
+    void OverDriveOn()
+    {
+        dodgeEnergyCost *= overdriveDodgeFactor;
+    }
+
+    void　OverDriveOff()
+    {
+        dodgeEnergyCost /= overdriveDodgeFactor;
+    }
 }

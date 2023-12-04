@@ -4,24 +4,27 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-
-
     [Header("---- MOVE ----")]
-    [Tooltip("これはキャラクターの最大速度です。")]
+    [Tooltip("キャラクターの最大速度です。")]
     [SerializeField] float moveSpeed = 10f;
 
-    [Tooltip("これはキャラクターの加速時間です。")]
+    [Tooltip("キャラクターの特殊状態スピード倍数")]
+    [SerializeField] float overdriveSpeedFactor = 1.2f;//スピードを1.2倍
+
+    [Tooltip("キャラクターの加速時間です。")]
     [SerializeField] float accelerationTime = 3f;   //加速時間
 
-    [Tooltip("これはキャラクターの減速時間です。")]
+    [Tooltip("キャラクターの減速時間です。")]
     [SerializeField] float decelerationTime = 3f;   //減速時間
 
-    [Tooltip("これはキャラクターの上下移動角度です。")]
+    [Tooltip("キャラクターの上下回転角度です。")]
     [SerializeField] float moveRotationAngle = 50f;
 
     //プレイヤー情報
     private Player _player;
+
     private PlayerInput _input;
+
     private new Rigidbody2D rigidbody;
 
     //モデルのXYの半分サイズ
@@ -30,27 +33,46 @@ public class PlayerMove : MonoBehaviour
 
     //入力した移動方向を保持する変数
     Vector2 moveDirection;
-
+    /*
+        事前に定義しておくによって繰り返し定義を防ぐ
+     */
     float t;                        //used for MoveCoroutine
     Vector2 previousVelocity;       //used for MoveCoroutine
     Quaternion previousRotation;    //used for MoveCoroutine
 
+    //コルーチン関連変数
     WaitForSeconds waitDecelerationTime;//減速時間
 
-    WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();   //used for MoveCoroutine
+    WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();//FixedUpdate物理演算最適
 
-    Coroutine moveCoroutine;
+    Coroutine moveCoroutine;//移動コルーチンの重複開始を防ぐための入れもの
 
-    private void Awake()
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    void Initialized()
     {
         _player = GetComponent<Player>();
         rigidbody = GetComponent<Rigidbody2D>();
+        waitDecelerationTime = new WaitForSeconds(decelerationTime);
+    }
+
+    /// <summary>
+    /// 機体サイズ取得
+    /// </summary>
+    void SetSize()
+    {
         //サイズ取得
         var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
         paddingX = size.x / 2f;
         paddingY = size.y / 2f;
+    }
 
-        waitDecelerationTime = new WaitForSeconds(decelerationTime);
+    private void Awake()
+    {
+        Initialized();
+        
+        SetSize();
     }
 
     private void Start()
@@ -64,6 +86,14 @@ public class PlayerMove : MonoBehaviour
     {
         EventCenter.Subscribe(EventNames.Move, Move);
         EventCenter.Subscribe(EventNames.StopMove, StopMove);
+
+        EventCenter.Subscribe(EventNames.PlayerOverDriveOn, OverDriveOn);
+
+        EventCenter.Subscribe(EventNames.OverDriveOff, OverDriveOff);
+
+        EventCenter.Unsubscribe(EventNames.PlayerOverDriveOn, OverDriveOn);
+
+        EventCenter.Unsubscribe(EventNames.OverDriveOff, OverDriveOff);
     }
 
     private void OnDisable()
@@ -72,6 +102,12 @@ public class PlayerMove : MonoBehaviour
         EventCenter.Unsubscribe(EventNames.StopMove, StopMove);
     }
 
+    /// <summary>
+    /// 移動処理<br/>
+    /// コルーチンを始まる処理<br/>
+    /// 自機を画面内に制限させる
+    /// </summary>
+    /// <param name="_moveInput">移動方向</param>
     void Move(object _moveInput)
     {
         Vector2 moveInput = (Vector2)_moveInput; 
@@ -92,6 +128,9 @@ public class PlayerMove : MonoBehaviour
         StartCoroutine(nameof(MoveRangeLimatationCoroutine));
     }
 
+    /// <summary>
+    /// 移動停止処理
+    /// </summary>
     void StopMove()
     {
         //移動コルーチンがnullではない場合停止させる
@@ -112,7 +151,6 @@ public class PlayerMove : MonoBehaviour
     /// <param name="time">変更時間</param>
     /// <param name="moveVelocity">移動速度</param>
     /// <param name="moveRotation">回転情報</param>
-    /// <returns></returns>
     IEnumerator MoveCoroutine(float time, Vector2 moveVelocity, Quaternion moveRotation)
     {
         t = 0f;
@@ -135,7 +173,6 @@ public class PlayerMove : MonoBehaviour
     /// <summary>
     /// 移動範囲を画面内に制限させる
     /// </summary>
-    /// <returns></returns>
     IEnumerator MoveRangeLimatationCoroutine()
     {
         while (true)
@@ -145,10 +182,25 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 減速終了時に自機を画面内に制限するコルーチンを停止して<br/>
+    /// 無駄のループ処理を減らす
+    /// </summary>
+    /// <returns></returns>
     IEnumerator DecelerationCoroutine()
     {
         yield return waitDecelerationTime;
 
         StopCoroutine(MoveRangeLimatationCoroutine());
+    }
+
+    void OverDriveOn()
+    {
+        moveSpeed *= overdriveSpeedFactor;
+    }
+
+    void OverDriveOff()
+    {
+        moveSpeed /= overdriveSpeedFactor;
     }
 }

@@ -21,24 +21,8 @@ public class Player : Character
     [Header("---- INPUT ----")]
     public PlayerInput input;
 
-
-    #region Overdrive　
-    //限界突破
-    [HideInInspector] public bool isOverdriving = false;
-
-    [SerializeField] int overdriveDodgeFactor = 2;  //ダッジ消耗を２倍を増やす
-
-    //[SerializeField] float overdriveSpeedFactor = 1.2f;//スピードを1.2倍
-
-    //[SerializeField] float overdriveFireFactor = 1.2f;//攻撃間隔1.2倍縮む
-    #endregion
-
-    [HideInInspector] public WaitForSeconds waitForOverdriveFireInterval;//オーバードライブの攻撃間隔
-
     //HP自動回復時間
     WaitForSeconds waitHealthRegenerateTime;
-
-
 
     private Vector2 lastMoveDirection;
 
@@ -47,26 +31,12 @@ public class Player : Character
 
     void Awake()
     {
-       
-        //waitForFireInterval = new WaitForSeconds(fireInterval);
-
-        //waitForOverdriveFireInterval = new WaitForSeconds(fireInterval /= overdriveFireFactor);
-
         waitHealthRegenerateTime = new WaitForSeconds(healthRegenerateTime);
-
-
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
-
-        //イベントのサブスクライブ
-
-        input.onOverdrive += Overdrive;
-
-        PlayerOverdrive.on += OverdriveOn;
-        PlayerOverdrive.off += OverdriveOff;
 
         EventCenter.Subscribe(EventNames.Move, OnPlayerMove);
         EventCenter.Subscribe(EventNames.StopMove, OnPlayerStopMove);
@@ -74,13 +44,6 @@ public class Player : Character
 
     void OnDisable()
     {
-        //イベントのアンサブスクライブ
-
-        input.onOverdrive -= Overdrive;
-
-        PlayerOverdrive.on -= OverdriveOn;
-        PlayerOverdrive.off -= OverdriveOff;
-
         EventCenter.Unsubscribe(EventNames.Move, OnPlayerMove);
         EventCenter.Unsubscribe(EventNames.StopMove, OnPlayerStopMove);
     }
@@ -142,40 +105,12 @@ public class Player : Character
     void OnPlayerMove(object moveInput)
     {
         lastMoveDirection = (Vector2)moveInput;
-        Debug.Log(lastMoveDirection);
     }
 
     void OnPlayerStopMove()
     {
         lastMoveDirection = Vector2.zero;
-        Debug.Log(lastMoveDirection);
     }
-
-    
-    #region OVERDRIVE
-    void Overdrive()
-    {
-        //エネルギーが足りない場合処理させない
-        if (!PlayerEnergy.Instance.IsEnough(PlayerEnergy.MAX)) return;
-
-        PlayerOverdrive.on.Invoke();
-    }
-
-    void OverdriveOn()
-    {
-        
-        isOverdriving = true;
-        //dodgeEnergyCost *= overdriveDodgeFactor;
-        //moveSpeed *= overdriveSpeedFactor;
-    }
-
-    void OverdriveOff()
-    {
-        isOverdriving = false;
-        //dodgeEnergyCost /= overdriveDodgeFactor;
-        //moveSpeed /= overdriveSpeedFactor;
-    }
-    #endregion
 
 
 }

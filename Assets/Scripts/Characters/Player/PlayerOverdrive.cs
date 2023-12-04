@@ -5,37 +5,48 @@ using UnityEngine.Events;
 
 public class PlayerOverdrive : MonoBehaviour
 {
-    //こう定義すると複数のイベントがサブスクライブができます
-    //PlayerEnergy.cs      Player.cs      this
-    //PlayerOverdriveOn()  OverdriveOn()  On()三つのイベントがあります
-    public static UnityAction on = delegate { };
-
-    public static UnityAction off = delegate { };
-
+    //開始エフェクト
     [SerializeField] GameObject triggerVFX;
-
+    //普通のエンジンエフェクトを保持するための変数
     [SerializeField] GameObject engineVFXNormal;
-
+    //特殊状態に入るエンジンエフェクト
     [SerializeField] GameObject engineVFXOverdrive;
-
+    //開始効果音
     [SerializeField] AudioData onSFX;
-
+    //終了効果音
     [SerializeField] AudioData offSFX;
 
     private void Awake()
     {
-        on += On;
-        off += Off;
+        //イベントのサブスクライブ
+        EventCenter.Subscribe(EventNames.InputOverDriveOn, Overdrive);
+
+        EventCenter.Subscribe(EventNames.PlayerOverDriveOn, On);
+        EventCenter.Subscribe(EventNames.OverDriveOff, Off);
     }
 
     private void OnDestroy()
     {
-        on -= On;
-        off -= Off;
+        //イベントのアンサブスクライブ
+        EventCenter.Unsubscribe(EventNames.InputOverDriveOn, Overdrive);
+
+        EventCenter.Unsubscribe(EventNames.PlayerOverDriveOn, On);
+        EventCenter.Unsubscribe(EventNames.OverDriveOff, Off);
+    }
+
+    void Overdrive()
+    {
+        //エネルギーが足りない場合処理させない
+        if (!PlayerEnergy.Instance.IsEnough(PlayerEnergy.MAX)) return;
+
+        EventCenter.TriggerEvent(EventNames.PlayerOverDriveOn);
     }
 
     void On()
     {
+        /*
+            エフェクトを切り替える
+         */
         triggerVFX.SetActive(true);
         engineVFXNormal.SetActive(false);
         engineVFXOverdrive.SetActive(true);
@@ -44,6 +55,9 @@ public class PlayerOverdrive : MonoBehaviour
 
     void Off()
     {
+        /*
+            エフェクトを戻す
+         */
         engineVFXOverdrive.SetActive(false);
         engineVFXNormal.SetActive(true);
         AudioManager.Instance.PlayRandomSFX(offSFX);

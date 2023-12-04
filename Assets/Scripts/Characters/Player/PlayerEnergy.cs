@@ -31,14 +31,14 @@ public class PlayerEnergy : Singleton<PlayerEnergy>
     }
     private void OnEnable()
     {
-        PlayerOverdrive.on += PlayerOverdriveOn;
-        PlayerOverdrive.off += PlayerOverdriveOff;
+        EventCenter.Subscribe(EventNames.PlayerOverDriveOn, PlayerOverdriveOn);
+        EventCenter.Subscribe(EventNames.OverDriveOff, PlayerOverdriveOff);
     }
 
     private void OnDisable()
     {
-        PlayerOverdrive.on -= PlayerOverdriveOn;
-        PlayerOverdrive.off -= PlayerOverdriveOff;
+        EventCenter.Unsubscribe(EventNames.PlayerOverDriveOn, PlayerOverdriveOn);
+        EventCenter.Unsubscribe(EventNames.OverDriveOff, PlayerOverdriveOff);
     }
 
     private void Start()
@@ -67,7 +67,7 @@ public class PlayerEnergy : Singleton<PlayerEnergy>
 
         if (energy == 0 && !available)
         {
-            PlayerOverdrive.off.Invoke();
+            EventCenter.TriggerEvent(EventNames.OverDriveOff);
         }
     }
 

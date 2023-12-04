@@ -12,12 +12,6 @@ public class PlayerInput :
     InputActions.IGameOverScreenActions
 {
 
-    //回避するのためのイベントです
-    public event UnityAction onDodge = delegate { };
-
-    //爆発のためのイベントです
-    public event UnityAction onOverdrive = delegate { };
-
     //一時停止のためのイベントです
     public event UnityAction onPause = delegate { };
 
@@ -146,7 +140,7 @@ public class PlayerInput :
     {
         if(context.performed)
         {
-            onOverdrive.Invoke();
+            EventCenter.TriggerEvent(EventNames.InputOverDriveOn);
         }
     }
 
