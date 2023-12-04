@@ -1,6 +1,17 @@
 using System;
 using System.Collections.Generic;
 
+public static class EventNames
+{
+    public const string Move = "Move";
+    public const string StopMove = "StopMove";
+
+    public const string Fire = "Fire";
+    public const string StopFire = "StopFire";
+
+    public const string LaunchMissile = "LaunchMissile";
+}
+
 /// <summary>
 /// イベント処理中心
 /// </summary>

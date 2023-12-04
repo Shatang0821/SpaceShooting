@@ -11,15 +11,6 @@ public class PlayerInput :
     InputActions.IPauseMenuActions,
     InputActions.IGameOverScreenActions
 {
-    // 移動アクションのためにイベントを作成して
-    //public event UnityAction<Vector2> onMove = delegate { };
-
-    //public event UnityAction onStopMove = delegate { };
-
-    //発射アクションのためのイベントです
-    public event UnityAction onFire = delegate { };
-
-    public event UnityAction onStopFire = delegate { };
 
     //回避するのためのイベントです
     public event UnityAction onDodge = delegate { };
@@ -119,14 +110,12 @@ public class PlayerInput :
     {
         if(context.performed)
         {
-            EventCenter.TriggerEvent("Move", context.ReadValue<Vector2>());
-            //イベントの実行
-            //onMove.Invoke(context.ReadValue<Vector2>());
+            EventCenter.TriggerEvent(EventNames.Move, context.ReadValue<Vector2>());
         }
 
         if(context.canceled)
         {
-            EventCenter.TriggerEvent("stopMove");
+            EventCenter.TriggerEvent(EventNames.StopMove);
         }
     }
 
@@ -135,12 +124,12 @@ public class PlayerInput :
     {
         if (context.performed)
         {
-            onFire.Invoke();
+            EventCenter.TriggerEvent(EventNames.Fire);
         }
 
         if (context.canceled)
         {
-            onStopFire.Invoke();
+            EventCenter.TriggerEvent(EventNames.StopFire);
         }
     }
 
@@ -180,7 +169,7 @@ public class PlayerInput :
     {
         if(context.performed)
         {
-            onLaunchMissile.Invoke();
+            EventCenter.TriggerEvent(EventNames.LaunchMissile);
         }
     }
 

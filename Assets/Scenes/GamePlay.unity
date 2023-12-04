@@ -1455,7 +1455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fad05b520e1e4ac4f9b6f7843bc0d8c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnEnemy: 0
+  spawnEnemy: 1
   waveUI: {fileID: 532102379}
   enemyPrefabs:
   - {fileID: 214778051926960383, guid: a624a0e3000461e4286965f8a65aedb6, type: 3}
@@ -1479,6 +1479,11 @@ Transform:
   m_Father: {fileID: 679118181}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &793637364 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 867358383, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+  m_PrefabInstance: {fileID: 12542097}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &803564347
 GameObject:
   m_ObjectHideFlags: 0
@@ -2726,10 +2731,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a12ea9edbe990ed47833ea7d1125b11f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  accelerationTime: 3
-  decelerationTime: 3
-  moveRotationAngle: 50
+  moveSpeed: 6
+  accelerationTime: 0.35
+  decelerationTime: 0.75
+  moveRotationAngle: 28
+--- !u!114 &1552694622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1552694613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7daee90dd09872142a39c01f04e75f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectile1: {fileID: 8510276924167900824, guid: be785fbc04c807948967104b1ef8b643, type: 3}
+  projectile2: {fileID: 8510276924167900824, guid: 319f56ea354bc9546ba8687e31a52308, type: 3}
+  projectile3: {fileID: 8510276924167900824, guid: 85a7ee1013457754a92cff805a7b06ad, type: 3}
+  projectileOverdrive: {fileID: 8510276924167900824, guid: 64b8a03681c976d42bc77c2fb19d551b, type: 3}
+  muzzleMiddle: {fileID: 2007181377}
+  muzzleTop: {fileID: 1982637791}
+  muzzleBottom: {fileID: 793637364}
+  projectileLaunchSFX:
+    audioClip: {fileID: 8300000, guid: 53622e00a83edfb49a70bcbb9a4eebec, type: 3}
+    volueme: 1
+  weaponPower: 0
+  fireInterval: 0.2
 --- !u!1 &1557958867
 GameObject:
   m_ObjectHideFlags: 0
@@ -3467,6 +3496,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1982637791 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 686012227, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+  m_PrefabInstance: {fileID: 12542097}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2007181377 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 316763256, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+  m_PrefabInstance: {fileID: 12542097}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2022478863
 GameObject:
   m_ObjectHideFlags: 0

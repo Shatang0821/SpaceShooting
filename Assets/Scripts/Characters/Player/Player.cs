@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using UnityEngine;
+using UnityEngine.EventSystems;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : Character
 {
@@ -19,32 +20,6 @@ public class Player : Character
 
     [Header("---- INPUT ----")]
     public PlayerInput input;
-
-    #region ProjectileAttributes
-
-    [Header("---- FIRE ----")]
-    [Tooltip("これはキャラクターの弾オブジェクトです。")]
-    [SerializeField] GameObject projectile1; //弾オブジェクト
-    [SerializeField] GameObject projectile2; //弾オブジェクト
-    [SerializeField] GameObject projectile3; //弾オブジェクト
-    [SerializeField] GameObject projectileOverdrive;
-
-    [Tooltip("これはキャラクターの弾発射位置です。")]
-    [SerializeField] Transform muzzleMiddle;      //弾発射位置
-    [SerializeField] Transform muzzleTop;      //弾発射位置
-    [SerializeField] Transform muzzleBottom;      //弾発射位置
-
-    [SerializeField] AudioData projectileLaunchSFX;   //発射効果音
-
-    [Tooltip("これはキャラクターのパワーです。")]
-    [SerializeField, Range(0, 2)] int weaponPower = 0;
-
-    [Tooltip("これはキャラクターの弾発射間隔です。")]
-    [SerializeField] float fireInterval = 0.2f;    //弾発射間隔
-
-
-
-    #endregion
 
     #region PlayerDodge
     [Header("----- DODGE -----")]
@@ -70,7 +45,7 @@ public class Player : Character
 
     #region Overdrive　
     //限界突破
-    bool isOverdriving = false;
+    [HideInInspector] public bool isOverdriving = false;
 
     [SerializeField] int overdriveDodgeFactor = 2;  //ダッジ消耗を２倍を増やす
 
@@ -79,24 +54,14 @@ public class Player : Character
     [SerializeField] float overdriveFireFactor = 1.2f;//攻撃間隔1.2倍縮む
     #endregion
 
-
-
-    WaitForSeconds waitForFireInterval;//攻撃間隔
-
-    WaitForSeconds waitForOverdriveFireInterval;//オーバードライブの攻撃間隔
+    [HideInInspector] public WaitForSeconds waitForOverdriveFireInterval;//オーバードライブの攻撃間隔
 
     //HP自動回復時間
     WaitForSeconds waitHealthRegenerateTime;
 
-
-    WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();   //used for MoveCoroutine
-
-
     new Collider2D collider;
 
-    MissileSystem missile;
-
-//    Coroutine moveCoroutine;
+    private Vector2 lastMoveDirection;
 
     //HealthRegenerateCoroutineを中止するための入れ物
     Coroutine healthRegenerateCoroutine;
@@ -105,11 +70,13 @@ public class Player : Character
     {
 
         collider = GetComponent<Collider2D>();
-        missile = GetComponent<MissileSystem>();
+        
 
 
-        waitForFireInterval = new WaitForSeconds(fireInterval);
-        waitForOverdriveFireInterval = new WaitForSeconds(fireInterval /= overdriveFireFactor);
+        //waitForFireInterval = new WaitForSeconds(fireInterval);
+
+        //waitForOverdriveFireInterval = new WaitForSeconds(fireInterval /= overdriveFireFactor);
+
         waitHealthRegenerateTime = new WaitForSeconds(healthRegenerateTime);
 
         dodgeDuration = maxRoll / rollSpeed;//最大回転角度/回転速度 = 時間
@@ -120,29 +87,28 @@ public class Player : Character
         base.OnEnable();
 
         //イベントのサブスクライブ
-
-        input.onFire += Fire;
-        input.onStopFire += StopFire;
         input.onDodge += Dodge;
         input.onOverdrive += Overdrive;
-        input.onLaunchMissile += LaunchMissile;
 
         PlayerOverdrive.on += OverdriveOn;
         PlayerOverdrive.off += OverdriveOff;
+
+        EventCenter.Subscribe(EventNames.Move, OnPlayerMove);
+        EventCenter.Subscribe(EventNames.StopMove, OnPlayerStopMove);
     }
 
     void OnDisable()
     {
         //イベントのアンサブスクライブ
 
-        input.onFire -= Fire;
-        input.onStopFire -= StopFire;
         input.onDodge -= Dodge;
         input.onOverdrive -= Overdrive;
-        input.onLaunchMissile -= LaunchMissile;
 
         PlayerOverdrive.on -= OverdriveOn;
         PlayerOverdrive.off -= OverdriveOff;
+
+        EventCenter.Unsubscribe(EventNames.Move, OnPlayerMove);
+        EventCenter.Unsubscribe(EventNames.StopMove, OnPlayerStopMove);
     }
     // Start is called before the first frame update
     void Start()
@@ -166,9 +132,9 @@ public class Player : Character
         if (gameObject.activeSelf)
         {
             //弾とぶつかると止まるときがあり、それを防ぐために入力があるなら動かせる
-            //Move(moveDirection);
+            EventCenter.TriggerEvent(EventNames.Move, lastMoveDirection);
             //
-            
+
             //もし回復中であれば
             if (regenerateHealth)
             {
@@ -199,54 +165,17 @@ public class Player : Character
         base.Die();
     }
 
-    #region FIRE
-
-    //イベントを実行したらこれを呼び出す
-    void Fire()
+    void OnPlayerMove(object moveInput)
     {
-        StartCoroutine(nameof(FireCoroutine));
-    }
-    //キーを話したら止まる
-    void StopFire()
-    {
-        //StopCoroutine(FireCoroutine());//作用しない
-        StopCoroutine(nameof(FireCoroutine));
+        lastMoveDirection = (Vector2)moveInput;
+        Debug.Log(lastMoveDirection);
     }
 
-    /// <summary>
-    //   攻撃コルーチン
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator FireCoroutine()
+    void OnPlayerStopMove()
     {
-        while (true)
-        {
-            switch (weaponPower)
-            {
-                case 0:
-                    PoolManager.Release(isOverdriving ? projectileOverdrive : projectile1, muzzleMiddle.position);//弾を生成する
-                    break;
-                case 1:
-                    PoolManager.Release(isOverdriving ? projectileOverdrive : projectile1, muzzleTop.position);//弾を生成する
-                    PoolManager.Release(isOverdriving ? projectileOverdrive : projectile1, muzzleBottom.position);//弾を生成する
-                    break;
-                case 2:
-                    PoolManager.Release(isOverdriving ? projectileOverdrive : projectile1, muzzleMiddle.position);//弾を生成する
-                    PoolManager.Release(isOverdriving ? projectileOverdrive : projectile2, muzzleTop.position);//弾を生成する
-                    PoolManager.Release(isOverdriving ? projectileOverdrive : projectile3, muzzleBottom.position);//弾を生成する
-                    break;
-                default:
-                    break;
-
-            }
-
-            AudioManager.Instance.PlayRandomSFX(projectileLaunchSFX);
-            //オーバードライブ状態ならその攻撃速度
-            yield return isOverdriving ? waitForOverdriveFireInterval : waitForFireInterval;
-            
-        }
+        lastMoveDirection = Vector2.zero;
+        Debug.Log(lastMoveDirection);
     }
-    #endregion
 
     #region DODGE
     void Dodge()
@@ -334,8 +263,5 @@ public class Player : Character
     }
     #endregion
 
-    void LaunchMissile()
-    {
-        missile.Launch(muzzleMiddle);
-    }
+
 }

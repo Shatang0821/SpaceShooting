@@ -62,31 +62,29 @@ public class PlayerMove : MonoBehaviour
 
     private void OnEnable()
     {
-        EventCenter.Subscribe("Move", Move);
-        //_input.onMove += Move;
-        EventCenter.Subscribe("stopMove", StopMove);
+        EventCenter.Subscribe(EventNames.Move, Move);
+        EventCenter.Subscribe(EventNames.StopMove, StopMove);
     }
 
     private void OnDisable()
     {
-        EventCenter.Unsubscribe("Move", Move);
-        EventCenter.Unsubscribe("stopMove", StopMove);
+        EventCenter.Unsubscribe(EventNames.Move, Move);
+        EventCenter.Unsubscribe(EventNames.StopMove, StopMove);
     }
 
     void Move(object _moveInput)
     {
         Vector2 moveInput = (Vector2)_moveInput; 
-        // Vector2 moveAmount = moveInput * moveSpeed;
-        // rigidbody.velocity = moveAmount;
+  
         //移動コルーチンがnullではない場合停止させる
         if (moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
 
         }
-        //キーのvalueを正規化させて1か-1にする
+        //移動方向は入力を正規化して返した数値、正規化によって斜めが早くなることを防ぎます
         moveDirection = moveInput.normalized;
-        //Quaternion moveRotation = Quaternion.AngleAxis(moveRotationAngle * moveInput.y,Vector3.right);
+
         moveCoroutine = StartCoroutine(MoveCoroutine(accelerationTime, moveDirection * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
         //移動させるであれば減速コルーチンを止める
         StopCoroutine(nameof(DecelerationCoroutine));
@@ -96,7 +94,6 @@ public class PlayerMove : MonoBehaviour
 
     void StopMove()
     {
-        //rigidbody.velocity = Vector2.zero;
         //移動コルーチンがnullではない場合停止させる
         if (moveCoroutine != null)
         {
