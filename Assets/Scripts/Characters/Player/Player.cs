@@ -21,27 +21,6 @@ public class Player : Character
     [Header("---- INPUT ----")]
     public PlayerInput input;
 
-    #region PlayerDodge
-    [Header("----- DODGE -----")]
-
-    [SerializeField] AudioData dodgeSFX;//効果音
-
-    [Tooltip("これはキャラクターのエネルギー消耗量です。")]
-    [SerializeField,Range(0,100)] int dodgeEnergyCost = 25;
-
-    [SerializeField] float maxRoll = 720f;//最大回転角度
-
-    [SerializeField] float rollSpeed = 360f;//回転速度
-    [SerializeField] Vector3 dodgeScale = new Vector3(0.5f, 0.5f, 0.5f);//スケール変化
-
-    bool isDodging = false; //ダッジ　躱すかわす
-
-    float currentRoll;//現在回転値
-
-    float dodgeDuration;//ダッジ持続時間
-
-    readonly float slowMotionDuration = 1f;//バレットタイムslowout時間
-    #endregion
 
     #region Overdrive　
     //限界突破
@@ -51,7 +30,7 @@ public class Player : Character
 
     //[SerializeField] float overdriveSpeedFactor = 1.2f;//スピードを1.2倍
 
-    [SerializeField] float overdriveFireFactor = 1.2f;//攻撃間隔1.2倍縮む
+    //[SerializeField] float overdriveFireFactor = 1.2f;//攻撃間隔1.2倍縮む
     #endregion
 
     [HideInInspector] public WaitForSeconds waitForOverdriveFireInterval;//オーバードライブの攻撃間隔
@@ -59,7 +38,7 @@ public class Player : Character
     //HP自動回復時間
     WaitForSeconds waitHealthRegenerateTime;
 
-    new Collider2D collider;
+
 
     private Vector2 lastMoveDirection;
 
@@ -68,18 +47,14 @@ public class Player : Character
 
     void Awake()
     {
-
-        collider = GetComponent<Collider2D>();
-        
-
-
+       
         //waitForFireInterval = new WaitForSeconds(fireInterval);
 
         //waitForOverdriveFireInterval = new WaitForSeconds(fireInterval /= overdriveFireFactor);
 
         waitHealthRegenerateTime = new WaitForSeconds(healthRegenerateTime);
 
-        dodgeDuration = maxRoll / rollSpeed;//最大回転角度/回転速度 = 時間
+
     }
 
     protected override void OnEnable()
@@ -87,7 +62,7 @@ public class Player : Character
         base.OnEnable();
 
         //イベントのサブスクライブ
-        input.onDodge += Dodge;
+
         input.onOverdrive += Overdrive;
 
         PlayerOverdrive.on += OverdriveOn;
@@ -101,7 +76,6 @@ public class Player : Character
     {
         //イベントのアンサブスクライブ
 
-        input.onDodge -= Dodge;
         input.onOverdrive -= Overdrive;
 
         PlayerOverdrive.on -= OverdriveOn;
@@ -177,67 +151,7 @@ public class Player : Character
         Debug.Log(lastMoveDirection);
     }
 
-    #region DODGE
-    void Dodge()
-    {
-        //もしダッジ中であれば処理させないまた、エネルギーが足りないときも同様
-        if (isDodging || !PlayerEnergy.Instance.IsEnough(dodgeEnergyCost)) return;
-        //そうでなければ処理に入る
-        StartCoroutine(nameof(DodgeCoroutine));
-        // Change Player's scale
-    }
-    /// <summary>
-    /// ダッジ実行コルーチン
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator DodgeCoroutine()
-    {
-        isDodging = true;
-        AudioManager.Instance.PlayRandomSFX(dodgeSFX);
-        // エネルギーを消耗
-        PlayerEnergy.Instance.Use(dodgeEnergyCost);
-
-        //物体と通過できるようにする
-        collider.isTrigger = true;
-
-        // 初期回転を0にする
-        currentRoll = 0f;
-
-        //バレットタイムを開始
-        TimeController.Instance.BulletTime(slowMotionDuration, slowMotionDuration);
-
-        //現在回転が最大回転より小さい場合ループさせる
-        while (currentRoll < maxRoll)
-        {
-            currentRoll += rollSpeed * Time.deltaTime;
-            //回転させる
-            transform.rotation = Quaternion.AngleAxis(currentRoll, Vector3.right);
-
-            /*
-             if (currentRoll < maxRoll / 2f)
-            {
-                scale.x = Mathf.Clamp(scale.x - Time.deltaTime / dodgeDuration,dodgeScale.x,1f);
-                scale.y = Mathf.Clamp(scale.y - Time.deltaTime / dodgeDuration, dodgeScale.y, 1f);
-                scale.z = Mathf.Clamp(scale.z - Time.deltaTime / dodgeDuration, dodgeScale.z, 1f);
-            }
-            else
-            {
-                scale.x = Mathf.Clamp(scale.x + Time.deltaTime / dodgeDuration, dodgeScale.x, 1f);
-                scale.y = Mathf.Clamp(scale.y + Time.deltaTime / dodgeDuration, dodgeScale.y, 1f);
-                scale.z = Mathf.Clamp(scale.z + Time.deltaTime / dodgeDuration, dodgeScale.z, 1f);
-            }
-             */
-            //ベジェ曲線を使って動きをなめらかにする
-            //scaleを1から0.5また1に戻るようにする
-            transform.localScale = BezierCurve.QuadraticPoint(Vector3.one, Vector3.one, dodgeScale, currentRoll / maxRoll);
-            yield return null;
-        }
-
-        collider.isTrigger = false;
-        isDodging = false;
-    }
-    #endregion
-
+    
     #region OVERDRIVE
     void Overdrive()
     {
@@ -251,14 +165,14 @@ public class Player : Character
     {
         
         isOverdriving = true;
-        dodgeEnergyCost *= overdriveDodgeFactor;
+        //dodgeEnergyCost *= overdriveDodgeFactor;
         //moveSpeed *= overdriveSpeedFactor;
     }
 
     void OverdriveOff()
     {
         isOverdriving = false;
-        dodgeEnergyCost /= overdriveDodgeFactor;
+        //dodgeEnergyCost /= overdriveDodgeFactor;
         //moveSpeed /= overdriveSpeedFactor;
     }
     #endregion

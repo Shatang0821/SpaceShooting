@@ -137,7 +137,8 @@ public class PlayerInput :
     {
        if(context.performed)
         {
-            onDodge.Invoke();
+            EventCenter.TriggerEvent(EventNames.Dodge);
+            //onDodge.Invoke();
         }
     }
 

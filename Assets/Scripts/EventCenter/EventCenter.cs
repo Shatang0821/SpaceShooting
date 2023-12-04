@@ -9,6 +9,8 @@ public static class EventNames
     public const string Fire = "Fire";
     public const string StopFire = "StopFire";
 
+    public const string Dodge = "Dodge";
+
     public const string LaunchMissile = "LaunchMissile";
 }
 
