@@ -124,15 +124,14 @@ public class PlayerMove : MonoBehaviour
 
         }
 
-        if(optionMoveCoroutine!= null)
+        if(optionMoveCoroutine == null)
         {
-            StopCoroutine(optionMoveCoroutine);
+            optionMoveCoroutine = StartCoroutine(nameof(OptionMoveCoroutine));
         }
         //移動方向は入力を正規化して返した数値、正規化によって斜めが早くなることを防ぎます
         moveDirection = moveInput.normalized;
-        Debug.Log(moveInput.normalized);
         moveCoroutine = StartCoroutine(MoveCoroutine(accelerationTime, moveDirection * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
-        optionMoveCoroutine = StartCoroutine(nameof(OptionMoveCoroutine));
+        
         //移動させるであれば減速コルーチンを止める
         StopCoroutine(nameof(DecelerationCoroutine));
         //画面制限を始まる
@@ -145,6 +144,7 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     void StopMove()
     {
+        Debug.Log("StopMove");
         //移動コルーチンがnullではない場合停止させる
         if (moveCoroutine != null)
         {
@@ -203,11 +203,12 @@ public class PlayerMove : MonoBehaviour
         yield return waitDecelerationTime;
 
         StopCoroutine(MoveRangeLimatationCoroutine());
+        StopCoroutine(OptionMoveCoroutine());
     }
 
     IEnumerator OptionMoveCoroutine()
     {
-        while(rigidbody.velocity != Vector2.zero)
+        while(true)
         {
             UpdateOptionPositions(transform.position);
             yield return null;
