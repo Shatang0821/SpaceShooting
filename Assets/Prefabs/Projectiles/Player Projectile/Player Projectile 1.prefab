@@ -5009,7 +5009,7 @@ MonoBehaviour:
   hitSFX:
   - audioClip: {fileID: 8300000, guid: 75adfe9a619833445a701305b983e548, type: 3}
     volueme: 0.3
-  damage: 1
+  damage: 1.5
   moveSpeed: 15
   moveDirection: {x: 1, y: 0}
 --- !u!114 &970545738572022482

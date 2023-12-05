@@ -37,6 +37,8 @@ public class PlayerFire : MonoBehaviour
 
     bool isOverdriving = false;
 
+    protected bool CanLaunchMissile { get; set; } = true;
+
     void Initialized()
     {
         waitForFireInterval = new WaitForSeconds(fireInterval);
@@ -53,7 +55,7 @@ public class PlayerFire : MonoBehaviour
        Initialized();
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         EventCenter.Subscribe(EventNames.Fire, Fire);
 
@@ -67,7 +69,7 @@ public class PlayerFire : MonoBehaviour
 
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         EventCenter.Unsubscribe(EventNames.Fire, Fire);
 
@@ -83,12 +85,12 @@ public class PlayerFire : MonoBehaviour
     #region FIRE
 
     //イベントを実行したらこれを呼び出す
-    void Fire()
+    protected void Fire()
     {
         StartCoroutine(nameof(FireCoroutine));
     }
     //キーを離したら止まる
-    void StopFire()
+    protected void StopFire()
     {
         //StopCoroutine(FireCoroutine());//作用しない
         StopCoroutine(nameof(FireCoroutine));
@@ -131,15 +133,18 @@ public class PlayerFire : MonoBehaviour
 
     void LaunchMissile()
     {
-        missile.Launch(muzzleMiddle);
+        if (CanLaunchMissile)
+        {
+            missile.Launch(muzzleMiddle);
+        }
     }
 
-    void OverDriveOn()
+    protected void OverDriveOn()
     {
         isOverdriving = true;
     }
 
-    void OverDriveOff()
+    protected void OverDriveOff()
     {
         isOverdriving = false;
     }

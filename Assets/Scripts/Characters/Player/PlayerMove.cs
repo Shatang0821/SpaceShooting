@@ -27,6 +27,8 @@ public class PlayerMove : MonoBehaviour
 
     private new Rigidbody2D rigidbody;
 
+    private OptionManager optionManager;
+
     //モデルのXYの半分サイズ
     private float paddingX;
     private float paddingY;
@@ -47,6 +49,8 @@ public class PlayerMove : MonoBehaviour
 
     Coroutine moveCoroutine;//移動コルーチンの重複開始を防ぐための入れもの
 
+    Coroutine optionMoveCoroutine;
+
     /// <summary>
     /// 初期化
     /// </summary>
@@ -54,6 +58,7 @@ public class PlayerMove : MonoBehaviour
     {
         _player = GetComponent<Player>();
         rigidbody = GetComponent<Rigidbody2D>();
+        optionManager = GetComponentInChildren<OptionManager>();
         waitDecelerationTime = new WaitForSeconds(decelerationTime);
     }
 
@@ -118,14 +123,21 @@ public class PlayerMove : MonoBehaviour
             StopCoroutine(moveCoroutine);
 
         }
+
+        if(optionMoveCoroutine!= null)
+        {
+            StopCoroutine(optionMoveCoroutine);
+        }
         //移動方向は入力を正規化して返した数値、正規化によって斜めが早くなることを防ぎます
         moveDirection = moveInput.normalized;
 
         moveCoroutine = StartCoroutine(MoveCoroutine(accelerationTime, moveDirection * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
+        optionMoveCoroutine = StartCoroutine(nameof(OptionMoveCoroutine));
         //移動させるであれば減速コルーチンを止める
         StopCoroutine(nameof(DecelerationCoroutine));
         //画面制限を始まる
         StartCoroutine(nameof(MoveRangeLimatationCoroutine));
+  
     }
 
     /// <summary>
@@ -156,7 +168,6 @@ public class PlayerMove : MonoBehaviour
         t = 0f;
         previousVelocity = rigidbody.velocity;
         previousRotation = transform.rotation;
-
         while (t < 1f)
         {
             t += Time.fixedDeltaTime / time;
@@ -164,7 +175,7 @@ public class PlayerMove : MonoBehaviour
             rigidbody.velocity = Vector2.Lerp(previousVelocity, moveVelocity, t);
             //上と同じこと
             transform.rotation = Quaternion.Lerp(previousRotation, moveRotation, t);
-
+            //
             //物理演算させるからFixedUpdate使って精度を上げる
             yield return waitForFixedUpdate;
         }
@@ -192,6 +203,23 @@ public class PlayerMove : MonoBehaviour
         yield return waitDecelerationTime;
 
         StopCoroutine(MoveRangeLimatationCoroutine());
+    }
+
+    IEnumerator OptionMoveCoroutine()
+    {
+        while(rigidbody.velocity != Vector2.zero)
+        {
+            UpdateOptionPositions(transform.position);
+            yield return null;
+        }
+    }
+
+    void UpdateOptionPositions(Vector3 newPosition)
+    {
+        foreach (var option in optionManager.options)
+        {
+            option.UpdatePosition(newPosition);
+        }
     }
 
     void OverDriveOn()

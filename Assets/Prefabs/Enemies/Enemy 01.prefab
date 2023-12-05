@@ -123,7 +123,7 @@ MonoBehaviour:
     volueme: 1
   - audioClip: {fileID: 8300000, guid: 0f2184b0c1d094741b11e8f4077c52e9, type: 3}
     volueme: 1
-  maxHealth: 50
+  maxHealth: 30
   health: 0
   showOnHeadHealthBar: 1
   onHeadHealtherBar: {fileID: 2314797840852339710}
@@ -141,8 +141,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 313a45fa97b6e6d4ab89c4273f308cf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paddingX: 0.8
-  paddingY: 0.4
   moveSpeed: 1.5
   moveRotationAngele: 35
   projectiles:

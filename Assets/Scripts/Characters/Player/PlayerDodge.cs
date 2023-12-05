@@ -9,10 +9,10 @@ public class PlayerDodge : MonoBehaviour
 
     [SerializeField] AudioData dodgeSFX;//効果音
 
-    [Tooltip("これはキャラクターのエネルギー消耗量です。")]
+    [Tooltip("キャラクターのエネルギー消耗量です。")]
     [SerializeField, Range(0, 100)] int dodgeEnergyCost = 25;
 
-    [Tooltip("これはキャラクターの特殊状態エネルギー消耗量です。")]
+    [Tooltip("キャラクターの特殊状態エネルギー消耗量です。")]
     [SerializeField] int overdriveDodgeFactor = 2;  //ダッジ消耗を２倍を増やす
 
     [SerializeField] float maxRoll = 720f;//最大回転角度
