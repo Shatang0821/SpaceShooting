@@ -90,6 +90,52 @@ Transform:
   m_Father: {fileID: 6435389010079767248}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &975363953
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 975363954}
+  - component: {fileID: 975363955}
+  m_Layer: 8
+  m_Name: OptionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &975363954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975363953}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6435389010079767248}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &975363955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 975363953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1d6ef547f26d324ba16be84c582dc92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  optionPrefab: {fileID: 2464458846112133758, guid: a06da6209b7e2eb43be5d16bed4499a0, type: 3}
+  maxOptions: 2
+  options: []
 --- !u!1 &1211729115870861339
 GameObject:
   m_ObjectHideFlags: 0
@@ -29125,6 +29171,9 @@ GameObject:
   - component: {fileID: 982463773}
   - component: {fileID: 5470325219722810831}
   - component: {fileID: 43259335}
+  - component: {fileID: 1552694614}
+  - component: {fileID: 1552694615}
+  - component: {fileID: 1552694622}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -29151,6 +29200,7 @@ Transform:
   - {fileID: 316763256}
   - {fileID: 867358383}
   - {fileID: 8197290848813592323}
+  - {fileID: 975363954}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -29216,32 +29266,6 @@ MonoBehaviour:
   healthRegenerateTime: 12
   healthRegeneratePercent: 0.02
   input: {fileID: 11400000, guid: 5973829ecdad6b044bf679136faba59b, type: 2}
-  moveSpeed: 6
-  accelerationTime: 0.35
-  decelerationTime: 0.75
-  moveRotationAngle: 28
-  projectile1: {fileID: 8510276924167900824, guid: be785fbc04c807948967104b1ef8b643, type: 3}
-  projectile2: {fileID: 8510276924167900824, guid: 319f56ea354bc9546ba8687e31a52308, type: 3}
-  projectile3: {fileID: 8510276924167900824, guid: 85a7ee1013457754a92cff805a7b06ad, type: 3}
-  projectileOverdrive: {fileID: 8510276924167900824, guid: 64b8a03681c976d42bc77c2fb19d551b, type: 3}
-  muzzleMiddle: {fileID: 316763256}
-  muzzleTop: {fileID: 686012227}
-  muzzleBottom: {fileID: 867358383}
-  projectileLaunchSFX:
-    audioClip: {fileID: 8300000, guid: 53622e00a83edfb49a70bcbb9a4eebec, type: 3}
-    volueme: 0.5
-  weaponPower: 2
-  fireInterval: 0.12
-  dodgeSFX:
-    audioClip: {fileID: 8300000, guid: 9fc03a91b5216b74394a6166059d68f2, type: 3}
-    volueme: 1
-  dodgeEnergyCost: 25
-  maxRoll: 360
-  rollSpeed: 360
-  dodgeScale: {x: 0.2, y: 0.2, z: 0.2}
-  overdriveDodgeFactor: 2
-  overdriveSpeedFactor: 1.2
-  overdriveFireFactor: 1.2
 --- !u!114 &982463773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29298,6 +29322,68 @@ MonoBehaviour:
   NoneAmount:
     audioClip: {fileID: 8300000, guid: 0ec937ee239f44744afb44d9af23ac6d, type: 3}
     volueme: 5
+--- !u!114 &1552694614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435389010079767255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a12ea9edbe990ed47833ea7d1125b11f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 6
+  overdriveSpeedFactor: 1.2
+  accelerationTime: 0.35
+  decelerationTime: 0.75
+  moveRotationAngle: 28
+--- !u!114 &1552694615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435389010079767255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b86e1f98009923a40b4f323fb53d4f12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dodgeSFX:
+    audioClip: {fileID: 8300000, guid: 9fc03a91b5216b74394a6166059d68f2, type: 3}
+    volueme: 1
+  dodgeEnergyCost: 25
+  overdriveDodgeFactor: 2
+  maxRoll: 360
+  rollSpeed: 360
+  dodgeScale: {x: 0.2, y: 0.2, z: 0.2}
+--- !u!114 &1552694622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435389010079767255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7daee90dd09872142a39c01f04e75f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectile1: {fileID: 8510276924167900824, guid: be785fbc04c807948967104b1ef8b643, type: 3}
+  projectile2: {fileID: 8510276924167900824, guid: 319f56ea354bc9546ba8687e31a52308, type: 3}
+  projectile3: {fileID: 8510276924167900824, guid: 85a7ee1013457754a92cff805a7b06ad, type: 3}
+  projectileOverdrive: {fileID: 8510276924167900824, guid: 64b8a03681c976d42bc77c2fb19d551b, type: 3}
+  muzzleMiddle: {fileID: 316763256}
+  muzzleTop: {fileID: 686012227}
+  muzzleBottom: {fileID: 867358383}
+  projectileLaunchSFX:
+    audioClip: {fileID: 8300000, guid: 53622e00a83edfb49a70bcbb9a4eebec, type: 3}
+    volueme: 1
+  weaponPower: 0
+  fireInterval: 0.2
+  overdriveFireFactor: 1.2
 --- !u!1 &6758096032694626173
 GameObject:
   m_ObjectHideFlags: 0

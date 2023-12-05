@@ -175,4 +175,12 @@ public class PlayerInput :
             onConfirmGameOver.Invoke();
         }
     }
+
+    public void OnAddOption(InputAction.CallbackContext context)
+    {
+        if(context.performed)
+        {
+            EventCenter.TriggerEvent(EventNames.AddOption);
+        }
+    }
 }

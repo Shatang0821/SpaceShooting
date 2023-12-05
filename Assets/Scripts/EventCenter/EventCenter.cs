@@ -16,6 +16,8 @@ public static class EventNames
     public const string PlayerOverDriveOn = "PlayerOverDriveOn";
     public const string OverDriveOff = "OverDriveOff";
 
+    public const string AddOption = "AddOption";
+
 
 }
 

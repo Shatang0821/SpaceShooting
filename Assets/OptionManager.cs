@@ -8,13 +8,30 @@ public class OptionManager : MonoBehaviour
     public int maxOptions = 2;
     public List<OptionFollower> options = new List<OptionFollower>();
 
+    [SerializeField] private int SpawnCost = 100;
+
+    private void OnEnable()
+    {
+        EventCenter.Subscribe(EventNames.AddOption, AddOption);
+    }
+
+    private void OnDisable()
+    {
+        EventCenter.Unsubscribe(EventNames.AddOption, AddOption);
+    }
+
     public void AddOption()
     {
-        if(options.Count < maxOptions)
+        if (!PlayerEnergy.Instance.IsEnough(SpawnCost)) return;
+
+        PlayerEnergy.Instance.Use(SpawnCost);
+        if (options.Count < maxOptions)
         {
             GameObject optionInstance = Instantiate(optionPrefab, transform);
+            optionInstance.transform.parent = transform.parent;
             OptionFollower follower = optionInstance.GetComponent<OptionFollower>();
-            follower.followDelayFrames = (options.Count * 60);  // 设置延迟帧数
+            Debug.Log(options.Count);
+            follower.followDelayFrames = ((options.Count+1) * 60);  // 设置延迟帧数
             options.Add(follower);
         }
     }
