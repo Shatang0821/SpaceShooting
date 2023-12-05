@@ -29,7 +29,7 @@ public class Projectile : MonoBehaviour
         {
             character.TakenDamage(damage);
             //Õ“Ë‚ÌÅ‰‚ÌÚG“_‚Ì–@ü•ûŒü‚É‰ñ“]
-            PoolManager.Release(hitVFX, collision.GetContact(0).point, Quaternion.LookRotation(collision.GetContact(0).normal)); ;
+            PoolManager.Release(hitVFX, collision.GetContact(0).point, Quaternion.LookRotation(collision.GetContact(0).normal));
             AudioManager.Instance.PlayRandomSFX(hitSFX);
             gameObject.SetActive(false);
         }

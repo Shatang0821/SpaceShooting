@@ -1455,7 +1455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fad05b520e1e4ac4f9b6f7843bc0d8c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnEnemy: 1
+  spawnEnemy: 0
   waveUI: {fileID: 532102379}
   enemyPrefabs:
   - {fileID: 214778051926960383, guid: a624a0e3000461e4286965f8a65aedb6, type: 3}

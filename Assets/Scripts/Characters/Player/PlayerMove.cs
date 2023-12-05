@@ -130,7 +130,7 @@ public class PlayerMove : MonoBehaviour
         }
         //移動方向は入力を正規化して返した数値、正規化によって斜めが早くなることを防ぎます
         moveDirection = moveInput.normalized;
-
+        Debug.Log(moveInput.normalized);
         moveCoroutine = StartCoroutine(MoveCoroutine(accelerationTime, moveDirection * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
         optionMoveCoroutine = StartCoroutine(nameof(OptionMoveCoroutine));
         //移動させるであれば減速コルーチンを止める
