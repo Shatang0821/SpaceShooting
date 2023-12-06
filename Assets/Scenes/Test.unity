@@ -354,6 +354,14 @@ PrefabInstance:
       propertyPath: statsBar_HUD
       value: 
       objectReference: {fileID: 4683171310775562469}
+    - target: {fileID: 975363955, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+      propertyPath: SpawnCost
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 975363955, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+      propertyPath: maxOptions
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 982463773, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
       propertyPath: energyBar
       value: 
@@ -1506,7 +1514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fad05b520e1e4ac4f9b6f7843bc0d8c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnEnemy: 0
+  spawnEnemy: 1
   waveUI: {fileID: 532102379}
   enemyPrefabs:
   - {fileID: 214778051926960383, guid: a624a0e3000461e4286965f8a65aedb6, type: 3}
