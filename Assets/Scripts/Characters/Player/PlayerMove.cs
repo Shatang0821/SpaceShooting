@@ -144,7 +144,6 @@ public class PlayerMove : MonoBehaviour
     /// </summary>
     void StopMove()
     {
-        Debug.Log("StopMove");
         //ˆÚ“®ƒRƒ‹[ƒ`ƒ“‚ªnull‚Å‚Í‚È‚¢ê‡’â~‚³‚¹‚é
         if (moveCoroutine != null)
         {

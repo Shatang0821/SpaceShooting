@@ -372,9 +372,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5429930512254070763}
-  - component: {fileID: 825494128}
-  - component: {fileID: 825494130}
   - component: {fileID: -5736722609866868337}
+  - component: {fileID: 825494128}
+  - component: {fileID: 5684961506350234373}
   m_Layer: 0
   m_Name: Option
   m_TagString: Untagged
@@ -398,44 +398,6 @@ Transform:
   - {fileID: 4917286385963307185}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &825494128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2464458846112133758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f0ea5be90a838f49a904a901db5620b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  followDelayFrames: 60
---- !u!114 &825494130
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2464458846112133758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d01dd20a79fece49a92abc21e8920de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectile1: {fileID: 8510276924167900824, guid: be785fbc04c807948967104b1ef8b643, type: 3}
-  projectile2: {fileID: 0}
-  projectile3: {fileID: 0}
-  projectileOverdrive: {fileID: 8510276924167900824, guid: 64b8a03681c976d42bc77c2fb19d551b, type: 3}
-  muzzleMiddle: {fileID: 1520028475}
-  muzzleTop: {fileID: 2818017913155749283}
-  muzzleBottom: {fileID: 6212027000475021788}
-  projectileLaunchSFX:
-    audioClip: {fileID: 8300000, guid: 53622e00a83edfb49a70bcbb9a4eebec, type: 3}
-    volueme: 1
-  weaponPower: 0
-  fireInterval: 0.2
-  overdriveFireFactor: 1.2
 --- !u!50 &-5736722609866868337
 Rigidbody2D:
   serializedVersion: 4
@@ -463,6 +425,45 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &825494128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2464458846112133758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0ea5be90a838f49a904a901db5620b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followDelayFrames: 60
+--- !u!114 &5684961506350234373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2464458846112133758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7daee90dd09872142a39c01f04e75f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectile1: {fileID: 8510276924167900824, guid: be785fbc04c807948967104b1ef8b643, type: 3}
+  projectile2: {fileID: 0}
+  projectile3: {fileID: 0}
+  projectileOverdrive: {fileID: 8510276924167900824, guid: 64b8a03681c976d42bc77c2fb19d551b, type: 3}
+  muzzleMiddle: {fileID: 6212027000475021788}
+  muzzleTop: {fileID: 2818017913155749283}
+  muzzleBottom: {fileID: 6212027000475021788}
+  projectileLaunchSFX:
+    audioClip: {fileID: 8300000, guid: 53622e00a83edfb49a70bcbb9a4eebec, type: 3}
+    volueme: 1
+  weaponPower: 0
+  fireInterval: 0.2
+  overdriveFireFactor: 1.2
+  CanLaunchMissile: 0
 --- !u!1 &2586755760439893298
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,7 +474,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6212027000475021788}
   m_Layer: 8
-  m_Name: Muzzle Middle
+  m_Name: Muzzle Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -37,7 +37,7 @@ public class PlayerFire : MonoBehaviour
 
     bool isOverdriving = false;
 
-    protected bool CanLaunchMissile { get; set; } = true;
+    [SerializeField] protected bool CanLaunchMissile = true;
 
     void Initialized()
     {

@@ -22,17 +22,17 @@ public class OptionManager : MonoBehaviour
 
     public void AddOption()
     {
-        if (!PlayerEnergy.Instance.IsEnough(SpawnCost)) return;
+        if (!PlayerEnergy.Instance.IsEnough(SpawnCost) || options.Count >= maxOptions) return;
 
         PlayerEnergy.Instance.Use(SpawnCost);
-        if (options.Count < maxOptions)
-        {
-            GameObject optionInstance = Instantiate(optionPrefab, transform);
-            optionInstance.transform.parent = transform.parent;
-            OptionFollower follower = optionInstance.GetComponent<OptionFollower>();
-            Debug.Log(options.Count);
-            follower.followDelayFrames = ((options.Count+1) * 60);  // 设置延迟帧数
-            options.Add(follower);
-        }
+        
+        GameObject optionInstance = Instantiate(optionPrefab, transform);
+        optionInstance.transform.parent = transform.parent;
+        
+        OptionFollower follower = optionInstance.GetComponent<OptionFollower>();
+        Debug.Log(options.Count);
+        
+        follower.followDelayFrames = ((options.Count+1) * 60);  // 设置延迟帧数
+        options.Add(follower);
     }
 }
