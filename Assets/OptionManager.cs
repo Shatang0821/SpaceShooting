@@ -32,7 +32,7 @@ public class OptionManager : MonoBehaviour
         OptionFollower follower = optionInstance.GetComponent<OptionFollower>();
         Debug.Log(options.Count);
         
-        follower.followDelayFrames = ((options.Count+1) * 60);  // 设置延迟帧数
+        follower.followDelayFrames = ((options.Count+1) * 20);  // 设置延迟帧数
         options.Add(follower);
     }
 }

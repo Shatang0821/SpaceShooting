@@ -11,10 +11,10 @@ public class GameManager : PersistentSingleton<GameManager>
 
     [SerializeField] GameState gameState = GameState.Playing;
 
-    //private void Start()
-    //{
-    //    Time.timeScale = 0.1f;
-    //}
+    private void Start()
+    {
+        Application.targetFrameRate =60;
+    }
 }
 
 public enum GameState
