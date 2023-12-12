@@ -4,19 +4,19 @@ using UnityEngine;
 public class OptionFollower : MonoBehaviour
 {
     public Queue<Vector3> positionsHistory = new Queue<Vector3>();
-    public int followDelayFrames = 60;  // 跟随延迟（以帧为单位）
+    public int followDelayFrames = 60;  // フレーム間隔
 
     public void UpdatePosition(Vector3 newPosition)
     {
         positionsHistory.Enqueue(newPosition);
 
-        // 维护队列长度，确保其等于延迟帧数
+        // キュー
         while (positionsHistory.Count > followDelayFrames)
         {
             positionsHistory.Dequeue();
         }
 
-        // 更新 Option 的位置
+        // option位置更新
         if (positionsHistory.Count == followDelayFrames)
         {
             transform.position = positionsHistory.Peek();
