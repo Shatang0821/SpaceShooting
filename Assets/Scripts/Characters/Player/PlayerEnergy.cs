@@ -1,3 +1,4 @@
+using Assets.Scripts.EventCenter;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,14 +32,14 @@ public class PlayerEnergy : Singleton<PlayerEnergy>
     }
     private void OnEnable()
     {
-        EventCenter.Subscribe(EventNames.PlayerOverDriveOn, PlayerOverdriveOn);
-        EventCenter.Subscribe(EventNames.OverDriveOff, PlayerOverdriveOff);
+        EventCenter.Subscribe(EventKeyManager.PlayerOverDriveOn, PlayerOverdriveOn);
+        EventCenter.Subscribe(EventKeyManager.OverDriveOff, PlayerOverdriveOff);
     }
 
     private void OnDisable()
     {
-        EventCenter.Unsubscribe(EventNames.PlayerOverDriveOn, PlayerOverdriveOn);
-        EventCenter.Unsubscribe(EventNames.OverDriveOff, PlayerOverdriveOff);
+        EventCenter.Unsubscribe(EventKeyManager.PlayerOverDriveOn, PlayerOverdriveOn);
+        EventCenter.Unsubscribe(EventKeyManager.OverDriveOff, PlayerOverdriveOff);
     }
 
     private void Start()
@@ -67,7 +68,7 @@ public class PlayerEnergy : Singleton<PlayerEnergy>
 
         if (energy == 0 && !available)
         {
-            EventCenter.TriggerEvent(EventNames.OverDriveOff);
+            EventCenter.TriggerEvent(EventKeyManager.OverDriveOff);
         }
     }
 

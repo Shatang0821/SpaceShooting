@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.EventCenter;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,12 +13,12 @@ public class OptionManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventCenter.Subscribe(EventNames.AddOption, AddOption);
+        EventCenter.Subscribe(EventKeyManager.AddOption, AddOption);
     }
 
     private void OnDisable()
     {
-        EventCenter.Unsubscribe(EventNames.AddOption, AddOption);
+        EventCenter.Unsubscribe(EventKeyManager.AddOption, AddOption);
     }
 
     public void AddOption()

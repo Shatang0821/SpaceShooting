@@ -1,3 +1,4 @@
+using Assets.Scripts.EventCenter;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -104,12 +105,12 @@ public class PlayerInput :
     {
         if(context.performed)
         {
-            EventCenter.TriggerEvent(EventNames.Move, context.ReadValue<Vector2>());
+            EventCenter.TriggerEvent(EventKeyManager.Move, context.ReadValue<Vector2>());
         }
 
         if(context.canceled)
         {
-            EventCenter.TriggerEvent(EventNames.StopMove);
+            EventCenter.TriggerEvent(EventKeyManager.StopMove);
         }
     }
 
@@ -118,12 +119,12 @@ public class PlayerInput :
     {
         if (context.performed)
         {
-            EventCenter.TriggerEvent(EventNames.Fire);
+            EventCenter.TriggerEvent(EventKeyManager.Fire);
         }
 
         if (context.canceled)
         {
-            EventCenter.TriggerEvent(EventNames.StopFire);
+            EventCenter.TriggerEvent(EventKeyManager.StopFire);
         }
     }
 
@@ -131,7 +132,7 @@ public class PlayerInput :
     {
        if(context.performed)
         {
-            EventCenter.TriggerEvent(EventNames.Dodge);
+            EventCenter.TriggerEvent(EventKeyManager.Dodge);
             //onDodge.Invoke();
         }
     }
@@ -140,7 +141,7 @@ public class PlayerInput :
     {
         if(context.performed)
         {
-            EventCenter.TriggerEvent(EventNames.InputOverDriveOn);
+            EventCenter.TriggerEvent(EventKeyManager.InputOverDriveOn);
         }
     }
 
@@ -164,7 +165,7 @@ public class PlayerInput :
     {
         if(context.performed)
         {
-            EventCenter.TriggerEvent(EventNames.LaunchMissile);
+            EventCenter.TriggerEvent(EventKeyManager.LaunchMissile);
         }
     }
 
@@ -180,7 +181,7 @@ public class PlayerInput :
     {
         if(context.performed)
         {
-            EventCenter.TriggerEvent(EventNames.AddOption);
+            EventCenter.TriggerEvent(EventKeyManager.AddOption);
         }
     }
 }

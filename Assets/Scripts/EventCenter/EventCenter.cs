@@ -1,108 +1,92 @@
+using Assets.Scripts.EventCenter;
 using System;
 using System.Collections.Generic;
-
-public static class EventNames
-{
-    public const string Move = "Move";
-    public const string StopMove = "StopMove";
-
-    public const string Fire = "Fire";
-    public const string StopFire = "StopFire";
-    public const string LaunchMissile = "LaunchMissile";
-
-    public const string Dodge = "Dodge";
-
-    public const string InputOverDriveOn = "InputOverDriveOn";
-    public const string PlayerOverDriveOn = "PlayerOverDriveOn";
-    public const string OverDriveOff = "OverDriveOff";
-
-    public const string AddOption = "AddOption";
-
-
-}
+using System.Linq;
 
 /// <summary>
 /// イベント処理中心
 /// </summary>
 public class EventCenter
 {
-    private static Dictionary<string,Action> eventNoParamDictionary = new Dictionary<string,Action>();
+    private static Dictionary<EventKey,Action> eventNoParamDictionary = new Dictionary<EventKey,Action>();
     
-    private static Dictionary<string,Action<object>> eventWithParamDictionary = new Dictionary<string,Action<object>>();
+    private static Dictionary<EventKey, Action<object>> eventWithParamDictionary = new Dictionary<EventKey, Action<object>>();
 
     /// <summary>
     /// イベントをサブスクライブ
     /// </summary>
-    /// <param name="eventName">イベント名</param>
+    /// <param name="eventKey">イベントキー</param>
     /// <param name="listener">イベント</param>
-    public static void Subscribe(string eventName,Action listener)
+    public static void Subscribe(EventKey eventKey,Action listener)
     {
-        if(eventNoParamDictionary.TryGetValue(eventName,out var thisEvent))
+        if (eventNoParamDictionary.TryGetValue(eventKey, out var thisEvent))
         {
-            thisEvent += listener;
-            eventNoParamDictionary[eventName] = thisEvent;
+            // 既に同じリスナーが登録されている場合は追加しない
+            if (thisEvent != null && !thisEvent.GetInvocationList().Contains(listener))
+            {
+                eventNoParamDictionary[eventKey] += listener;
+            }
         }
         else
         {
-            thisEvent += listener;
-            eventNoParamDictionary.Add(eventName, thisEvent);
+            eventNoParamDictionary.Add(eventKey, listener);
         }
     }
 
     /// <summary>
     /// 引数持ちイベントをサブスクライブ
     /// </summary>
-    /// <param name="eventName">イベント名</param>
+    /// <param name="eventKey">イベントキー</param>
     /// <param name="listener">イベント</param>
-    public static void Subscribe(string eventName, Action<object> listener)
+    public static void Subscribe(EventKey eventKey, Action<object> listener)
     {
-        if(eventWithParamDictionary.TryGetValue(eventName,out var thisEvent))
+        if(eventWithParamDictionary.TryGetValue(eventKey,out var thisEvent))
         {
             thisEvent += listener;
-            eventWithParamDictionary[eventName] = thisEvent;
+            eventWithParamDictionary[eventKey] = thisEvent;
         }
         else
         {
             thisEvent += listener;
-            eventWithParamDictionary.Add(eventName, thisEvent);
+            eventWithParamDictionary.Add(eventKey, thisEvent);
         }
     }
 
     /// <summary>
     /// サブスクライブを解除
     /// </summary>
-    /// <param name="eventName">イベント名</param>
+    /// <param name="eventKey">イベントキー</param>
     /// <param name="listener">イベント</param>
-    public static void Unsubscribe(string eventName,Action listener)
+    public static void Unsubscribe(EventKey eventKey,Action listener)
     {
-        if(eventNoParamDictionary.TryGetValue(eventName, out var thisEvent))
+        if(eventNoParamDictionary.TryGetValue(eventKey, out var thisEvent))
         {
             thisEvent -= listener;
-            eventNoParamDictionary[eventName] = thisEvent;
+            eventNoParamDictionary[eventKey] = thisEvent;
         }
     }
 
     /// <summary>
     /// 引数持ちサブスクライブを解除
     /// </summary>
-    /// <param name="eventName">イベント名</param>
+    /// <param name="eventKey">イベントキー</param>
     /// <param name="listener">イベント</param>
-    public static void Unsubscribe(string eventName,Action<object> listener)
+    public static void Unsubscribe(EventKey eventKey, Action<object> listener)
     {
-        if(eventWithParamDictionary.TryGetValue(eventName,out var thisEvent))
+        if(eventWithParamDictionary.TryGetValue(eventKey, out var thisEvent))
         {
             thisEvent -= listener;
-            eventWithParamDictionary[eventName] = thisEvent;
+            eventWithParamDictionary[eventKey] = thisEvent;
         }
     }
 
     /// <summary>
     /// イベントを実行する
     /// </summary>
-    /// <param name="eventName">イベント名</param>
-    public static void TriggerEvent(string eventName)
+    /// <param name="eventKey">イベントキー</param>
+    public static void TriggerEvent(EventKey eventKey)
     {
-        if(eventNoParamDictionary.TryGetValue(eventName,out var thisEvent))
+        if(eventNoParamDictionary.TryGetValue(eventKey, out var thisEvent))
         {
             thisEvent?.Invoke();
         }
@@ -111,11 +95,11 @@ public class EventCenter
     /// <summary>
     /// 引数持ちイベントを実行
     /// </summary>
-    /// <param name="eventName">イベント名</param>
+    /// <param name="eventKey">イベントキー</param>
     /// <param name="eventParam">引数</param>
-    public static void TriggerEvent(string eventName, object eventParam)
+    public static void TriggerEvent(EventKey eventKey, object eventParam)
     {
-        if (eventWithParamDictionary.TryGetValue(eventName, out var thisEvent))
+        if (eventWithParamDictionary.TryGetValue(eventKey, out var thisEvent))
         {
             thisEvent?.Invoke(eventParam);
         }

@@ -26,6 +26,10 @@ namespace Assets.Scripts.EventCenter
             return obj is EventKey key && id == key.id;
         }
 
+        /// <summary>
+        /// コンストラクターで計算した値を返す
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
             return hash;

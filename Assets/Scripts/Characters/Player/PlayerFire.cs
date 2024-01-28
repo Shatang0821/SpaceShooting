@@ -1,3 +1,4 @@
+using Assets.Scripts.EventCenter;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -57,29 +58,29 @@ public class PlayerFire : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        EventCenter.Subscribe(EventNames.Fire, Fire);
+        EventCenter.Subscribe(EventKeyManager.Fire, Fire);
 
-        EventCenter.Subscribe(EventNames.StopFire, StopFire);
+        EventCenter.Subscribe(EventKeyManager.StopFire, StopFire);
 
-        EventCenter.Subscribe(EventNames.LaunchMissile, LaunchMissile);
+        EventCenter.Subscribe(EventKeyManager.LaunchMissile, LaunchMissile);
 
-        EventCenter.Subscribe(EventNames.PlayerOverDriveOn, OverDriveOn);
+        EventCenter.Subscribe(EventKeyManager.PlayerOverDriveOn, OverDriveOn);
 
-        EventCenter.Subscribe(EventNames.OverDriveOff, OverDriveOff);
+        EventCenter.Subscribe(EventKeyManager.OverDriveOff, OverDriveOff);
 
     }
 
     protected virtual void OnDisable()
     {
-        EventCenter.Unsubscribe(EventNames.Fire, Fire);
+        EventCenter.Unsubscribe(EventKeyManager.Fire, Fire);
 
-        EventCenter.Unsubscribe(EventNames.StopFire, StopFire);
+        EventCenter.Unsubscribe(EventKeyManager.StopFire, StopFire);
 
-        EventCenter.Unsubscribe(EventNames.LaunchMissile, LaunchMissile);
+        EventCenter.Unsubscribe(EventKeyManager.LaunchMissile, LaunchMissile);
 
-        EventCenter.Unsubscribe(EventNames.PlayerOverDriveOn, OverDriveOn);
+        EventCenter.Unsubscribe(EventKeyManager.PlayerOverDriveOn, OverDriveOn);
 
-        EventCenter.Unsubscribe(EventNames.OverDriveOff, OverDriveOff);
+        EventCenter.Unsubscribe(EventKeyManager.OverDriveOff, OverDriveOff);
     }
 
     #region FIRE

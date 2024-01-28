@@ -1,3 +1,4 @@
+using Assets.Scripts.EventCenter;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,20 +41,20 @@ public class PlayerDodge : MonoBehaviour
 
     private void OnEnable()
     {
-        EventCenter.Subscribe(EventNames.Dodge, Dodge);
+        EventCenter.Subscribe(EventKeyManager.Dodge, Dodge);
 
-        EventCenter.Subscribe(EventNames.PlayerOverDriveOn, OverDriveOn);
+        EventCenter.Subscribe(EventKeyManager.PlayerOverDriveOn, OverDriveOn);
 
-        EventCenter.Subscribe(EventNames.OverDriveOff, OverDriveOff);
+        EventCenter.Subscribe(EventKeyManager.OverDriveOff, OverDriveOff);
     }
 
     private void OnDisable()
     {
-        EventCenter.Unsubscribe(EventNames.Dodge, Dodge);
+        EventCenter.Unsubscribe(EventKeyManager.Dodge, Dodge);
 
-        EventCenter.Unsubscribe(EventNames.PlayerOverDriveOn, OverDriveOn);
+        EventCenter.Unsubscribe(EventKeyManager.PlayerOverDriveOn, OverDriveOn);
 
-        EventCenter.Unsubscribe(EventNames.OverDriveOff, OverDriveOff);
+        EventCenter.Unsubscribe(EventKeyManager.OverDriveOff, OverDriveOff);
     }
     #region DODGE
     void Dodge()

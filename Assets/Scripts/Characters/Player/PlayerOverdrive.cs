@@ -1,3 +1,4 @@
+using Assets.Scripts.EventCenter;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,19 +20,19 @@ public class PlayerOverdrive : MonoBehaviour
     private void Awake()
     {
         //イベントのサブスクライブ
-        EventCenter.Subscribe(EventNames.InputOverDriveOn, Overdrive);
+        EventCenter.Subscribe(EventKeyManager.InputOverDriveOn, Overdrive);
 
-        EventCenter.Subscribe(EventNames.PlayerOverDriveOn, On);
-        EventCenter.Subscribe(EventNames.OverDriveOff, Off);
+        EventCenter.Subscribe(EventKeyManager.PlayerOverDriveOn, On);
+        EventCenter.Subscribe(EventKeyManager.OverDriveOff, Off);
     }
 
     private void OnDestroy()
     {
         //イベントのアンサブスクライブ
-        EventCenter.Unsubscribe(EventNames.InputOverDriveOn, Overdrive);
+        EventCenter.Unsubscribe(EventKeyManager.InputOverDriveOn, Overdrive);
 
-        EventCenter.Unsubscribe(EventNames.PlayerOverDriveOn, On);
-        EventCenter.Unsubscribe(EventNames.OverDriveOff, Off);
+        EventCenter.Unsubscribe(EventKeyManager.PlayerOverDriveOn, On);
+        EventCenter.Unsubscribe(EventKeyManager.OverDriveOff, Off);
     }
 
     void Overdrive()
@@ -39,7 +40,7 @@ public class PlayerOverdrive : MonoBehaviour
         //エネルギーが足りない場合処理させない
         if (!PlayerEnergy.Instance.IsEnough(PlayerEnergy.MAX)) return;
 
-        EventCenter.TriggerEvent(EventNames.PlayerOverDriveOn);
+        EventCenter.TriggerEvent(EventKeyManager.PlayerOverDriveOn);
     }
 
     void On()

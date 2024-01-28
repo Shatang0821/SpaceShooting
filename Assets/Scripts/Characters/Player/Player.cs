@@ -1,3 +1,4 @@
+using Assets.Scripts.EventCenter;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,14 +39,14 @@ public class Player : OldCharacter
     {
         base.OnEnable();
 
-        EventCenter.Subscribe(EventNames.Move, OnPlayerMove);
-        EventCenter.Subscribe(EventNames.StopMove, OnPlayerStopMove);
+        EventCenter.Subscribe(EventKeyManager.Move, OnPlayerMove);
+        EventCenter.Subscribe(EventKeyManager.StopMove, OnPlayerStopMove);
     }
 
     void OnDisable()
     {
-        EventCenter.Unsubscribe(EventNames.Move, OnPlayerMove);
-        EventCenter.Unsubscribe(EventNames.StopMove, OnPlayerStopMove);
+        EventCenter.Unsubscribe(EventKeyManager.Move, OnPlayerMove);
+        EventCenter.Unsubscribe(EventKeyManager.StopMove, OnPlayerStopMove);
     }
     // Start is called before the first frame update
     void Start()
@@ -69,7 +70,7 @@ public class Player : OldCharacter
         if (gameObject.activeSelf)
         {
             //’e‚Æ‚Ô‚Â‚©‚é‚Æ~‚Ü‚é‚Æ‚«‚ª‚ ‚èA‚»‚ê‚ğ–h‚®‚½‚ß‚É“ü—Í‚ª‚ ‚é‚È‚ç“®‚©‚¹‚é
-            EventCenter.TriggerEvent(EventNames.Move, lastMoveDirection);
+            EventCenter.TriggerEvent(EventKeyManager.Move, lastMoveDirection);
             //
 
             //‚à‚µ‰ñ•œ’†‚Å‚ ‚ê‚Î

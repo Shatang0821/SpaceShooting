@@ -1,3 +1,4 @@
+using Assets.Scripts.EventCenter;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -89,22 +90,22 @@ public class PlayerMove : MonoBehaviour
 
     private void OnEnable()
     {
-        EventCenter.Subscribe(EventNames.Move, Move);
-        EventCenter.Subscribe(EventNames.StopMove, StopMove);
+        EventCenter.Subscribe(EventKeyManager.Move, Move);
+        EventCenter.Subscribe(EventKeyManager.StopMove, StopMove);
 
-        EventCenter.Subscribe(EventNames.PlayerOverDriveOn, OverDriveOn);
+        EventCenter.Subscribe(EventKeyManager.PlayerOverDriveOn, OverDriveOn);
 
-        EventCenter.Subscribe(EventNames.OverDriveOff, OverDriveOff);
+        EventCenter.Subscribe(EventKeyManager.OverDriveOff, OverDriveOff);
 
-        EventCenter.Unsubscribe(EventNames.PlayerOverDriveOn, OverDriveOn);
+        EventCenter.Unsubscribe(EventKeyManager.PlayerOverDriveOn, OverDriveOn);
 
-        EventCenter.Unsubscribe(EventNames.OverDriveOff, OverDriveOff);
+        EventCenter.Unsubscribe(EventKeyManager.OverDriveOff, OverDriveOff);
     }
 
     private void OnDisable()
     {
-        EventCenter.Unsubscribe(EventNames.Move, Move);
-        EventCenter.Unsubscribe(EventNames.StopMove, StopMove);
+        EventCenter.Unsubscribe(EventKeyManager.Move, Move);
+        EventCenter.Unsubscribe(EventKeyManager.StopMove, StopMove);
     }
 
     /// <summary>

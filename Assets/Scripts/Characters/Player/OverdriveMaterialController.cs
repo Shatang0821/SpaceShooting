@@ -1,3 +1,4 @@
+using Assets.Scripts.EventCenter;
 using UnityEngine;
 
 public class OverdriveMaterialController : MonoBehaviour
@@ -16,14 +17,14 @@ public class OverdriveMaterialController : MonoBehaviour
     
     void OnEnable()
     {
-        EventCenter.Subscribe(EventNames.PlayerOverDriveOn, PlayerOverdriveOn);
-        EventCenter.Subscribe(EventNames.OverDriveOff, PlayerOverdriveOff);
+        EventCenter.Subscribe(EventKeyManager.PlayerOverDriveOn, PlayerOverdriveOn);
+        EventCenter.Subscribe(EventKeyManager.OverDriveOff, PlayerOverdriveOff);
     }
 
     void OnDisable()
     {
-        EventCenter.Unsubscribe(EventNames.PlayerOverDriveOn, PlayerOverdriveOn);
-        EventCenter.Unsubscribe(EventNames.OverDriveOff, PlayerOverdriveOff);     
+        EventCenter.Unsubscribe(EventKeyManager.PlayerOverDriveOn, PlayerOverdriveOn);
+        EventCenter.Unsubscribe(EventKeyManager.OverDriveOff, PlayerOverdriveOff);     
     }
 
     void PlayerOverdriveOn() => renderer.material = overdriveMaterial;
