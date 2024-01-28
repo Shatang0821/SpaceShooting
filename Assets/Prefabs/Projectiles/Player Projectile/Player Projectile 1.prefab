@@ -178,7 +178,7 @@ Transform:
   m_Children:
   - {fileID: 8510276922534215693}
   m_Father: {fileID: 8510276924167900827}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &8510276923724641431
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -5042,7 +5042,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.28, y: 0}
-  m_Size: {x: 0.25, y: 0.1}
+  m_Size: {x: 0.25, y: 0.2}
   m_Direction: 1
 --- !u!114 &8510276924167900826
 MonoBehaviour:
@@ -5060,8 +5060,8 @@ MonoBehaviour:
   hitSFX:
   - audioClip: {fileID: 8300000, guid: 75adfe9a619833445a701305b983e548, type: 3}
     volueme: 0.3
-  damage: 1.5
-  moveSpeed: 20
+  damage: 5
+  moveSpeed: 40
   moveDirection: {x: 1, y: 0}
 --- !u!114 &970545738572022482
 MonoBehaviour:
