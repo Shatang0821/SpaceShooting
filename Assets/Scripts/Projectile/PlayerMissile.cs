@@ -47,7 +47,7 @@ public class PlayerMissile : PlayerProjectileOverdrive
 
         foreach(var collider in colliders)
         {
-            if(collider.TryGetComponent<Enemy>(out Enemy enemy))
+            if(collider.TryGetComponent<OldEnemy>(out OldEnemy enemy))
             {
                 enemy.TakenDamage(explosionDamage);
             }

@@ -25,7 +25,7 @@ public class Projectile : MonoBehaviour
 
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.TryGetComponent<Character>(out Character character))
+        if(collision.gameObject.TryGetComponent<OldCharacter>(out OldCharacter character))
         {
             character.TakenDamage(damage);
             //Õ“Ë‚ÌÅ‰‚ÌÚG“_‚Ì–@ü•ûŒü‚É‰ñ“]

@@ -1,122 +1,29 @@
-using System.Collections;
+ï»¿using Assets.Scripts.Interface;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
+using System.Numerics;
+using System.Text;
+using System.Threading.Tasks;
 
-public class Character : MonoBehaviour
+namespace Assets.Scripts.Characters
 {
-    [Header("---- DEATH ----")]
-    //€–SŒø‰Ê
-    [SerializeField] GameObject deathVFX;
-
-    [SerializeField] AudioData[] deathSFX;
-
-    [Header("---- HEALTH ----")]
-    [SerializeField] protected float maxHealth;
-
-    [SerializeField] protected float health;
-
-    [SerializeField] bool showOnHeadHealthBar = true;
-
-    [SerializeField] StatsBar onHeadHealtherBar;
-
-    //protected Œp³‚µ‚½æ‚Å‚à‚±‚ê‚ğƒAƒNƒZƒX‚Å‚«‚é
-    //virtual ƒI[ƒo[ƒ‰ƒCƒg‚Å‚«‚é
-    protected virtual void OnEnable()
+    public class Character
     {
-        health = maxHealth;
+        //ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
+        public float MaxHealth { get; private set; }
+        public float Health { get; private set; }
+        public bool ShowOnHeadHealthBar {  get; private set; }
 
-        if(showOnHeadHealthBar)
+        public Character(float maxHealth,bool showOnHeadHealthBar)
         {
-            ShowOnHeadHealthBar();
+            MaxHealth = maxHealth;
+
+            Health = maxHealth;
+
+            ShowOnHeadHealthBar = showOnHeadHealthBar;
         }
-        else
-        {
-            HideOnHeadHealthBar();
-        }
-    }
 
-    public void ShowOnHeadHealthBar()
-    {
-        onHeadHealtherBar.gameObject.SetActive(true);
-        onHeadHealtherBar.Initialize(health, maxHealth);
-    }
-
-    public void HideOnHeadHealthBar()
-    {
-        onHeadHealtherBar.gameObject.SetActive(false);
-    }
-
-    public virtual void TakenDamage(float damage)
-    {
-        if (health == 0f) return;
-        health -= damage;
-
-        if (showOnHeadHealthBar)
-        {
-            onHeadHealtherBar.UpdateStats(health, maxHealth);
-        }
-            
-
-        if (health <= 0f)
-        {
-            Die();
-        }
-    }
-
-    public virtual void Die()
-    {
-        //UIã‚ÅHP‚ğ‚O‚³‚¹‚é‚½‚ß
-        health = 0f;
-        AudioManager.Instance.PlayRandomSFX(deathSFX);
-        PoolManager.Release(deathVFX,transform.position);
-        gameObject.SetActive(false);
-    }
-
-    /// <summary>
-    /// HP‚ğ‰ñ•œ‚³‚¹‚é
-    /// </summary>
-    /// <param name="value">‰ñ•œ—Ê</param>
-    public virtual void RestoreHealth(float value)
-    {
-        if(health<=maxHealth)
-        {
-            //health += value;
-            //health = Mathf.Clamp(health, 0f, maxHealth);
-
-            //‚±‚Ì‹æŠÔ‚É‰z‚¦‚È‚¢‚±‚Æ
-            //health + value ‚ª0‚©‚çmaxHealth‚Ì‹æŠÔ‚É‚ ‚é‚±‚Æ
-            health = Mathf.Clamp(health + value, 0f, maxHealth);
-        }
-        if(showOnHeadHealthBar)
-        {
-            onHeadHealtherBar.UpdateStats(health, maxHealth);
-        }
-    }
-
-    /// <summary>
-    /// ˆê’èŠÔ‚ğ‘Ò‚Á‚Ä‚©‚ç‰ñ•œ‚³‚¹‚é
-    /// </summary>
-    /// <param name="waitTime">‘Ò‚ÂŠÔ</param>
-    /// <param name="percent">‰ñ•œƒp[ƒZƒ“ƒg</param>
-    /// <returns></returns>
-    protected IEnumerator HealthRegenerateCoroutine(WaitForSeconds waitTime,float percent)
-    {
-        while(health<maxHealth)
-        {
-            yield return waitTime;
-
-            RestoreHealth(maxHealth * percent);
-        }
-    }
-
-    //‘±ƒ_ƒ[ƒW
-    protected IEnumerator DamegeOverTimeCoroutine(WaitForSeconds waitTime, float percent)
-    {
-        while (health > 0f)
-        {
-            yield return waitTime;
-
-            TakenDamage(maxHealth * percent);
-        }
+        public Character() { }
     }
 }

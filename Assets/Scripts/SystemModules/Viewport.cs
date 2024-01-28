@@ -23,13 +23,10 @@ public class Viewport : Singleton<Viewport>
         Vector2 topRight = mainCamera.ViewportToWorldPoint(new Vector3(1f, 1f));
 
         middleX = mainCamera.ViewportToWorldPoint(new Vector3(0.5f, 0f, 0f)).x;//‹ŠpÀ•W‚©‚ç¢ŠEÀ•W‚É•ÏŠ·
-
         minX = bottomLeft.x;
         minY = bottomLeft.y;
         maxX = topRight.x;
         maxY = topRight.y;
-
-        
     }
 
     public Vector3 PlayerMoveablePosition(Vector3 playerPosition,float paddingx,float paddingy)
@@ -70,8 +67,22 @@ public class Viewport : Singleton<Viewport>
     {
         Vector3 position = Vector3.zero;
 
-        position.x = Random.Range(middleX, maxY - paddingX);
+        position.x = Random.Range(middleX, maxX - paddingX);
         position.y = Random.Range(minY + paddingY, maxY - paddingY);
+
+        return position;
+    }
+    /// <summary>
+    /// “G‚ÌˆÚ“®”ÍˆÍ‚ğ‰E”¼•ª‚É—}‚¦‚é
+    /// </summary>
+    /// <param name="padding">“G‚Ì•</param>
+    /// <returns>ˆÊ’uî•ñ</returns>
+    public Vector3 RandomRightHalfPosition(Vector3 padding)
+    {
+        Vector3 position = Vector3.zero;
+
+        position.x = Random.Range(middleX, maxX - padding.x);
+        position.y = Random.Range(minY + padding.y, maxY - padding.y);
 
         return position;
     }

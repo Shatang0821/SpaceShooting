@@ -1,33 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+ï»¿using UnityEngine;
 
-public class Enemy : Character
+namespace Assets.Scripts.Characters.Enemies
 {
-    [SerializeField] int scorePoint = 100;          // “|‚·Û‚ÉƒvƒŒƒCƒ„[‚É—^‚¦‚éƒXƒRƒAƒ|ƒCƒ“ƒg
-    [SerializeField] int deathEnergyBonus = 3;      // “|‚·Û‚ÉƒvƒŒƒCƒ„[‚É—^‚¦‚éƒGƒlƒ‹ƒM[ƒ{[ƒiƒX
-
-    protected virtual void OnCollisionEnter2D(Collision2D other)
+    public class Enemy : Character
     {
-        // “|‚·Û‚ÉƒvƒŒƒCƒ„[‚É—^‚¦‚éƒGƒlƒ‹ƒM[ƒ{[ƒiƒX
-        if (other.gameObject.TryGetComponent<Player>(out Player player))
+        public GameObject EnemyPrefab { get; private set; }    // æ•µã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+        public int ScorePoint { get; private set; }             // å€’ã™éš›ã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ä¸ãˆã‚‹ã‚¹ã‚³ã‚¢ãƒã‚¤ãƒ³ãƒˆ
+        public int DeathEnergyBonus { get; private set; }       // å€’ã™éš›ã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ä¸ãˆã‚‹ã‚¨ãƒãƒ«ã‚®ãƒ¼ãƒœãƒ¼ãƒŠã‚¹
+        public Vector3 Padding { get; private set; }            // æ•µã‚µã‚¤ã‚º
+        public float MoveSpeed { get; private set; }            //ç§»å‹•é€Ÿåº¦
+        public float MoveRotationAngele {  get; private set; }  //å›è»¢è§’åº¦
+
+        public Enemy(GameObject enemy,float maxHealth, bool showOnHeadHealthBar,int scorePoint,int deathEnergyBonus,float moveSpeed) : base(maxHealth, showOnHeadHealthBar)
         {
-            // ƒvƒŒƒCƒ„[‚ª€‚Êƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
-            player.Die();
-            // “G‚ª€‚Êƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
-            Die();
+            this.EnemyPrefab = enemy;
+            this.ScorePoint = scorePoint;
+            this.DeathEnergyBonus = deathEnergyBonus;
+            this.Padding = enemy.transform.GetChild(0).GetComponent<Renderer>().bounds.size / 2f;    // æ•µã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‹ã‚‰ã‚µã‚¤ã‚ºã‚’è¨ˆç®—
+            this.MoveSpeed = moveSpeed;
+            this.MoveRotationAngele = 30f;
+
+            Debug.Log(Padding);
         }
-    }
 
-    public override void Die()
-    {
-        // ƒXƒRƒAƒ}ƒl[ƒWƒƒ[‚ÉƒXƒRƒAƒ|ƒCƒ“ƒg‚ğ’Ç‰Á‚·‚é
-        ScoreManager.Instance.AddScore(scorePoint);
-        // ƒvƒŒƒCƒ„[ƒGƒlƒ‹ƒM[‚ÉƒGƒlƒ‹ƒM[ƒ{[ƒiƒX‚ğ’Ç‰Á‚·‚é
-        PlayerEnergy.Instance.Obtain(deathEnergyBonus);
-        // “G‚ğ“Gƒ}ƒl[ƒWƒƒ[‚ÌƒŠƒXƒg‚©‚çíœ‚·‚é
-        EnemyManager.Instance.RemoveFromList(gameObject);
-
-        base.Die();
+        public Enemy() { }
     }
 }

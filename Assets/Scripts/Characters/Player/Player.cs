@@ -5,7 +5,7 @@ using System.Runtime.ExceptionServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : Character
+public class Player : OldCharacter
 {
     [SerializeField] StatsBar_HUD statsBar_HUD;
 
