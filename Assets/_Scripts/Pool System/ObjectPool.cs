@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Pool
+public class ObjectPool
 {
     // プレハブへの参照を外部から取得するためのプロパティ
     public GameObject Prefab => prefab;

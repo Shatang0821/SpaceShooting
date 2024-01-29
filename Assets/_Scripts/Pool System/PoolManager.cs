@@ -6,21 +6,21 @@ public class PoolManager : MonoBehaviour
 {
     // Unity Inspectorで設定可能な、
     // 敵、プレイヤーのプロジェクタイル、敵のプロジェクタイル、エフェクトの各プール配列。
-    [SerializeField] Pool[] enemyPools;
+    [SerializeField] ObjectPool[] enemyPools;
     
-    [SerializeField] Pool[] playerProjectilePools;
+    [SerializeField] ObjectPool[] playerProjectilePools;
 
-    [SerializeField] Pool[] enemyProjectilePools;
+    [SerializeField] ObjectPool[] enemyProjectilePools;
 
-    [SerializeField] Pool[] vFXPools;
+    [SerializeField] ObjectPool[] vFXPools;
 
     // プレハブとそれに対応するプールのリファレンスを格納する辞書
-    static Dictionary<GameObject, Pool> dictionary;
+    static Dictionary<GameObject, ObjectPool> dictionary;
 
     void Awake()
     {
         // 辞書の初期化と各プールの初期化。
-        dictionary = new Dictionary<GameObject, Pool>();
+        dictionary = new Dictionary<GameObject, ObjectPool>();
 
         Initialize(enemyPools);
         Initialize(playerProjectilePools);
@@ -42,7 +42,7 @@ public class PoolManager : MonoBehaviour
 #endif
 
     // 各プールが指定されたサイズを超えていないかを確認し、超過している場合は警告を表示
-    void CheckPoolSize(Pool[] pools)
+    void CheckPoolSize(ObjectPool[] pools)
     {
         foreach (var pool in pools)
         {
@@ -61,7 +61,7 @@ public class PoolManager : MonoBehaviour
     /// プールを初期化し、それぞれのプールを辞書に追加する。
     /// </summary>
     /// <param name="pools">プレハブの配列</param>
-    void Initialize(Pool[] pools)
+    void Initialize(ObjectPool[] pools)
     {
         //同じプールに異なるものが入っているため、それぞれを取り出す
         foreach (var pool in pools)
