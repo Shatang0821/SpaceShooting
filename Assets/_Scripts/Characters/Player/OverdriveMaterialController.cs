@@ -1,4 +1,4 @@
-using Assets.Scripts.EventCenter;
+using Event;
 using UnityEngine;
 
 public class OverdriveMaterialController : MonoBehaviour

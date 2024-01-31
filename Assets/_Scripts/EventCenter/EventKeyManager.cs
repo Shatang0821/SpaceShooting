@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Assets.Scripts.EventCenter
+﻿namespace Event
 {
     public static class EventKeyManager
     {
@@ -22,5 +16,7 @@ namespace Assets.Scripts.EventCenter
         public static readonly EventKey OverDriveOff = new("OverDriveOff");
 
         public static readonly EventKey AddOption = new("AddOption");
+
+        public static readonly EventKey EnemyManagementInit = new("Initialize");
     }
 }

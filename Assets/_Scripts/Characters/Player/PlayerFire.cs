@@ -1,4 +1,4 @@
-using Assets.Scripts.EventCenter;
+using Event;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;

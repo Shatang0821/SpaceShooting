@@ -1,10 +1,6 @@
-using Assets.Scripts.EventCenter;
+using Event;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.ExceptionServices;
 using UnityEngine;
-using UnityEngine.EventSystems;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : OldCharacter
 {

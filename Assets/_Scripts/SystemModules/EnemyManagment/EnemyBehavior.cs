@@ -1,9 +1,8 @@
 ﻿using Assets.Scripts.Interface;
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 
-namespace Assets.Scripts.Characters.Enemies
+namespace EnemyManagment
 {
     public class EnemyBehavior : IEnemyBehavior
     {
