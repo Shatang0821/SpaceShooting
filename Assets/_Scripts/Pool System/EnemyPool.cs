@@ -1,10 +1,5 @@
 ﻿using Assets.Scripts.Characters.Enemies;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Assets._Scripts.Pool_System
 {
@@ -49,7 +44,7 @@ namespace Assets._Scripts.Pool_System
         /// 使用可能なインスタンスを取得
         /// </summary>
         /// <returns></returns>
-        private Enemy AvaliableEnemy()
+        public Enemy AvaliableEnemy()
         {
             Enemy avaliableEnemy = null;
 
@@ -65,7 +60,6 @@ namespace Assets._Scripts.Pool_System
 
             //取り出したものを末尾に戻る
             enemyQueue.Enqueue (avaliableEnemy);
-
             return avaliableEnemy;
         }
     }

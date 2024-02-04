@@ -15,4 +15,4 @@ MonoBehaviour:
   EnemyType: 1
   EnemuNumber: 5
   EnemySpawnPos: {x: 20, y: 0, z: 0}
-  SpawnInterval: 0
+  SpawnInterval: 2

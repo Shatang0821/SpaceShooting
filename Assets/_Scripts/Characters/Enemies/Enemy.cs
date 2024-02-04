@@ -1,18 +1,22 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Interface;
+using EnemyManagment;
+using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 namespace Assets.Scripts.Characters.Enemies
 {
-    public class Enemy : Character
+    public class Enemy : Character, ITakenDamange
     {
-        public GameObject EnemyPrefab { get; private set; }    // 敵オブジェクト
+        public GameObject EnemyPrefab { get; private set; }     // 敵オブジェクト
         public int ScorePoint { get; private set; }             // 倒す際にプレイヤーに与えるスコアポイント
         public int DeathEnergyBonus { get; private set; }       // 倒す際にプレイヤーに与えるエネルギーボーナス
         public float MoveSpeed { get; private set; }            //移動速度
         public Vector3 Padding { get; private set; }            // 敵サイズ
-        public float MoveRotationAngele { get; private set; }  //回転角度
+        public float MoveRotationAngele { get; private set; }   //回転角度
+        public IEnemyBehavior Behavior { get; private set; }     //動きパターン
 
-        public Enemy(bool isActive) : base(isActive) { }
 
+        public Enemy(bool isActive) : base(isActive) {}
         /// <summary>
         /// Enemyのセット
         /// </summary>
@@ -22,18 +26,47 @@ namespace Assets.Scripts.Characters.Enemies
         /// <param name="scorePoint"></param>
         /// <param name="deathEnergyBonus"></param>
         /// <param name="moveSpeed"></param>
-        public void Initialize(EnemyAircraftData enemyAircraftData)
+        public void Initialize(EnemyAircraft enemyAircraft)
         {
-            this.EnemyPrefab = enemyAircraftData.EnemyPrefab;
-            this.MaxHealth = enemyAircraftData.MaxHealth;
-            this.Health = enemyAircraftData.MaxHealth;
-            this.ShowOnHeadHealthBar = enemyAircraftData.ShowOnHeadHealthBar;
-            this.ScorePoint = enemyAircraftData.ScorePoint;
-            this.DeathEnergyBonus = enemyAircraftData.DeathEnergyBonus;
-            this.MoveSpeed = enemyAircraftData.MoveSpeed;
-            this.Padding = enemyAircraftData.EnemyPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size / 2f;// 敵のコライダーからサイズを計算
-            this.MoveRotationAngele = enemyAircraftData.MoveRotationAngele;
+            this.EnemyPrefab = PoolManager.Release(enemyAircraft.EnemyPrefab,Vector3.zero);
+            this.EnemyPrefab.SetActive(true);
 
+            this.MaxHealth = enemyAircraft.MaxHealth;
+            this.Health = enemyAircraft.MaxHealth;
+            this.ShowOnHeadHealthBar = enemyAircraft.ShowOnHeadHealthBar;
+            this.ScorePoint = enemyAircraft.ScorePoint;
+            this.DeathEnergyBonus = enemyAircraft.DeathEnergyBonus;
+            this.MoveSpeed = enemyAircraft.MoveSpeed;
+            this.Padding = enemyAircraft.Padding;
+            this.MoveRotationAngele = enemyAircraft.MoveRotationAngele;
+
+        }
+
+        public void Update()
+        {
+            Behavior.Move();
+        }
+
+        public void SetEnemyPos(Vector3 pos)
+        {
+            this.EnemyPrefab.transform.position = pos;
+        }
+
+        public void SetBehavior(IEnemyBehavior behavior)
+        {
+            behavior.Initialize(EnemyPrefab);
+            this.Behavior = behavior;
+        }
+
+        public void TakenDamage(float damage)
+        {
+            this.Health -= damage;
+
+            if (this.Health <= 0)
+            {
+                this.Health = 0;
+                Die();
+            }
         }
 
         public override void Die()
@@ -64,5 +97,7 @@ namespace Assets.Scripts.Characters.Enemies
             this.Padding = Vector3.zero;
             this.MoveRotationAngele = 0;
         }
+
+        
     }
 }
