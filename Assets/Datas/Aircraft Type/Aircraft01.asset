@@ -20,5 +20,5 @@ MonoBehaviour:
   ShowOnHeadHealthBar: 1
   ScorePoint: 20
   DeathEnergyBonus: 10
-  MoveSpeed: 5
+  MoveSpeed: 1
   MoveRotationAngele: 30

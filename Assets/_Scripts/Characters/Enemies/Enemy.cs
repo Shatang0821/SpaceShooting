@@ -31,6 +31,8 @@ namespace Assets.Scripts.Characters.Enemies
             this.EnemyPrefab = PoolManager.Release(enemyAircraft.EnemyPrefab,Vector3.zero);
             this.EnemyPrefab.SetActive(true);
 
+            this.IsActive = true;
+
             this.MaxHealth = enemyAircraft.MaxHealth;
             this.Health = enemyAircraft.MaxHealth;
             this.ShowOnHeadHealthBar = enemyAircraft.ShowOnHeadHealthBar;
@@ -39,6 +41,8 @@ namespace Assets.Scripts.Characters.Enemies
             this.MoveSpeed = enemyAircraft.MoveSpeed;
             this.Padding = enemyAircraft.Padding;
             this.MoveRotationAngele = enemyAircraft.MoveRotationAngele;
+
+
 
         }
 
@@ -72,20 +76,20 @@ namespace Assets.Scripts.Characters.Enemies
         public override void Die()
         {
             base.Die();
+            EnemyPrefab.SetActive(false);
             // スコアマネージャーにスコアポイントを追加する
             ScoreManager.Instance.AddScore(ScorePoint);
             // プレイヤーエネルギーにエネルギーボーナスを追加する
             PlayerEnergy.Instance.Obtain(DeathEnergyBonus);
+            
+            //ResetValues();
 
-            EnemyPrefab.SetActive(false);
-
-            ResetValues();
         }
 
         /// <summary>
         /// Enemyの数値をリセットするメソッド
         /// </summary>
-        private void ResetValues()
+        public void ResetValues()
         {
             this.EnemyPrefab = null;
             this.MaxHealth = 0;

@@ -23,7 +23,14 @@ public class PlayerProjectile : Projectile
 
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
-        base.OnCollisionEnter2D(collision);
+        //base.OnCollisionEnter2D(collision);
+        if(collision.gameObject.tag == "Enemy")
+        {
+            TEST_EnemyManager.Instance.Damage(collision.gameObject, 10);
+            PoolManager.Release(hitVFX, collision.GetContact(0).point, Quaternion.LookRotation(collision.GetContact(0).normal));
+            AudioManager.Instance.PlayRandomSFX(hitSFX);
+            gameObject.SetActive(false);
+        }
         PlayerEnergy.Instance.Obtain(PlayerEnergy.PERCENT);
     }
 

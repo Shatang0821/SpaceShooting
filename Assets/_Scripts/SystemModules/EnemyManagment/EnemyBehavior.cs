@@ -65,7 +65,6 @@ namespace EnemyManagment
                 {
                     PoolManager.Release(p, _muzzle.transform.position);
                 }
-                Debug.Log(_muzzle.transform.position);
                 // ランダムな弾発射音を再生
                 //AudioManager.Instance.PlayRandomSFX(projectileLaunchSFX);
             }

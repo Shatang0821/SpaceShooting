@@ -98,7 +98,7 @@ MonoBehaviour:
     volueme: 1
   - audioClip: {fileID: 8300000, guid: 958408b32ccf3714ea02821877b0870c, type: 3}
     volueme: 1
-  damage: 10
+  damage: 1
   moveSpeed: 20
   moveDirection: {x: -1, y: 0}
 --- !u!114 &3738076239146582

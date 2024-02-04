@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] GameObject hitVFX; //ヒットエフェクト
-    [SerializeField] AudioData[] hitSFX;//ヒットサウンド
+    [SerializeField] protected GameObject hitVFX; //ヒットエフェクト
+    [SerializeField] protected AudioData[] hitSFX;//ヒットサウンド
 
     [SerializeField] float damage;  //ダメージ
 
