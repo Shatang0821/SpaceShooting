@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9d12e3038e3045e4c9300409a34144ad, type: 3}
-  m_Name: Enemy02
+  m_Name: Spawn01
   m_EditorClassIdentifier: 
-  EnemyType: 1
-  EnemuNumber: 5
-  EnemySpawnPos: {x: 20, y: 0, z: 0}
-  SpawnInterval: 2
+  EnemyData: {fileID: 11400000, guid: 3d14fabe13e71c44a821a398deff4598, type: 2}
+  EnemyNumber: 5
+  EnemySpawnPos: {x: 20, y: 5, z: 0}
+  SpawnInterval: 1

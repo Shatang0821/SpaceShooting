@@ -4,6 +4,7 @@ using UnityEngine;
 using Assets.Scripts.Interface;
 using Assets.Scripts.Characters.Enemies;
 using System.Collections.Generic;
+using System.Collections;
 public enum EnemyManagerState
 {
     Waiting,
@@ -18,92 +19,120 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     [SerializeField]
     private EnemyManagerState _currentState;
 
-    private EnemyBehavior _enemyBehavior;
-
     private List<Enemy> _enemyList = new List<Enemy>();
     private List<Enemy> _enemiesToRemove = new List<Enemy>();
 
     private Dictionary<GameObject, Enemy> _enemyDictionary = new Dictionary<GameObject, Enemy>();
+
+    private Coroutine spawnCoroutine;
     protected override void Awake()
     {
         base.Awake();
+
+        Initialize();
     }
 
     private void Initialize()
     {
         _spawnManager = new SpawnManager();
-
-
         _waveManager = new WaveManager();
+
         _waveManager.Initialize(DataManager.Instance.EnemyWaveDatas);
 
         _currentState = EnemyManagerState.Waiting;
     }
-    private void Start()
-    {
-        _enemyList = _spawnManager.GetEnemy(AircraftType.Aircraf01, 5);
 
-        SetDictionary(_enemyList);
-        //_waveManager.Initialize();
-    }
-
-    private void Update()
+    private IEnumerator Start()
     {
-        switch (_currentState)
+        //while(true)
         {
-            case EnemyManagerState.Waiting:
-                _currentState = EnemyManagerState.InProgress;
-                break;
-            case EnemyManagerState.InProgress:
-                InProgressUpdate();
-                break;
-            case EnemyManagerState.Completed:
+            yield return StartCoroutine(nameof(InWaiting));
 
-                break;
+            yield return StartCoroutine(nameof(InProgressUpdate));
+
+            //yield return StartCoroutine(nameof(InCompleted));
+            yield return null;  
         }
+        
     }
 
-    private void InWaiting()
+    private IEnumerator InWaiting()
     {
+        StartWave();
+        yield return null;
 
     }
 
-    private void InProgressUpdate()
+    /// <summary>
+    /// waveの準備
+    /// </summary>
+    private void StartWave()
     {
-        if (_enemyList.Count > 0)
+        _waveManager.StartNextWave();
+
+        var wave = _waveManager.GetSpawnWave();
+
+        _enemyList = _spawnManager.PrepareEnemies(wave);
+        foreach(var enemy in _enemyList)
         {
-            foreach (var enemy in _enemyList)
-            {
-                enemy.Update();
-                if (enemy.IsActive == false)
+            _enemyDictionary.Add(enemy.EnemyPrefab, enemy);
+        }
+
+        Debug.Log("EnemyListの数は : " + _enemyList.Count);
+    }
+
+    private IEnumerator InProgressUpdate()
+    {
+        spawnCoroutine = StartCoroutine(_spawnManager.Spawn(_enemyList));
+        while(IsProgressUpdate)
+        {
+            foreach(var  enemy in _enemyList) 
+            { 
+                if(enemy.IsActive)
                 {
+                    enemy.Update();
+                }
+
+                if(!enemy.EnemyPrefab.activeSelf) 
+                { 
                     _enemiesToRemove.Add(enemy);
                 }
 
             }
+
+            if (_enemiesToRemove.Count > 0)
+                Remove();
+
+            yield return null;
         }
-        else
-        {
-            _currentState = EnemyManagerState.Completed;
-        }
-        if (_enemiesToRemove.Count > 0)
-            Remove();
+        yield return null;
     }
 
+    private IEnumerator InCompleted()
+    {
+        Debug.Log("wave終わり");
+        yield return null;
+    }
 
+    private bool IsProgressUpdate => _enemyList.Count > 0 && GameManager.GameState != GameState.GameOver;
 
     /// <summary>
     /// リストから不要なオブジェクトを削除
     /// </summary>
     void Remove()
     {
-        foreach (var enemy in _enemiesToRemove)
+        if(spawnCoroutine == null)
         {
-            _enemyList.Remove(enemy);
-            _enemyDictionary.Remove(enemy.EnemyPrefab); // 敵をDictionaryからも削除
-            enemy.ResetValues();
+            foreach (var enemy in _enemiesToRemove)
+            {
+                Debug.Log("Remove");
+                _enemyList.Remove(enemy);
+                _enemyDictionary.Remove(enemy.EnemyPrefab); // 敵をDictionaryからも削除
+                enemy.ResetValues();
+            }
+            _enemiesToRemove.Clear();
         }
-        _enemiesToRemove.Clear();
+        
     }
 
     public void Damage(GameObject gameObject, float damage)

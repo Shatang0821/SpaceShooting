@@ -13,16 +13,17 @@ namespace EnemyManagment
 
         private EnemyPool _enemyPool;                   //エネミーインスタンスプールを作成
 
-        private Dictionary<AircraftType, EnemyAircraft> _enemyAircraftDictionary;
+        private Dictionary<EnemyData, EnemyAircraft> _enemyAircraftDictionary;
         public EnemyFactory()
         {
-            _enemyAircraftDictionary = new Dictionary<AircraftType, EnemyAircraft>();
+            Debug.Log("Create EnemyFactory Instance");
+            _enemyAircraftDictionary = new Dictionary<EnemyData, EnemyAircraft>();
             _enemyPool = new EnemyPool(SIZE);
 
-            foreach (var enemyData in DataManager.Instance.EnemyAircraftDatas)
+            foreach (var enemyData in DataManager.Instance.EnemyDatas)
             {
                 var aircraft = new EnemyAircraft(enemyData);
-                _enemyAircraftDictionary.Add(enemyData.Type, aircraft);
+                _enemyAircraftDictionary.Add(enemyData, aircraft);
 
             }
         }
@@ -34,12 +35,25 @@ namespace EnemyManagment
         /// </summary>
         /// <param name="aircraftType">機体タイプ</param>
         /// <returns></returns>
-        public Enemy GetEnemy(AircraftType aircraftType)
+        //public Enemy GetEnemy(EnemyType type)
+        //{
+        //    var enemy = _enemyPool.AvaliableEnemy();
+        //    enemy.Initialize(_enemyAircraftDictionary[type]);
+        //    var behaviour = new EnemyBehavior(_enemyAircraftDictionary[type]);
+        //    enemy.SetBehavior(behaviour);
+        //    return enemy;
+        //}
+
+        public Enemy GetEnemy(EnemyData data)
         {
             var enemy = _enemyPool.AvaliableEnemy();
-            enemy.Initialize(_enemyAircraftDictionary[aircraftType]);
-            var behaviour = new EnemyBehavior(_enemyAircraftDictionary[aircraftType]);
+            enemy.Initialize(_enemyAircraftDictionary[data]);
+            var behaviour = new EnemyBehavior(_enemyAircraftDictionary[data]);
             enemy.SetBehavior(behaviour);
+            if(enemy == null)
+            {
+                Debug.Log("Enemyインスタンス作成失敗しました");
+            }
             return enemy;
         }
     }

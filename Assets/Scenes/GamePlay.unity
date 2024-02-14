@@ -762,9 +762,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50372421154f46e4d8e93faddeb7a70d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyAircraftDatas:
+  _enemyDatas:
   - {fileID: 11400000, guid: 3d14fabe13e71c44a821a398deff4598, type: 2}
-  - {fileID: 11400000, guid: f04eba3f434d2cd4ea5022603585b860, type: 2}
+  - {fileID: 11400000, guid: f95b701285d6941498a12b1013a8bcf5, type: 2}
   _enemyWaveDatas:
   - {fileID: 11400000, guid: e281b2c60c0d22c4faf2cee597dbc80f, type: 2}
 --- !u!1 &296299559
@@ -1673,6 +1673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e6349e2b2436bb4fa593e34265fd262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentState: 0
 --- !u!1 &803564347
 GameObject:
   m_ObjectHideFlags: 0

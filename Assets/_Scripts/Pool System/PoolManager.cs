@@ -191,4 +191,6 @@ public class PoolManager : MonoBehaviour
 #endif
         return dictionary[prefab].preparedObject(position, rotation,localScale);
     }
+
+
 }

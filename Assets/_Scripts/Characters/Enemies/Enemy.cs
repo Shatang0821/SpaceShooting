@@ -28,10 +28,7 @@ namespace Assets.Scripts.Characters.Enemies
         /// <param name="moveSpeed"></param>
         public void Initialize(EnemyAircraft enemyAircraft)
         {
-            this.EnemyPrefab = PoolManager.Release(enemyAircraft.EnemyPrefab,Vector3.zero);
-            this.EnemyPrefab.SetActive(true);
-
-            this.IsActive = true;
+            this.EnemyPrefab = PoolManager.Release(enemyAircraft.EnemyPrefab,new Vector3(-50,-50,0));
 
             this.MaxHealth = enemyAircraft.MaxHealth;
             this.Health = enemyAircraft.MaxHealth;
@@ -41,9 +38,6 @@ namespace Assets.Scripts.Characters.Enemies
             this.MoveSpeed = enemyAircraft.MoveSpeed;
             this.Padding = enemyAircraft.Padding;
             this.MoveRotationAngele = enemyAircraft.MoveRotationAngele;
-
-
-
         }
 
         public void Update()
@@ -51,17 +45,44 @@ namespace Assets.Scripts.Characters.Enemies
             Behavior.Move();
         }
 
-        public void SetEnemyPos(Vector3 pos)
+        #region SET VALUE
+
+        /// <summary>
+        /// 位置設定
+        /// </summary>
+        /// <param name="pos"></param>
+        public void SetPos(Vector3 pos)
         {
             this.EnemyPrefab.transform.position = pos;
         }
 
+        /// <summary>
+        /// 行動設定
+        /// </summary>
+        /// <param name="behavior"></param>
         public void SetBehavior(IEnemyBehavior behavior)
         {
             behavior.Initialize(EnemyPrefab);
             this.Behavior = behavior;
         }
 
+        /// <summary>
+        /// クラスとゲームオブジェクトのアクティブ
+        /// </summary>
+        /// <param name="isActive"></param>
+        public void SetActive(bool isActive)
+        {
+            this.EnemyPrefab.SetActive(isActive);
+            this.IsActive = isActive;
+        }
+        #endregion
+
+
+
+        /// <summary>
+        /// ダメージ処理
+        /// </summary>
+        /// <param name="damage"></param>
         public void TakenDamage(float damage)
         {
             this.Health -= damage;
@@ -73,9 +94,13 @@ namespace Assets.Scripts.Characters.Enemies
             }
         }
 
+        /// <summary>
+        /// 死亡処理
+        /// </summary>
         public override void Die()
         {
             base.Die();
+            Debug.Log("Die");
             EnemyPrefab.SetActive(false);
             // スコアマネージャーにスコアポイントを追加する
             ScoreManager.Instance.AddScore(ScorePoint);

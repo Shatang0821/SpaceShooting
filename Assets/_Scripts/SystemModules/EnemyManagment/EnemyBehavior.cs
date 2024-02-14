@@ -18,7 +18,6 @@ namespace EnemyManagment
         public EnemyBehavior(EnemyAircraft enemyAircraft) 
         {
             this._projectiles = enemyAircraft.ProjectilePrefabs;
-
             this._moveSpeed = enemyAircraft.MoveSpeed;
             this._moveRotationAngle = enemyAircraft.MoveRotationAngele;
             this._padding = enemyAircraft.Padding;

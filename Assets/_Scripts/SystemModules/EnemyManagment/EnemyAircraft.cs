@@ -2,6 +2,9 @@
 
 namespace EnemyManagment
 {
+    /// <summary>
+    /// EnemyDataをクラス化
+    /// </summary>
     public class EnemyAircraft
     {
         public GameObject[] ProjectilePrefabs;      //  敵弾
@@ -14,18 +17,18 @@ namespace EnemyManagment
         public Vector3 Padding;                     // 敵サイズ
         public float MoveRotationAngele;            //  回転角度
 
-        public EnemyAircraft(EnemyAircraftData enemyAircraftData)
+        public EnemyAircraft(EnemyData enemyData)
         {
-            this.ProjectilePrefabs = enemyAircraftData.ProjectilePrefabs;
-            this.EnemyPrefab = enemyAircraftData.EnemyPrefab;
-            this.MaxHealth = enemyAircraftData.MaxHealth;
-            this.ShowOnHeadHealthBar = enemyAircraftData.ShowOnHeadHealthBar;
-            this.ScorePoint = enemyAircraftData.ScorePoint;
-            this.DeathEnergyBonus = enemyAircraftData.DeathEnergyBonus;
-            this.MoveSpeed = enemyAircraftData.MoveSpeed;
+            this.ProjectilePrefabs = enemyData.ProjectilePrefabs;
+            this.EnemyPrefab = enemyData.EnemyPrefab;
+            this.MaxHealth = enemyData.MaxHealth;
+            this.ShowOnHeadHealthBar = enemyData.ShowOnHeadHealthBar;
+            this.ScorePoint = enemyData.ScorePoint;
+            this.DeathEnergyBonus = enemyData.DeathEnergyBonus;
+            this.MoveSpeed = enemyData.MoveSpeed;
 
-            this.Padding = enemyAircraftData.EnemyPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size / 2f;// 敵のコライダーからサイズを計算
-            this.MoveRotationAngele = enemyAircraftData.MoveRotationAngele;
+            this.Padding = enemyData.EnemyPrefab.transform.GetChild(0).GetComponent<Renderer>().bounds.size / 2f;// 敵のコライダーからサイズを計算
+            this.MoveRotationAngele = enemyData.MoveRotationAngele;
         }
     }
 }

@@ -2,10 +2,9 @@ using EnemyManagment;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "Aircraft", menuName = "Data/AircraftType")]
-public class EnemyAircraftData : ScriptableObject
+[CreateAssetMenu(fileName = "Enemy", menuName = "Data/EnemyType")]
+public class EnemyData : ScriptableObject
 {
-    public AircraftType Type;                   //  AircraftType‚ğ’Ç‰Á
     public GameObject[] ProjectilePrefabs;      //  “G’e
     public GameObject EnemyPrefab;              //  “GƒvƒŒƒnƒu
     public float MaxHealth;                     //  Å‘åHP

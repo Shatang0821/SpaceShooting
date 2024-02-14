@@ -1,11 +1,11 @@
 using EnemyManagment;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Enemy", menuName = "Data/EnemyType")]
+[CreateAssetMenu(fileName = "Spawn", menuName = "Data/SpawnType")]
 public class EnemySpawnData : ScriptableObject
 {
-    public EnemyType EnemyType;
-    public int EnemuNumber;
+    public EnemyData EnemyData;
+    public int EnemyNumber;
     public Vector3 EnemySpawnPos;
     public float SpawnInterval;
 }

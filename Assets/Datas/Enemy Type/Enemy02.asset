@@ -9,16 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb36df93a64064444b9d417dee8a0e7a, type: 3}
-  m_Name: Aircraft01
+  m_Script: {fileID: 11500000, guid: cd79ae6222d0ad3448cabaad60171e2a, type: 3}
+  m_Name: Enemy02
   m_EditorClassIdentifier: 
-  Type: 0
   ProjectilePrefabs:
   - {fileID: 3738076239146580, guid: 3d7b4711312b26048954dca1819b6bc7, type: 3}
-  EnemyPrefab: {fileID: 214778051926960383, guid: a624a0e3000461e4286965f8a65aedb6, type: 3}
+  EnemyPrefab: {fileID: 8921546478736950322, guid: 2ab3ff156c8f1c149a4d4fe513936685, type: 3}
   MaxHealth: 100
   ShowOnHeadHealthBar: 1
-  ScorePoint: 20
+  ScorePoint: 10
   DeathEnergyBonus: 10
-  MoveSpeed: 1
+  MoveSpeed: 3
   MoveRotationAngele: 30
