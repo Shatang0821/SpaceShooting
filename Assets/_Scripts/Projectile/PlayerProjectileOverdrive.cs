@@ -8,7 +8,7 @@ public class PlayerProjectileOverdrive : PlayerProjectile
 
     protected override void OnEnable()
     {
-        SetTarget(EnemyManager.Instance.RandomEnemy);
+        SetTarget(TEST_EnemyManager.Instance.RandomEnemy);
         transform.rotation = Quaternion.identity;
         if(target == null)
         {

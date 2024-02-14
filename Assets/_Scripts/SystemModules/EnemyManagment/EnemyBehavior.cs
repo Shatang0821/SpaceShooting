@@ -53,7 +53,7 @@ namespace EnemyManagment
             while (_enemy.activeSelf)
             {
                 // ランダムな待機時間を設定
-                yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
+                yield return new WaitForSeconds(0.5f);
 
                 // ゲームがゲームオーバー状態であれば、コルーチンを終了 つまり、攻撃しないようにする
                 if (GameManager.GameState == GameState.GameOver) yield break;

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd79ae6222d0ad3448cabaad60171e2a, type: 3}
   m_Name: Enemy01
   m_EditorClassIdentifier: 
-  Type: 0
   ProjectilePrefabs:
   - {fileID: 3738076239146580, guid: 3d7b4711312b26048954dca1819b6bc7, type: 3}
   EnemyPrefab: {fileID: 214778051926960383, guid: a624a0e3000461e4286965f8a65aedb6, type: 3}
@@ -20,5 +19,5 @@ MonoBehaviour:
   ShowOnHeadHealthBar: 1
   ScorePoint: 10
   DeathEnergyBonus: 10
-  MoveSpeed: 3
+  MoveSpeed: 4
   MoveRotationAngele: 30

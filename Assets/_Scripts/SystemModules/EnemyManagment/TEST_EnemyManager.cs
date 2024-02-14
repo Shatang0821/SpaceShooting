@@ -20,6 +20,7 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     private EnemyManagerState _currentState;
 
     private List<Enemy> _enemyList = new List<Enemy>();
+    private List<Enemy> _activeEnemyList = new List<Enemy>();
 
     private List<Enemy> _enemiesToRemove = new List<Enemy>();
 
@@ -110,6 +111,10 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
                 if (enemy.IsActive)
                 {
                     enemy.Update();
+                    if(!_activeEnemyList.Contains(enemy))
+                    {
+                        _activeEnemyList.Add(enemy);
+                    }
                 }
 
                 if(enemy.IsDied)
@@ -196,4 +201,9 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
             StartCoroutine(enemy.Behavior.Attack());
         }
     }
+
+    /// <summary>
+    /// “G‚ğƒ‰ƒ“ƒ_ƒ€‚Éˆê‚Â‚ğæ‚èo‚·
+    /// </summary>
+    public GameObject RandomEnemy => _activeEnemyList.Count == 0 ? null : _activeEnemyList[Random.Range(0, _activeEnemyList.Count)].EnemyPrefab;
 }

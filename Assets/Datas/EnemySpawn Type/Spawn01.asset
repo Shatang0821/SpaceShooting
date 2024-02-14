@@ -15,4 +15,4 @@ MonoBehaviour:
   EnemyData: {fileID: 11400000, guid: 3d14fabe13e71c44a821a398deff4598, type: 2}
   EnemyNumber: 5
   EnemySpawnPos: {x: 20, y: 5, z: 0}
-  SpawnInterval: 1
+  SpawnInterval: 0.3

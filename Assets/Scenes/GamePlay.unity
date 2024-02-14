@@ -767,6 +767,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f95b701285d6941498a12b1013a8bcf5, type: 2}
   _enemyWaveDatas:
   - {fileID: 11400000, guid: e281b2c60c0d22c4faf2cee597dbc80f, type: 2}
+  - {fileID: 11400000, guid: e281b2c60c0d22c4faf2cee597dbc80f, type: 2}
+  - {fileID: 11400000, guid: e281b2c60c0d22c4faf2cee597dbc80f, type: 2}
 --- !u!1 &296299559
 GameObject:
   m_ObjectHideFlags: 0
