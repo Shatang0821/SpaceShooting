@@ -20,11 +20,10 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     private EnemyManagerState _currentState;
 
     private List<Enemy> _enemyList = new List<Enemy>();
+
     private List<Enemy> _enemiesToRemove = new List<Enemy>();
 
     private Dictionary<GameObject, Enemy> _enemyDictionary = new Dictionary<GameObject, Enemy>();
-
-    private Coroutine spawnCoroutine;
     protected override void Awake()
     {
         base.Awake();
@@ -44,21 +43,33 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
 
     private IEnumerator Start()
     {
-        //while(true)
+        while (true)
         {
-            yield return StartCoroutine(nameof(InWaiting));
-
-            yield return StartCoroutine(nameof(InProgressUpdate));
-
-            //yield return StartCoroutine(nameof(InCompleted));
-            yield return null;  
+            switch (_currentState)
+            {
+                case EnemyManagerState.Waiting:
+                    yield return StartCoroutine(nameof(InWaiting));
+                    break;
+                case EnemyManagerState.InProgress:
+                    yield return StartCoroutine(nameof(InProgressUpdate));
+                    break;
+                case EnemyManagerState.Completed:
+                    yield return StartCoroutine(nameof(InCompleted));
+                    break;
+            }
+            yield return null;
         }
-        
+
     }
 
+    /// <summary>
+    /// Wave‚Ìİ’è
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator InWaiting()
     {
         StartWave();
+
         yield return null;
 
     }
@@ -68,49 +79,70 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     /// </summary>
     private void StartWave()
     {
-        _waveManager.StartNextWave();
-
-        var wave = _waveManager.GetSpawnWave();
-
-        _enemyList = _spawnManager.PrepareEnemies(wave);
-        foreach(var enemy in _enemyList)
+        if(_waveManager.StartNextWave())
         {
-            _enemyDictionary.Add(enemy.EnemyPrefab, enemy);
+            var wave = _waveManager.GetSpawnWave();
+
+            _enemyList = _spawnManager.PrepareEnemies(wave);
+            SetDictionary(_enemyList);
+
+            _currentState = EnemyManagerState.InProgress;
+        }
+        else
+        {
+            _currentState = EnemyManagerState.Completed;
         }
 
-        Debug.Log("EnemyList‚Ì”‚Í : " + _enemyList.Count);
+        //Debug.Log("EnemyList‚Ì”‚Í : " + _enemyList.Count);
     }
 
+    /// <summary>
+    /// “GÀsXV
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator InProgressUpdate()
     {
-        spawnCoroutine = StartCoroutine(_spawnManager.Spawn(_enemyList));
-        while(IsProgressUpdate)
+        StartCoroutine(_spawnManager.Spawn(_enemyList));
+        while (IsProgressUpdate)
         {
-            foreach(var  enemy in _enemyList) 
-            { 
-                if(enemy.IsActive)
+            foreach (var enemy in _enemyList)
+            {
+                if (enemy.IsActive)
                 {
                     enemy.Update();
                 }
 
-                if(!enemy.EnemyPrefab.activeSelf) 
-                { 
-                    _enemiesToRemove.Add(enemy);
+                if(enemy.IsDied)
+                {
+                    if (!_enemiesToRemove.Contains(enemy))
+                    {
+                        //Debug.Log("Add");
+                        _enemiesToRemove.Add(enemy);
+                    }
+                        
                 }
-
+                    
             }
 
-            if (_enemiesToRemove.Count > 0)
+            if (_enemiesToRemove.Count > 0 && !_spawnManager.IsSpawning)
+            {
                 Remove();
-
+            }
+                         
             yield return null;
         }
+        _waveManager.UpdateIndex();
+        _currentState = EnemyManagerState.Waiting;
         yield return null;
     }
 
+    /// <summary>
+    /// ƒQ[ƒ€I—¹
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator InCompleted()
     {
-        Debug.Log("waveI‚í‚è");
+        Debug.Log("ƒQ[ƒ€ƒNƒŠƒA");
         yield return null;
     }
 
@@ -121,26 +153,34 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     /// </summary>
     void Remove()
     {
-        if(spawnCoroutine == null)
+
+        foreach (var enemy in _enemiesToRemove)
         {
-            foreach (var enemy in _enemiesToRemove)
+            _enemyList.Remove(enemy);
+            if(enemy.EnemyPrefab == null)
             {
-                Debug.Log("Remove");
-                _enemyList.Remove(enemy);
-                _enemyDictionary.Remove(enemy.EnemyPrefab); // “G‚ğDictionary‚©‚ç‚àíœ
-                enemy.ResetValues();
+                Debug.Log("ERROR");
             }
-            _enemiesToRemove.Clear();
+            else
+            {
+                Debug.Log("Delete From Dictionary");
+                _enemyDictionary.Remove(enemy.EnemyPrefab); // “G‚ğDictionary‚©‚ç‚àíœ
+            }
+            
+            
+            enemy.ResetValues();
         }
-        
+        _enemiesToRemove.Clear();
+
+
     }
 
     public void Damage(GameObject gameObject, float damage)
     {
         var enemy = _enemyDictionary[gameObject];
-        if(enemy.IsActive)
+        if (enemy.IsActive)
         {
-            Debug.Log(enemy.Health);
+            //Debug.Log(enemy.Health);
             enemy.TakenDamage(damage);
         }
     }
@@ -150,7 +190,7 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     /// <param name="enemies"></param>
     public void SetDictionary(List<Enemy> enemies)
     {
-        foreach(var enemy in enemies)
+        foreach (var enemy in enemies)
         {
             _enemyDictionary.Add(enemy.EnemyPrefab, enemy);
             StartCoroutine(enemy.Behavior.Attack());

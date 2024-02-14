@@ -42,18 +42,20 @@ namespace EnemyManagment
             }
         }
 
-        public void StartNextWave()
+        public bool StartNextWave()
         {
             if (IsWaveNotDone)
             {
                 Debug.Log($"現在はWave.{waveIndex}です");
                 _currentWave = _waves.Dequeue();
+                return true;
 
             }
             else
             {
                 Debug.Log($"現在はWave.{waveIndex}です");
                 Debug.LogWarning("Waveが終わりました");
+                return false;
             }
         }
 

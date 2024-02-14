@@ -14651,10 +14651,9 @@ GameObject:
   - component: {fileID: 8921546478736950316}
   - component: {fileID: 1707629011}
   - component: {fileID: 1707629012}
-  - component: {fileID: 1982125628}
   m_Layer: 7
   m_Name: Enemy 02
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14740,28 +14739,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0.010282633, y: -0.037150152}
   m_Size: {x: 1.6395824, y: 0.51730734}
   m_Direction: 1
---- !u!114 &1982125628
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8921546478736950322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 313a45fa97b6e6d4ab89c4273f308cf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 1.2
-  moveRotationAngele: 35
-  projectiles:
-  - {fileID: 3738076239146580, guid: a23ccf84dc7885c4299abad3e127ac44, type: 3}
-  projectileLaunchSFX:
-  - audioClip: {fileID: 8300000, guid: 56c2ee139e8c844ba9a3a17370e3b763, type: 3}
-    volueme: 0.5
-  muzzle: {fileID: 2064246448}
-  minFireInterval: 1
-  maxFireInterval: 3.5
 --- !u!1001 &4500798229139381623
 PrefabInstance:
   m_ObjectHideFlags: 0

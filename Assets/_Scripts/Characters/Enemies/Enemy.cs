@@ -15,7 +15,7 @@ namespace Assets.Scripts.Characters.Enemies
         public float MoveRotationAngele { get; private set; }   //回転角度
         public IEnemyBehavior Behavior { get; private set; }     //動きパターン
 
-
+        public bool IsDied = false;
         public Enemy(bool isActive) : base(isActive) {}
         /// <summary>
         /// Enemyのセット
@@ -100,7 +100,8 @@ namespace Assets.Scripts.Characters.Enemies
         public override void Die()
         {
             base.Die();
-            Debug.Log("Die");
+            IsDied = true;
+            //Debug.Log("Die");
             EnemyPrefab.SetActive(false);
             // スコアマネージャーにスコアポイントを追加する
             ScoreManager.Instance.AddScore(ScorePoint);
@@ -125,6 +126,8 @@ namespace Assets.Scripts.Characters.Enemies
             this.MoveSpeed = 0;
             this.Padding = Vector3.zero;
             this.MoveRotationAngele = 0;
+
+            this.IsDied = false;
         }
 
         

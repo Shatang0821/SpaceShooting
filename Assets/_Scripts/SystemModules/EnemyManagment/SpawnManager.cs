@@ -11,25 +11,15 @@ namespace EnemyManagment
         private EnemyFactory _enemyFactory;
 
         private Queue<EnemySpawnData> _enemySpawnDatas = new Queue<EnemySpawnData>();
-        public SpawnManager() {
+
+        public bool IsSpawning {  get; private set; }
+        public SpawnManager() 
+        {
+            IsSpawning = false;
             _enemyFactory = new EnemyFactory();
             Debug.Log("Create SpawnManager Instance");
+
         }
-        #region EnemyManager—p
-
-        //public List<Enemy> GetEnemy(EnemyType type,int count)
-        //{
-        //    var enemyList = new List<Enemy>();
-        //    for (int i = 0; i < count; i++)
-        //    {
-        //        var enemy = _enemyFactory.GetEnemy(type);
-        //        enemy.SetEnemyPos(new Vector3(10, i, 0));
-
-        //        enemyList.Add(enemy);
-        //    }
-        //    return enemyList;
-        //}
-        #endregion
         public List<Enemy> PrepareEnemies(Wave wave)
         {
             var prepareEnemies = new List<Enemy>();
@@ -48,6 +38,7 @@ namespace EnemyManagment
         
         public IEnumerator Spawn(List<Enemy> prepareEnemies)
         {
+            IsSpawning = true;
             int index = 0;
             while (_enemySpawnDatas.Count > 0)
             {
@@ -63,13 +54,14 @@ namespace EnemyManagment
 
                     yield return new WaitForSeconds(enemySpawnData.SpawnInterval);
                     index++;
-                    Debug.Log(index);
+                    //Debug.Log(index);
                 }
 
                 yield return null;
             }
 
-            Debug.Log("DONE");
+            IsSpawning = false;
+            //Debug.Log("DONE");
         }
     }
 }
