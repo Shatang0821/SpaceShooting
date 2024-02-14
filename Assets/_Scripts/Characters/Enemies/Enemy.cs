@@ -8,6 +8,7 @@ namespace Assets.Scripts.Characters.Enemies
     public class Enemy : Character, ITakenDamange
     {
         public GameObject EnemyPrefab { get; private set; }     // 敵オブジェクト
+        private GameObject _enemyPrefab;
         public int ScorePoint { get; private set; }             // 倒す際にプレイヤーに与えるスコアポイント
         public int DeathEnergyBonus { get; private set; }       // 倒す際にプレイヤーに与えるエネルギーボーナス
         public float MoveSpeed { get; private set; }            //移動速度
@@ -28,7 +29,7 @@ namespace Assets.Scripts.Characters.Enemies
         /// <param name="moveSpeed"></param>
         public void Initialize(EnemyAircraft enemyAircraft)
         {
-            this.EnemyPrefab = PoolManager.Release(enemyAircraft.EnemyPrefab,new Vector3(-50,-50,0));
+            this._enemyPrefab = enemyAircraft.EnemyPrefab;
 
             this.MaxHealth = enemyAircraft.MaxHealth;
             this.Health = enemyAircraft.MaxHealth;
@@ -53,6 +54,7 @@ namespace Assets.Scripts.Characters.Enemies
         /// <param name="pos"></param>
         public void SetPos(Vector3 pos)
         {
+            Behavior.Initialize(EnemyPrefab);
             this.EnemyPrefab.transform.position = pos;
         }
 
@@ -62,7 +64,7 @@ namespace Assets.Scripts.Characters.Enemies
         /// <param name="behavior"></param>
         public void SetBehavior(IEnemyBehavior behavior)
         {
-            behavior.Initialize(EnemyPrefab);
+
             this.Behavior = behavior;
         }
 
@@ -72,6 +74,7 @@ namespace Assets.Scripts.Characters.Enemies
         /// <param name="isActive"></param>
         public void SetActive(bool isActive)
         {
+            this.EnemyPrefab = PoolManager.Release(_enemyPrefab);
             this.EnemyPrefab.SetActive(isActive);
             this.IsActive = isActive;
         }

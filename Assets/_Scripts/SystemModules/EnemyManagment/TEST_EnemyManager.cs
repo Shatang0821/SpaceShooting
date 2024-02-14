@@ -85,7 +85,7 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
             var wave = _waveManager.GetSpawnWave();
 
             _enemyList = _spawnManager.PrepareEnemies(wave);
-            SetDictionary(_enemyList);
+            //SetDictionary(_enemyList);
 
             _currentState = EnemyManagerState.InProgress;
         }
@@ -114,6 +114,7 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
                     if(!_activeEnemyList.Contains(enemy))
                     {
                         _activeEnemyList.Add(enemy);
+                        SetDictionary(_activeEnemyList);
                     }
                 }
 
@@ -147,6 +148,7 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     /// <returns></returns>
     private IEnumerator InCompleted()
     {
+        Reset();
         Debug.Log("ゲームクリア");
         yield return null;
     }
@@ -162,6 +164,7 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
         foreach (var enemy in _enemiesToRemove)
         {
             _enemyList.Remove(enemy);
+            _activeEnemyList.Remove(enemy);
             if(enemy.EnemyPrefab == null)
             {
                 Debug.Log("ERROR");
@@ -197,11 +200,23 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     {
         foreach (var enemy in enemies)
         {
-            _enemyDictionary.Add(enemy.EnemyPrefab, enemy);
-            StartCoroutine(enemy.Behavior.Attack());
+            if (!_enemyDictionary.ContainsKey(enemy.EnemyPrefab))
+            {
+                _enemyDictionary.Add(enemy.EnemyPrefab, enemy);
+                StartCoroutine(enemy.Behavior.Attack());
+            }
+            
         }
     }
 
+    private void Reset()
+    {
+        _enemyList.Clear();
+        _activeEnemyList.Clear();
+        _enemiesToRemove.Clear();
+        _enemyDictionary.Clear();
+
+    }
     /// <summary>
     /// 敵をランダムに一つを取り出す
     /// </summary>
