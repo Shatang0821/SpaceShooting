@@ -36,7 +36,7 @@ namespace EnemyManagment
             return prepareEnemies;
         }
         
-        public IEnumerator Spawn(List<Enemy> prepareEnemies)
+        public IEnumerator Spawn(List<Enemy> prepareEnemies, Dictionary<GameObject,Enemy> enemyDictionary)
         {
             IsSpawning = true;
             int index = 0;
@@ -47,11 +47,14 @@ namespace EnemyManagment
                 {
                     prepareEnemies[index].SetActive(true);
                     prepareEnemies[index].SetPos(enemySpawnData.EnemySpawnPos);
+                    enemyDictionary.Add(prepareEnemies[index].EnemyPrefab, prepareEnemies[index]);
+
                     if (prepareEnemies[index].Behavior == null)
                     {
                         Debug.Log("Behavior‚ªİ’è‚µ‚Ä‚¢‚È‚¢");
                     }
 
+                    
                     yield return new WaitForSeconds(enemySpawnData.SpawnInterval);
                     index++;
                     //Debug.Log(index);

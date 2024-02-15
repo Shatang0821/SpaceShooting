@@ -5,6 +5,9 @@ using Assets.Scripts.Interface;
 using Assets.Scripts.Characters.Enemies;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
+using UnityEngine.Rendering;
+
 public enum EnemyManagerState
 {
     Waiting,
@@ -20,8 +23,8 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     private EnemyManagerState _currentState;
 
     private List<Enemy> _enemyList = new List<Enemy>();
-    private List<Enemy> _activeEnemyList = new List<Enemy>();
 
+    private List<Enemy> _activeEnemyList = new List<Enemy>();
     private List<Enemy> _enemiesToRemove = new List<Enemy>();
 
     private Dictionary<GameObject, Enemy> _enemyDictionary = new Dictionary<GameObject, Enemy>();
@@ -63,6 +66,16 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
 
     }
 
+    private void OnEnable()
+    {
+        EventCenter.Subscribe(EventKeyManager.RemoveEnemy, Remove);
+    }
+
+    private void OnDisable()
+    {
+        EventCenter.Unsubscribe(EventKeyManager.RemoveEnemy, Remove);
+    }
+
     /// <summary>
     /// Waveの設定
     /// </summary>
@@ -94,7 +107,7 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
             _currentState = EnemyManagerState.Completed;
         }
 
-        //Debug.Log("EnemyListの数は : " + _enemyList.Count);
+        Debug.Log("EnemyListの数は : " + _enemyList.Count);
     }
 
     /// <summary>
@@ -103,39 +116,20 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     /// <returns></returns>
     private IEnumerator InProgressUpdate()
     {
-        StartCoroutine(_spawnManager.Spawn(_enemyList));
+        StartCoroutine(_spawnManager.Spawn(_enemyList, _enemyDictionary));
         while (IsProgressUpdate)
         {
+            _enemiesToRemove.Clear();
+
             foreach (var enemy in _enemyList)
             {
-                if (enemy.IsActive)
+                if (enemy.EnemyPrefab != null)
                 {
                     enemy.Update();
-                    if(!_activeEnemyList.Contains(enemy))
-                    {
-                        _activeEnemyList.Add(enemy);
-                        SetDictionary(_activeEnemyList);
-                    }
                 }
-
-                if(enemy.IsDied)
-                {
-                    if (!_enemiesToRemove.Contains(enemy))
-                    {
-                        //Debug.Log("Add");
-                        _enemiesToRemove.Add(enemy);
-                    }
-                        
-                }
-                    
-            }
-
-            if (_enemiesToRemove.Count > 0 && !_spawnManager.IsSpawning)
-            {
-                Remove();
             }
                          
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
         _waveManager.UpdateIndex();
         _currentState = EnemyManagerState.Waiting;
@@ -158,56 +152,53 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     /// <summary>
     /// リストから不要なオブジェクトを削除
     /// </summary>
-    void Remove()
+    void Remove(object obj)
     {
-
-        foreach (var enemy in _enemiesToRemove)
+        if(obj is GameObject)
         {
-            _enemyList.Remove(enemy);
-            _activeEnemyList.Remove(enemy);
-            if(enemy.EnemyPrefab == null)
-            {
-                Debug.Log("ERROR");
-            }
-            else
-            {
-                Debug.Log("Delete From Dictionary");
-                _enemyDictionary.Remove(enemy.EnemyPrefab); // 敵をDictionaryからも削除
-            }
-            
-            
+            var enemy = _enemyDictionary[(GameObject)obj];
             enemy.ResetValues();
+            _enemyList.Remove(enemy);
+            _enemyDictionary.Remove((GameObject)obj);
+            
         }
-        _enemiesToRemove.Clear();
-
-
     }
 
     public void Damage(GameObject gameObject, float damage)
     {
-        var enemy = _enemyDictionary[gameObject];
-        if (enemy.IsActive)
+        // キーが辞書に存在するかを確認
+        if (_enemyDictionary.ContainsKey(gameObject))
         {
-            //Debug.Log(enemy.Health);
-            enemy.TakenDamage(damage);
+            var enemy = _enemyDictionary[gameObject];
+            // IsActiveのチェックだけで十分
+            if (enemy.IsActive)
+            {
+                enemy.TakenDamage(damage);
+            }
         }
+        else
+        {
+            // gameObjectが_enemyDictionaryに存在しない場合の処理（ログ記録など）
+            Debug.LogWarning($"Enemy not found for gameObject {gameObject.name}");
+        }
+
     }
     /// <summary>
     /// 攻撃開始と辞書登録
     /// </summary>
     /// <param name="enemies"></param>
-    public void SetDictionary(List<Enemy> enemies)
-    {
-        foreach (var enemy in enemies)
-        {
-            if (!_enemyDictionary.ContainsKey(enemy.EnemyPrefab))
-            {
-                _enemyDictionary.Add(enemy.EnemyPrefab, enemy);
-                StartCoroutine(enemy.Behavior.Attack());
-            }
+    //public void SetDictionary(List<Enemy> enemies)
+    //{
+    //    foreach (var enemy in enemies)
+    //    {
+    //        if (!_enemyDictionary.ContainsKey(enemy.EnemyPrefab))
+    //        {
+    //            _enemyDictionary.Add(enemy.EnemyPrefab, enemy);
+    //            StartCoroutine(enemy.Behavior.Attack());
+    //        }
             
-        }
-    }
+    //    }
+    //}
 
     private void Reset()
     {

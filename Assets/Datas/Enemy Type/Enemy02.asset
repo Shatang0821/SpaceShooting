@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Enemy02
   m_EditorClassIdentifier: 
   ProjectilePrefabs:
-  - {fileID: 3738076239146580, guid: 3d7b4711312b26048954dca1819b6bc7, type: 3}
+  - {fileID: 3738076239146580, guid: 91e7f22b84c73164b86a6c3c8382f628, type: 3}
+  - {fileID: 3738076239146580, guid: effe737a2911abc44b247e79ba738d2e, type: 3}
+  - {fileID: 3738076239146580, guid: 61816a434c7f0354c8e4918da0652845, type: 3}
   EnemyPrefab: {fileID: 8921546478736950322, guid: 2ab3ff156c8f1c149a4d4fe513936685, type: 3}
   MaxHealth: 100
   ShowOnHeadHealthBar: 1

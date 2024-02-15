@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Characters.Enemies;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets._Scripts.Pool_System
 {
@@ -51,6 +52,7 @@ namespace Assets._Scripts.Pool_System
             //キューの先頭から取り出す
             if(enemyQueue.Count > 0 && !enemyQueue.Peek().IsActive)
             {
+                Debug.Log("敵を取り出す");
                 avaliableEnemy = enemyQueue.Dequeue();
             }
             else

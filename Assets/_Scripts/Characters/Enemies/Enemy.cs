@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Interface;
 using EnemyManagment;
+using Event;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -8,6 +9,7 @@ namespace Assets.Scripts.Characters.Enemies
     public class Enemy : Character, ITakenDamange
     {
         public GameObject EnemyPrefab { get; private set; }     // 敵オブジェクト
+
         private GameObject _enemyPrefab;
         public int ScorePoint { get; private set; }             // 倒す際にプレイヤーに与えるスコアポイント
         public int DeathEnergyBonus { get; private set; }       // 倒す際にプレイヤーに与えるエネルギーボーナス
@@ -111,6 +113,7 @@ namespace Assets.Scripts.Characters.Enemies
             // プレイヤーエネルギーにエネルギーボーナスを追加する
             PlayerEnergy.Instance.Obtain(DeathEnergyBonus);
             
+            EventCenter.TriggerEvent(EventKeyManager.RemoveEnemy, this.EnemyPrefab);
             //ResetValues();
 
         }

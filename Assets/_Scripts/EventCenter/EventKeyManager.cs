@@ -18,5 +18,7 @@
         public static readonly EventKey AddOption = new("AddOption");
 
         public static readonly EventKey EnemyManagementInit = new("Initialize");
+
+        public static readonly EventKey RemoveEnemy = new("RemoveFormEnemies");
     }
 }
