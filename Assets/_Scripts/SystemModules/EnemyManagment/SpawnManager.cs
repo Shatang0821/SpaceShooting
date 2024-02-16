@@ -12,6 +12,7 @@ namespace EnemyManagment
 
         private Queue<EnemySpawnData> _enemySpawnDatas = new Queue<EnemySpawnData>();
 
+        private WaitForSeconds _waitTimeBetweenSpawns;
         public bool IsSpawning {  get; private set; }
         public SpawnManager() 
         {
@@ -39,14 +40,19 @@ namespace EnemyManagment
         public IEnumerator Spawn(List<Enemy> prepareEnemies, Dictionary<GameObject,Enemy> enemyDictionary)
         {
             IsSpawning = true;
+            Debug.Log(IsSpawning);
             int index = 0;
             while (_enemySpawnDatas.Count > 0)
             {
                 var enemySpawnData = _enemySpawnDatas.Dequeue();
+
+                _waitTimeBetweenSpawns = new WaitForSeconds(enemySpawnData.SpawnInterval);
+
                 for(int i = 0;i<enemySpawnData.EnemyNumber;i++)
                 {
                     prepareEnemies[index].SetActive(true);
                     prepareEnemies[index].SetPos(enemySpawnData.EnemySpawnPos);
+
                     enemyDictionary.Add(prepareEnemies[index].EnemyPrefab, prepareEnemies[index]);
 
                     if (prepareEnemies[index].Behavior == null)
@@ -54,8 +60,8 @@ namespace EnemyManagment
                         Debug.Log("Behavior‚ªÝ’è‚µ‚Ä‚¢‚È‚¢");
                     }
 
-                    
-                    yield return new WaitForSeconds(enemySpawnData.SpawnInterval);
+
+                    yield return _waitTimeBetweenSpawns;
                     index++;
                     //Debug.Log(index);
                 }

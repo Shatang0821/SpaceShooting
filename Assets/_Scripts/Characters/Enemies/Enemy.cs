@@ -113,7 +113,7 @@ namespace Assets.Scripts.Characters.Enemies
             // プレイヤーエネルギーにエネルギーボーナスを追加する
             PlayerEnergy.Instance.Obtain(DeathEnergyBonus);
             
-            EventCenter.TriggerEvent(EventKeyManager.RemoveEnemy, this.EnemyPrefab);
+            EventCenter.TriggerEvent(EventKeyManager.UpdateRemoveList, this.EnemyPrefab);
             //ResetValues();
 
         }

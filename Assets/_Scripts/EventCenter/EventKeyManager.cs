@@ -19,6 +19,13 @@
 
         public static readonly EventKey EnemyManagementInit = new("Initialize");
 
-        public static readonly EventKey RemoveEnemy = new("RemoveFormEnemies");
+        public static readonly EventKey UpdateRemoveList = new("UpdateRemoveList");
+    }
+
+    public static class UIEventKey
+    {
+        public static readonly EventKey ShowWave = new("ShowWave");
+
+        public static readonly EventKey HideWave = new("HideWave");
     }
 }

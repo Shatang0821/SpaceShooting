@@ -21,7 +21,9 @@ namespace EnemyManagment
         //現在のWave(複数Waveがある前提)
         private Wave _currentWave;
 
-        private int waveIndex = 0;
+        private int _waveCount = 0;
+
+        public int WaveCount { get { return _waveCount; } }
         public WaveManager()
         {
             Debug.Log("Create WaveManager Instance");
@@ -46,14 +48,14 @@ namespace EnemyManagment
         {
             if (IsWaveNotDone)
             {
-                Debug.Log($"現在はWave.{waveIndex}です");
+                Debug.Log($"現在はWave.{_waveCount}です");
                 _currentWave = _waves.Dequeue();
                 return true;
 
             }
             else
             {
-                Debug.Log($"現在はWave.{waveIndex}です");
+                Debug.Log($"現在はWave.{_waveCount}です");
                 Debug.LogWarning("Waveが終わりました");
                 return false;
             }
@@ -70,9 +72,7 @@ namespace EnemyManagment
         public void UpdateIndex()
         {
             _currentWave = null;
-            waveIndex++;
-
-            
+            _waveCount++;
         }
 
         private bool IsWaveNotDone => _waves.Count > 0;

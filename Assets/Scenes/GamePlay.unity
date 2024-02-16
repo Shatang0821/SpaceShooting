@@ -768,6 +768,7 @@ MonoBehaviour:
   _enemyWaveDatas:
   - {fileID: 11400000, guid: e281b2c60c0d22c4faf2cee597dbc80f, type: 2}
   - {fileID: 11400000, guid: 0cc6b17313a6a5247a2c31d73b4e1228, type: 2}
+  - {fileID: 11400000, guid: 0cc6b17313a6a5247a2c31d73b4e1228, type: 2}
 --- !u!1 &296299559
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,7 +1018,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &532102380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1084,7 +1085,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 532102379}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49143b68dca7df845b1294ffd0d5ac3d, type: 3}
   m_Name: 
@@ -1675,6 +1676,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentState: 0
+  timeBetweenSpawns: 3
 --- !u!1 &803564347
 GameObject:
   m_ObjectHideFlags: 0
@@ -2888,18 +2890,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPools:
   - prefab: {fileID: 214778051926960383, guid: a624a0e3000461e4286965f8a65aedb6, type: 3}
-    size: 5
+    size: 15
   - prefab: {fileID: 8921546478736950322, guid: 2ab3ff156c8f1c149a4d4fe513936685, type: 3}
-    size: 5
+    size: 15
   - prefab: {fileID: 578449712315536124, guid: c09767a80c39dca498c95b2e5be1afd8, type: 3}
-    size: 5
+    size: 15
   playerProjectilePools:
   - prefab: {fileID: 8510276924167900824, guid: be785fbc04c807948967104b1ef8b643, type: 3}
     size: 90
   - prefab: {fileID: 8510276924167900824, guid: 319f56ea354bc9546ba8687e31a52308, type: 3}
-    size: 25
+    size: 28
   - prefab: {fileID: 8510276924167900824, guid: 85a7ee1013457754a92cff805a7b06ad, type: 3}
-    size: 25
+    size: 28
   - prefab: {fileID: 8510276924167900824, guid: 64b8a03681c976d42bc77c2fb19d551b, type: 3}
     size: 108
   - prefab: {fileID: 2523096243714385163, guid: 1b2c3ab1e0e61914ba3e10d026ca3023, type: 3}

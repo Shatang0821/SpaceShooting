@@ -19,15 +19,22 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     private WaveManager _waveManager;
     private SpawnManager _spawnManager;
 
+
     [SerializeField]
     private EnemyManagerState _currentState;
+
+    [SerializeField] float timeBetweenSpawns = 3f;  //Waveごと生成間隔
+
 
     private List<Enemy> _enemyList = new List<Enemy>();
 
     private List<Enemy> _activeEnemyList = new List<Enemy>();
+
     private List<Enemy> _enemiesToRemove = new List<Enemy>();
 
     private Dictionary<GameObject, Enemy> _enemyDictionary = new Dictionary<GameObject, Enemy>();
+
+    private WaitForSeconds _waitTimeBetweenSpawns;
     protected override void Awake()
     {
         base.Awake();
@@ -35,10 +42,15 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
         Initialize();
     }
 
+    /// <summary>
+    /// インスタンス作成と初期化
+    /// </summary>
     private void Initialize()
     {
         _spawnManager = new SpawnManager();
         _waveManager = new WaveManager();
+
+        _waitTimeBetweenSpawns = new WaitForSeconds(timeBetweenSpawns);
 
         _waveManager.Initialize(DataManager.Instance.EnemyWaveDatas);
 
@@ -68,12 +80,12 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
 
     private void OnEnable()
     {
-        EventCenter.Subscribe(EventKeyManager.RemoveEnemy, Remove);
+        EventCenter.Subscribe(EventKeyManager.UpdateRemoveList, UpdateRemoveList);
     }
 
     private void OnDisable()
     {
-        EventCenter.Unsubscribe(EventKeyManager.RemoveEnemy, Remove);
+        EventCenter.Unsubscribe(EventKeyManager.UpdateRemoveList, UpdateRemoveList);
     }
 
     /// <summary>
@@ -85,7 +97,6 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
         StartWave();
 
         yield return null;
-
     }
 
     /// <summary>
@@ -95,6 +106,7 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     {
         if(_waveManager.StartNextWave())
         {
+
             var wave = _waveManager.GetSpawnWave();
 
             _enemyList = _spawnManager.PrepareEnemies(wave);
@@ -108,6 +120,8 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
         }
 
         Debug.Log("EnemyListの数は : " + _enemyList.Count);
+        Debug.Log("EnemiesToRemoveの数は : " + _enemiesToRemove.Count);
+        Debug.Log("EnemyDictionarytの数は : " + _enemyDictionary.Count);
     }
 
     /// <summary>
@@ -116,11 +130,14 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     /// <returns></returns>
     private IEnumerator InProgressUpdate()
     {
+        EventCenter.TriggerEvent(UIEventKey.ShowWave, _waveManager.WaveCount);
+        //UIを待つ
+        yield return _waitTimeBetweenSpawns;
+        EventCenter.TriggerEvent(UIEventKey.HideWave);
+
         StartCoroutine(_spawnManager.Spawn(_enemyList, _enemyDictionary));
         while (IsProgressUpdate)
         {
-            _enemiesToRemove.Clear();
-
             foreach (var enemy in _enemyList)
             {
                 if (enemy.EnemyPrefab != null)
@@ -128,12 +145,18 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
                     enemy.Update();
                 }
             }
-                         
-            yield return new WaitForFixedUpdate();
+            if(!_spawnManager.IsSpawning)
+            {
+                Remove();
+            }
+            yield return null;
+        }
+        if(_enemiesToRemove.Count > 0 && _enemyDictionary.Count > 0) 
+        {
+            Debug.Log("ERROR");
         }
         _waveManager.UpdateIndex();
         _currentState = EnemyManagerState.Waiting;
-        yield return null;
     }
 
     /// <summary>
@@ -143,7 +166,7 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     private IEnumerator InCompleted()
     {
         Reset();
-        Debug.Log("ゲームクリア");
+        //Debug.Log("ゲームクリア");
         yield return null;
     }
 
@@ -152,18 +175,27 @@ public class TEST_EnemyManager : Singleton<TEST_EnemyManager>
     /// <summary>
     /// リストから不要なオブジェクトを削除
     /// </summary>
-    void Remove(object obj)
+    void UpdateRemoveList(object obj)
     {
         if(obj is GameObject)
         {
             var enemy = _enemyDictionary[(GameObject)obj];
-            enemy.ResetValues();
-            _enemyList.Remove(enemy);
-            _enemyDictionary.Remove((GameObject)obj);
-            
+            _enemiesToRemove.Add(enemy);
         }
     }
 
+    void Remove()
+    {
+        if(_enemiesToRemove.Count > 0)
+        {
+            foreach(var enemy in _enemiesToRemove) 
+            {
+                _enemyList.Remove(enemy);
+                _enemyDictionary.Remove(enemy.EnemyPrefab);
+            }
+        }
+        _enemiesToRemove.Clear();
+    }
     public void Damage(GameObject gameObject, float damage)
     {
         // キーが辞書に存在するかを確認
