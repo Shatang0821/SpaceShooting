@@ -3,10 +3,10 @@ using UnityEngine.EventSystems;
                                              
 public class UIEventTrigger : 
     MonoBehaviour, 
-    IPointerEnterHandler,   //ƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ªƒ{ƒ^ƒ“”ÍˆÍ“à‚É‚¢‚é‚©‚ğƒ`ƒFƒbƒN
-    IPointerDownHandler,    //ƒ}ƒEƒX‚Å’ño‚µ‚½‚çŒÄ‚Ño‚·
-    ISelectHandler,         //ƒL[ƒ{[ƒh‚âƒQ[ƒ€ƒpƒbƒh‚Å‘I‘ğ‚µ‚½‚ç
-    ISubmitHandler          //ƒL[ƒ{[ƒh‚âƒQ[ƒ€ƒpƒbƒh‚È‚Ç‚Å’ño‚µ‚½‚çŒÄ‚Ño‚·
+    IPointerEnterHandler,   //ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ãŒãƒœã‚¿ãƒ³ç¯„å›²å†…ã«ã„ã‚‹ã‹ã‚’ãƒã‚§ãƒƒã‚¯
+    IPointerDownHandler,    //ãƒã‚¦ã‚¹ã§æå‡ºã—ãŸã‚‰å‘¼ã³å‡ºã™
+    ISelectHandler,         //ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‚„ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã§é¸æŠã—ãŸã‚‰
+    ISubmitHandler          //ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‚„ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ãªã©ã§æå‡ºã—ãŸã‚‰å‘¼ã³å‡ºã™
 {
     [SerializeField] AudioData selectSFX;
     [SerializeField] AudioData submitSFX;

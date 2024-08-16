@@ -5,22 +5,22 @@ using UnityEngine;
 public class PlayerMove : MonoBehaviour
 {
     [Header("---- MOVE ----")]
-    [Tooltip("ƒLƒƒƒ‰ƒNƒ^[‚ÌÅ‘å‘¬“x‚Å‚·B")]
+    [Tooltip("ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®æœ€å¤§é€Ÿåº¦ã§ã™ã€‚")]
     [SerializeField] float moveSpeed = 10f;
 
-    [Tooltip("ƒLƒƒƒ‰ƒNƒ^[‚Ì“Áêó‘ÔƒXƒs[ƒh”{”")]
-    [SerializeField] float overdriveSpeedFactor = 1.2f;//ƒXƒs[ƒh‚ğ1.2”{
+    [Tooltip("ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ç‰¹æ®ŠçŠ¶æ…‹ã‚¹ãƒ”ãƒ¼ãƒ‰å€æ•°")]
+    [SerializeField] float overdriveSpeedFactor = 1.2f;//ã‚¹ãƒ”ãƒ¼ãƒ‰ã‚’1.2å€
 
-    [Tooltip("ƒLƒƒƒ‰ƒNƒ^[‚Ì‰Á‘¬ŠÔ‚Å‚·B")]
-    [SerializeField] float accelerationTime = 3f;   //‰Á‘¬ŠÔ
+    [Tooltip("ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®åŠ é€Ÿæ™‚é–“ã§ã™ã€‚")]
+    [SerializeField] float accelerationTime = 3f;   //åŠ é€Ÿæ™‚é–“
 
-    [Tooltip("ƒLƒƒƒ‰ƒNƒ^[‚ÌŒ¸‘¬ŠÔ‚Å‚·B")]
-    [SerializeField] float decelerationTime = 3f;   //Œ¸‘¬ŠÔ
+    [Tooltip("ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®æ¸›é€Ÿæ™‚é–“ã§ã™ã€‚")]
+    [SerializeField] float decelerationTime = 3f;   //æ¸›é€Ÿæ™‚é–“
 
-    [Tooltip("ƒLƒƒƒ‰ƒNƒ^[‚Ìã‰º‰ñ“]Šp“x‚Å‚·B")]
+    [Tooltip("ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®ä¸Šä¸‹å›è»¢è§’åº¦ã§ã™ã€‚")]
     [SerializeField] float moveRotationAngle = 50f;
 
-    //ƒvƒŒƒCƒ„[î•ñ
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æƒ…å ±
     private Player _player;
 
     private PlayerInput _input;
@@ -29,30 +29,30 @@ public class PlayerMove : MonoBehaviour
 
     private OptionManager optionManager;
 
-    //ƒ‚ƒfƒ‹‚ÌXY‚Ì”¼•ªƒTƒCƒY
+    //ãƒ¢ãƒ‡ãƒ«ã®XYã®åŠåˆ†ã‚µã‚¤ã‚º
     private float paddingX;
     private float paddingY;
 
-    //“ü—Í‚µ‚½ˆÚ“®•ûŒü‚ğ•Û‚·‚é•Ï”
+    //å…¥åŠ›ã—ãŸç§»å‹•æ–¹å‘ã‚’ä¿æŒã™ã‚‹å¤‰æ•°
     Vector2 moveDirection;
     /*
-        –‘O‚É’è‹`‚µ‚Ä‚¨‚­‚É‚æ‚Á‚ÄŒJ‚è•Ô‚µ’è‹`‚ğ–h‚®
+        äº‹å‰ã«å®šç¾©ã—ã¦ãŠãã«ã‚ˆã£ã¦ç¹°ã‚Šè¿”ã—å®šç¾©ã‚’é˜²ã
      */
     float t;                        //used for MoveCoroutine
     Vector2 previousVelocity;       //used for MoveCoroutine
     Quaternion previousRotation;    //used for MoveCoroutine
 
-    //ƒRƒ‹[ƒ`ƒ“ŠÖ˜A•Ï”
-    WaitForSeconds waitDecelerationTime;//Œ¸‘¬ŠÔ
+    //ã‚³ãƒ«ãƒ¼ãƒãƒ³é–¢é€£å¤‰æ•°
+    WaitForSeconds waitDecelerationTime;//æ¸›é€Ÿæ™‚é–“
 
-    WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();//FixedUpdate•¨—‰‰ZÅ“K
+    WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();//FixedUpdateç‰©ç†æ¼”ç®—æœ€é©
 
-    Coroutine moveCoroutine;//ˆÚ“®ƒRƒ‹[ƒ`ƒ“‚Ìd•¡ŠJn‚ğ–h‚®‚½‚ß‚Ì“ü‚ê‚à‚Ì
+    Coroutine moveCoroutine;//ç§»å‹•ã‚³ãƒ«ãƒ¼ãƒãƒ³ã®é‡è¤‡é–‹å§‹ã‚’é˜²ããŸã‚ã®å…¥ã‚Œã‚‚ã®
 
     Coroutine optionMoveCoroutine;
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     void Initialized()
     {
@@ -63,11 +63,11 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// ‹@‘ÌƒTƒCƒYæ“¾
+    /// æ©Ÿä½“ã‚µã‚¤ã‚ºå–å¾—
     /// </summary>
     void SetSize()
     {
-        //ƒTƒCƒYæ“¾
+        //ã‚µã‚¤ã‚ºå–å¾—
         var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
         paddingX = size.x / 2f;
         paddingY = size.y / 2f;
@@ -84,7 +84,7 @@ public class PlayerMove : MonoBehaviour
     {
         _input =_player.input;
 
-        rigidbody.gravityScale = 0f;//d—Í‚ğ0
+        rigidbody.gravityScale = 0f;//é‡åŠ›ã‚’0
     }
 
     private void OnEnable()
@@ -108,16 +108,16 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// ˆÚ“®ˆ—<br/>
-    /// ƒRƒ‹[ƒ`ƒ“‚ğn‚Ü‚éˆ—<br/>
-    /// ©‹@‚ğ‰æ–Ê“à‚É§ŒÀ‚³‚¹‚é
+    /// ç§»å‹•å‡¦ç†<br/>
+    /// ã‚³ãƒ«ãƒ¼ãƒãƒ³ã‚’å§‹ã¾ã‚‹å‡¦ç†<br/>
+    /// è‡ªæ©Ÿã‚’ç”»é¢å†…ã«åˆ¶é™ã•ã›ã‚‹
     /// </summary>
-    /// <param name="_moveInput">ˆÚ“®•ûŒü</param>
+    /// <param name="_moveInput">ç§»å‹•æ–¹å‘</param>
     void Move(object _moveInput)
     {
         Vector2 moveInput = (Vector2)_moveInput; 
   
-        //ˆÚ“®ƒRƒ‹[ƒ`ƒ“‚ªnull‚Å‚Í‚È‚¢ê‡’â~‚³‚¹‚é
+        //ç§»å‹•ã‚³ãƒ«ãƒ¼ãƒãƒ³ãŒnullã§ã¯ãªã„å ´åˆåœæ­¢ã•ã›ã‚‹
         if (moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
@@ -128,40 +128,43 @@ public class PlayerMove : MonoBehaviour
         {
             optionMoveCoroutine = StartCoroutine(nameof(OptionMoveCoroutine));
         }
-        //ˆÚ“®•ûŒü‚Í“ü—Í‚ğ³‹K‰»‚µ‚Ä•Ô‚µ‚½”’lA³‹K‰»‚É‚æ‚Á‚ÄÎ‚ß‚ª‘‚­‚È‚é‚±‚Æ‚ğ–h‚¬‚Ü‚·
+        //ç§»å‹•æ–¹å‘ã¯å…¥åŠ›ã‚’æ­£è¦åŒ–ã—ã¦è¿”ã—ãŸæ•°å€¤ã€æ­£è¦åŒ–ã«ã‚ˆã£ã¦æ–œã‚ãŒæ—©ããªã‚‹ã“ã¨ã‚’é˜²ãã¾ã™
         moveDirection = moveInput.normalized;
-        moveCoroutine = StartCoroutine(MoveCoroutine(accelerationTime, moveDirection * moveSpeed, Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)));
+        moveCoroutine = StartCoroutine(MoveCoroutine(accelerationTime, 
+            moveDirection * moveSpeed, 
+            Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right)
+            ));
         
-        //ˆÚ“®‚³‚¹‚é‚Å‚ ‚ê‚ÎŒ¸‘¬ƒRƒ‹[ƒ`ƒ“‚ğ~‚ß‚é
+        //ç§»å‹•ã•ã›ã‚‹ã§ã‚ã‚Œã°æ¸›é€Ÿã‚³ãƒ«ãƒ¼ãƒãƒ³ã‚’æ­¢ã‚ã‚‹
         StopCoroutine(nameof(DecelerationCoroutine));
-        //‰æ–Ê§ŒÀ‚ğn‚Ü‚é
+        //ç”»é¢åˆ¶é™ã‚’å§‹ã¾ã‚‹
         StartCoroutine(nameof(MoveRangeLimatationCoroutine));
   
     }
 
     /// <summary>
-    /// ˆÚ“®’â~ˆ—
+    /// ç§»å‹•åœæ­¢å‡¦ç†
     /// </summary>
     void StopMove()
     {
-        //ˆÚ“®ƒRƒ‹[ƒ`ƒ“‚ªnull‚Å‚Í‚È‚¢ê‡’â~‚³‚¹‚é
+        //ç§»å‹•ã‚³ãƒ«ãƒ¼ãƒãƒ³ãŒnullã§ã¯ãªã„å ´åˆåœæ­¢ã•ã›ã‚‹
         if (moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
         }
         moveDirection = Vector2.zero;
-        //‘¬“x‚Æ‰ñ“]‚ğŒ¸‘¬ŠÔ‚É‚æ‚Á‚Ä™X‚É‰Šú‚É–ß‚é
+        //é€Ÿåº¦ã¨å›è»¢ã‚’æ¸›é€Ÿæ™‚é–“ã«ã‚ˆã£ã¦å¾ã€…ã«åˆæœŸã«æˆ»ã‚‹
         moveCoroutine = StartCoroutine(MoveCoroutine(decelerationTime, Vector2.zero, Quaternion.identity));
-        //Œ¸‘¬ŠÔ‚ğI‚í‚é‚Æ‰æ–Ê§ŒÀ‚ğ~‚ß‚é,,ˆÚ“®‚µ‚Ä‚¢‚È‚¢‚½‚ß‰æ–ÊŠO‚Éo‚é‚±‚Æ‚È‚¢
+        //æ¸›é€Ÿæ™‚é–“ã‚’çµ‚ã‚ã‚‹ã¨ç”»é¢åˆ¶é™ã‚’æ­¢ã‚ã‚‹,,ç§»å‹•ã—ã¦ã„ãªã„ãŸã‚ç”»é¢å¤–ã«å‡ºã‚‹ã“ã¨ãªã„
         StartCoroutine(nameof(DecelerationCoroutine));
     }
 
     /// <summary>
-    ///  ‘¬“x•ÏX‚³‚¹‚é
+    ///  é€Ÿåº¦å¤‰æ›´ã•ã›ã‚‹
     /// </summary>
-    /// <param name="time">•ÏXŠÔ</param>
-    /// <param name="moveVelocity">ˆÚ“®‘¬“x</param>
-    /// <param name="moveRotation">‰ñ“]î•ñ</param>
+    /// <param name="time">å¤‰æ›´æ™‚é–“</param>
+    /// <param name="moveVelocity">ç§»å‹•é€Ÿåº¦</param>
+    /// <param name="moveRotation">å›è»¢æƒ…å ±</param>
     IEnumerator MoveCoroutine(float time, Vector2 moveVelocity, Quaternion moveRotation)
     {
         t = 0f;
@@ -170,18 +173,18 @@ public class PlayerMove : MonoBehaviour
         while (t < 1f)
         {
             t += Time.fixedDeltaTime / time;
-            //t‚ª0‚©‚ç1‚ÌŠÔ‚Évelocity‚ğ•â³‚³‚¹‚ét‚ª1‚É‚È‚é‚ÆÅ‘å‘¬“x‚É’B‚µ‚Ü‚·
+            //tãŒ0ã‹ã‚‰1ã®é–“ã«velocityã‚’è£œæ­£ã•ã›ã‚‹tãŒ1ã«ãªã‚‹ã¨æœ€å¤§é€Ÿåº¦ã«é”ã—ã¾ã™
             rigidbody.velocity = Vector2.Lerp(previousVelocity, moveVelocity, t);
-            //ã‚Æ“¯‚¶‚±‚Æ
+            //ä¸Šã¨åŒã˜ã“ã¨
             transform.rotation = Quaternion.Lerp(previousRotation, moveRotation, t);
             //
-            //•¨—‰‰Z‚³‚¹‚é‚©‚çFixedUpdateg‚Á‚Ä¸“x‚ğã‚°‚é
+            //ç‰©ç†æ¼”ç®—ã•ã›ã‚‹ã‹ã‚‰FixedUpdateä½¿ã£ã¦ç²¾åº¦ã‚’ä¸Šã’ã‚‹
             yield return waitForFixedUpdate;
         }
     }
 
     /// <summary>
-    /// ˆÚ“®”ÍˆÍ‚ğ‰æ–Ê“à‚É§ŒÀ‚³‚¹‚é
+    /// ç§»å‹•ç¯„å›²ã‚’ç”»é¢å†…ã«åˆ¶é™ã•ã›ã‚‹
     /// </summary>
     IEnumerator MoveRangeLimatationCoroutine()
     {
@@ -193,8 +196,8 @@ public class PlayerMove : MonoBehaviour
     }
 
     /// <summary>
-    /// Œ¸‘¬I—¹‚É©‹@‚ğ‰æ–Ê“à‚É§ŒÀ‚·‚éƒRƒ‹[ƒ`ƒ“‚ğ’â~‚µ‚Ä<br/>
-    /// –³‘Ê‚Ìƒ‹[ƒvˆ—‚ğŒ¸‚ç‚·
+    /// æ¸›é€Ÿçµ‚äº†æ™‚ã«è‡ªæ©Ÿã‚’ç”»é¢å†…ã«åˆ¶é™ã™ã‚‹ã‚³ãƒ«ãƒ¼ãƒãƒ³ã‚’åœæ­¢ã—ã¦<br/>
+    /// ç„¡é§„ã®ãƒ«ãƒ¼ãƒ—å‡¦ç†ã‚’æ¸›ã‚‰ã™
     /// </summary>
     /// <returns></returns>
     IEnumerator DecelerationCoroutine()

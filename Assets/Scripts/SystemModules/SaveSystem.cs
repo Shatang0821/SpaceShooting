@@ -5,14 +5,14 @@ public static class SaveSystem
 {
     public static void Save(string saveFileName, object data)
     {
-        //date‚ğJSONƒf[ƒ^‚É•Ï‚¦‚é
+        //dateã‚’JSONãƒ‡ãƒ¼ã‚¿ã«å¤‰ãˆã‚‹
         var json = JsonUtility.ToJson(data);
-                              //ƒvƒ‰ƒbƒgƒtƒH[ƒ€‚É‚æ‚Á‚ÄƒpƒX‚ğ•Ï‚¦‚é
+                              //ãƒ—ãƒ©ãƒƒãƒˆãƒ•ã‚©ãƒ¼ãƒ ã«ã‚ˆã£ã¦ãƒ‘ã‚¹ã‚’å¤‰ãˆã‚‹
         var path = Path.Combine(Application.persistentDataPath, saveFileName);
 
         try
         {
-            //json‚ğpathæ‚Ìƒtƒ@ƒCƒ‹‚É‘‚«‚Ş
+            //jsonã‚’pathå…ˆã®ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã‚€
             File.WriteAllText(path, json);
 
 #if UNITY_EDITOR
@@ -33,7 +33,7 @@ public static class SaveSystem
 
         try
         {
-            //ƒf[ƒ^‚ğ“Ç‚İ‚Ş
+            //ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿è¾¼ã‚€
             var json = File.ReadAllText(path);
             var data = JsonUtility.FromJson<T>(json);
 
@@ -66,7 +66,7 @@ public static class SaveSystem
     }
 
     /// <summary>
-    /// ƒtƒ@ƒCƒ‹‚Ì‘¶İƒ`ƒFƒbƒN
+    /// ãƒ•ã‚¡ã‚¤ãƒ«ã®å­˜åœ¨ãƒã‚§ãƒƒã‚¯
     /// </summary>
     /// <param name="saveFileName"></param>
     /// <returns></returns>

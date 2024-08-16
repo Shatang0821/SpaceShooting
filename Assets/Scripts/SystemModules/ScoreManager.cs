@@ -43,7 +43,7 @@ public class ScoreManager : PersistentSingleton<ScoreManager>
     #region HIGH SCORE SYSTEM
 
     /// <summary>
-    /// �X�R�A�f�[�^
+    /// スコアデータ
     /// </summary>
     [System.Serializable] 
     public class PlayerScore
@@ -60,7 +60,7 @@ public class ScoreManager : PersistentSingleton<ScoreManager>
     }
 
     /// <summary>
-    /// �n�C�X�R�A���בւ��ׂ�list
+    /// ハイスコア並べ替え為のlist
     /// </summary>
     [System.Serializable] public class PlayerScoreData
     {
@@ -68,9 +68,9 @@ public class ScoreManager : PersistentSingleton<ScoreManager>
     }
 
     readonly string SaveFileName = "player_score.json";
-    string playerName = "NO Name";//�f�t�H���g�̖��O
+    string playerName = "NO Name";//デフォルトの名前
 
-    //��ԏ������X�R�A��荂���Ƃ��n�C�X�R�A����Ɣ��f����
+    //一番小さいスコアより高いときハイスコアありと判断する
     public bool HasNewHighScore => score > LoadPlayerScoreData().list[9].score;
 
     public void SetPlayerName(string newName)

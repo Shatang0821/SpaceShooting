@@ -12,7 +12,7 @@ public class ScoringUIController : MonoBehaviour
     [SerializeField] Text playerScoreText;
     [SerializeField] Button buttonMainMenu;
 
-    //Score Container‚ÌqƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é‚½‚ß‚Ì
+    //Score Containerã®å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—ã™ã‚‹ãŸã‚ã®
     [SerializeField] Transform highScoreLeaderboardContainer;
 
     [Header("==== HIGHT SCORE SCREEN ====")]
@@ -23,7 +23,7 @@ public class ScoringUIController : MonoBehaviour
 
     private void Start()
     {
-        //ƒ}ƒEƒXƒJ[ƒ\ƒ‹•\¦
+        //ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«è¡¨ç¤º
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
@@ -44,7 +44,7 @@ public class ScoringUIController : MonoBehaviour
     }
 
     /// <summary>
-    /// –¼‘O“ü—Í‰æ–Ê‚ğ•\¦‚·‚é
+    /// åå‰å…¥åŠ›ç”»é¢ã‚’è¡¨ç¤ºã™ã‚‹
     /// </summary>
     void ShowNewHighScoreScreen()
     {
@@ -54,7 +54,7 @@ public class ScoringUIController : MonoBehaviour
     }
 
     /// <summary>
-    /// –¼‘O“ü—Í‰æ–Ê‚ğ•Â‚¶‚é
+    /// åå‰å…¥åŠ›ç”»é¢ã‚’é–‰ã˜ã‚‹
     /// </summary>
     void HideNewHighScoreScreen()
     {
@@ -69,7 +69,7 @@ public class ScoringUIController : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒXƒRƒA‰æ–Ê‚ğ•\¦‚·‚é
+    /// ã‚¹ã‚³ã‚¢ç”»é¢ã‚’è¡¨ç¤ºã™ã‚‹
     /// </summary>
     void ShowScoringScreen()
     {
@@ -80,7 +80,7 @@ public class ScoringUIController : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒXƒRƒAƒ‰ƒ“ƒLƒ“ƒO‚ğƒAƒbƒvƒf[ƒg
+    /// ã‚¹ã‚³ã‚¢ãƒ©ãƒ³ã‚­ãƒ³ã‚°ã‚’ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
     /// </summary>
     void UpdateHighScoreLeaderboard()
     {
@@ -98,7 +98,7 @@ public class ScoringUIController : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒƒCƒ“ƒƒjƒ…[‚É–ß‚é
+    /// ãƒ¡ã‚¤ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«æˆ»ã‚‹
     /// </summary>
     void OnButtonMainMenuClicked()
     {
@@ -107,7 +107,7 @@ public class ScoringUIController : MonoBehaviour
     }
 
     /// <summary>
-    /// V‚µ‚¢–¼‘O‚ÆƒXƒRƒA‚ğ’ño‚·‚é
+    /// æ–°ã—ã„åå‰ã¨ã‚¹ã‚³ã‚¢ã‚’æå‡ºã™ã‚‹
     /// </summary>
     void OnButtonSubmitClicked()
     {

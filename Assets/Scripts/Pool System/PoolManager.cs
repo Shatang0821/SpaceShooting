@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    // Unity Inspector�Őݒ�\�ȁA
-    // �G�A�v���C���[�̃v���W�F�N�^�C���A�G�̃v���W�F�N�^�C���A�G�t�F�N�g�̊e�v�[���z��B
+    // Unity Inspectorで設定可能な、
+    // 敵、プレイヤーのプロジェクタイル、敵のプロジェクタイル、エフェクトの各プール配列。
     [SerializeField] Pool[] enemyPools;
     
     [SerializeField] Pool[] playerProjectilePools;
@@ -14,12 +14,12 @@ public class PoolManager : MonoBehaviour
 
     [SerializeField] Pool[] vFXPools;
 
-    // �v���n�u�Ƃ���ɑΉ�����v�[���̃��t�@�����X���i�[���鎫��
+    // プレハブとそれに対応するプールのリファレンスを格納する辞書
     static Dictionary<GameObject, Pool> dictionary;
 
     void Awake()
     {
-        // �����̏������Ɗe�v�[���̏������B
+        // 辞書の初期化と各プールの初期化。
         dictionary = new Dictionary<GameObject, Pool>();
 
         Initialize(enemyPools);
@@ -28,12 +28,12 @@ public class PoolManager : MonoBehaviour
         Initialize(vFXPools);
     }
 
-    // Unity�G�f�B�^�ł̂ݎ��s�����f�X�g���N�^�B�e�v�[���̃T�C�Y�����؁B
-    // ���ۂ̃Q�[���v���C�ł͎��s����Ȃ��B
+    // Unityエディタでのみ実行されるデストラクタ。各プールのサイズを検証。
+    // 実際のゲームプレイでは実行されない。
 #if UNITY_EDITOR
     void OnDestroy()
     {
-        //�v�[���T�C�Y�������������`�F�b�N����
+        //プールサイズが正しいかをチェックする
         CheckPoolSize(enemyPools);
         CheckPoolSize(playerProjectilePools);
         CheckPoolSize(enemyProjectilePools);
@@ -41,7 +41,7 @@ public class PoolManager : MonoBehaviour
     }
 #endif
 
-    // �e�v�[�����w�肳�ꂽ�T�C�Y�𒴂��Ă��Ȃ������m�F���A���߂��Ă���ꍇ�͌x����\��
+    // 各プールが指定されたサイズを超えていないかを確認し、超過している場合は警告を表示
     void CheckPoolSize(Pool[] pools)
     {
         foreach (var pool in pools)
@@ -58,29 +58,29 @@ public class PoolManager : MonoBehaviour
     }
 
     /// <summary>
-    /// �v�[�������������A���ꂼ��̃v�[���������ɒǉ�����B
+    /// プールを初期化し、それぞれのプールを辞書に追加する。
     /// </summary>
-    /// <param name="pools">�v���n�u�̔z��</param>
+    /// <param name="pools">プレハブの配列</param>
     void Initialize(Pool[] pools)
     {
-        //�����v�[���ɈقȂ���̂������Ă��邽�߁A���ꂼ������o��
+        //同じプールに異なるものが入っているため、それぞれを取り出す
         foreach (var pool in pools)
         {
 #if UNITY_EDITOR    
-            //�������̂�����ꍇ�G���[���\������
+            //同じものがある場合エラーが表示する
             if (dictionary.ContainsKey(pool.Prefab))
             {
-                //�v���n�u�������v�[��������ꍇ�G���[��\��������
+                //プレハブが同じプールがある場合エラーを表示させる
                 Debug.LogError("Same prefab in multiple pools! prefab:" + pool.Prefab.name);
                 continue;
             }
 #endif
-            //��Ő�������Ƃ킩��₷��
-            //�Ⴆ�΁AEnemy Pools��Enemy01,02,03������
-            //01���L�[�Ƃ��Ă��̑Ή��̃v�[�����w��
+            //例で説明するとわかりやすい
+            //例えば、Enemy PoolsにEnemy01,02,03がある
+            //01をキーとしてその対応のプールを指す
             dictionary.Add(pool.Prefab, pool);
 
-            // �v�[����Hierarchy�r���[�Ō��₷�����邽�߂ɐV����GameObject���쐬���āA���̎q�Ƃ��ăv�[���I�u�W�F�N�g�����B
+            // プールをHierarchyビューで見やすくするために新しいGameObjectを作成して、その子としてプールオブジェクトを持つ。
             Transform poolParent = new GameObject("Pool:" + pool.Prefab.name).transform;
             poolParent.parent = transform;
 
@@ -89,17 +89,17 @@ public class PoolManager : MonoBehaviour
     }
 
 
-    // �ȉ���Release�֐��Q�́A�w�肳�ꂽ�v���n�u�Ɋ�Â��ăv�[������I�u�W�F�N�g���擾���邽�߂̃I�[�o�[���[�h���ꂽ�֐��B
-    // �����v�[�������݂��Ȃ��A�܂��̓v�[������̏ꍇ�A�V�����I�u�W�F�N�g���쐬�����B
+    // 以下のRelease関数群は、指定されたプレハブに基づいてプールからオブジェクトを取得するためのオーバーロードされた関数。
+    // もしプールが存在しない、またはプールが空の場合、新しいオブジェクトが作成される。
 
     /// <summary>
-    /// <para>�v�[�����Ɏw�肳�ꂽ<paramref name="prefab"></paramref>���Q�[���I�u�W�F�N�g�ɕԂ��B</para>
+    /// <para>プール内に指定された<paramref name="prefab"></paramref>をゲームオブジェクトに返す。</para>
     /// </summary>
     /// <param name="prefab">
-    /// <para>�w�肳�ꂽ�v���n�u</para>
+    /// <para>指定されたプレハブ</para>
     /// </param>
     /// <returns>
-    /// <para>�v�[�����ɏ����ł����Q�[���I�u�W�F�N�g</para>
+    /// <para>プール内に準備できたゲームオブジェクト</para>
     /// </returns>
     public static GameObject Release(GameObject prefab)
     {
@@ -115,13 +115,13 @@ public class PoolManager : MonoBehaviour
     }
 
     /// <summary>
-    /// <para>�v�[�����Ɏw�肳�ꂽ<paramref name="prefab"></paramref>���Q�[���I�u�W�F�N�g�ɕԂ��B</para>
+    /// <para>プール内に指定された<paramref name="prefab"></paramref>をゲームオブジェクトに返す。</para>
     /// </summary>
     /// <param name="prefab">
-    /// <para>�w�肳�ꂽ�v���n�u</para>
+    /// <para>指定されたプレハブ</para>
     /// </param>
     /// <param name="position">
-    /// <para>�w�肳�ꂽ�����ʒu</para>
+    /// <para>指定された生成位置</para>
     /// </param>
     /// <returns></returns>
     public static GameObject Release(GameObject prefab,Vector3 position)
@@ -138,16 +138,16 @@ public class PoolManager : MonoBehaviour
     }
 
     /// <summary>
-    /// <para>�v�[�����Ɏw�肳�ꂽ<paramref name="prefab"></paramref>���Q�[���I�u�W�F�N�g�ɕԂ��B</para>
+    /// <para>プール内に指定された<paramref name="prefab"></paramref>をゲームオブジェクトに返す。</para>
     /// </summary>
     /// <param name="prefab">
-    /// <para>�w�肳�ꂽ�v���n�u</para>
+    /// <para>指定されたプレハブ</para>
     /// </param>
     /// <param name="position">
-    /// <para>�w�肳�ꂽ�����ʒu</para>
+    /// <para>指定された生成位置</para>
     /// </param>
     /// <param name="rotation">
-    /// <para>�w�肳�ꂽ��]</para>
+    /// <para>指定された回転</para>
     /// </param>
     /// <returns></returns>
     public static GameObject Release(GameObject prefab, Vector3 position,Quaternion rotation)
@@ -164,19 +164,19 @@ public class PoolManager : MonoBehaviour
     }
 
     /// <summary>
-    /// <para>�v�[�����Ɏw�肳�ꂽ<paramref name="prefab"></paramref>���Q�[���I�u�W�F�N�g�ɕԂ��B</para>
+    /// <para>プール内に指定された<paramref name="prefab"></paramref>をゲームオブジェクトに返す。</para>
     /// </summary>
     /// <param name="prefab">
-    /// <para>�w�肳�ꂽ�v���n�u</para>
+    /// <para>指定されたプレハブ</para>
     /// </param>
     /// <param name="position">
-    /// <para>�w�肳�ꂽ�����ʒu</para>
+    /// <para>指定された生成位置</para>
     /// </param>
     /// <param name="rotation">
-    /// <para>�w�肳�ꂽ��]</para>
+    /// <para>指定された回転</para>
     /// </param>
     /// <param name="localScale">
-    /// <para>�w�肳�ꂽ�g��E�k��</para>
+    /// <para>指定された拡大・縮小</para>
     /// </param>
     /// <returns></returns>
     public static GameObject Release(GameObject prefab, Vector3 position, Quaternion rotation,Vector3 localScale)

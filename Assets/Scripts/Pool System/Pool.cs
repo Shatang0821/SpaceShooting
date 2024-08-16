@@ -5,39 +5,39 @@ using UnityEngine;
 [System.Serializable]
 public class Pool
 {
-    // �v���n�u�ւ̎Q�Ƃ��O������擾���邽�߂̃v���p�e�B
+    // プレハブへの参照を外部から取得するためのプロパティ
     public GameObject Prefab => prefab;
 
-    // �T�C�Y���O������擾���邽�߂̃v���p�e�B
+    // サイズを外部から取得するためのプロパティ
     public int Size => size;
 
-    // ���s���̃L���[�̃T�C�Y���擾���邽�߂̃v���p�e�B
+    // 実行時のキューのサイズを取得するためのプロパティ
     public int RuntimeSize => queue.Count;
 
     [SerializeField]
-    private GameObject prefab; // ���̃v�[���Ɋi�[����Q�[���I�u�W�F�N�g�̃v���n�u
+    private GameObject prefab; // このプールに格納するゲームオブジェクトのプレハブ
 
     [SerializeField]
-    private int size = 1; // �v�[���̏����T�C�Y
+    private int size = 1; // プールの初期サイズ
 
-    // �Q�[���I�u�W�F�N�g��ێ����邽�߂̃L���[
+    // ゲームオブジェクトを保持するためのキュー
     private Queue<GameObject> queue;
 
-    // �Q�[���I�u�W�F�N�g���C���X�^���X�������Ƃ��̐e�I�u�W�F�N�g
+    // ゲームオブジェクトがインスタンス化されるときの親オブジェクト
     private Transform parent;
-    #region �������֘A
+    #region 初期化関連
     /// <summary>
-    /// �L���[�̏��������A�w�肳�ꂽ���̃Q�[���I�u�W�F�N�g���L���[�ɒǉ�����
+    /// キューの初期化し、指定された数のゲームオブジェクトをキューに追加する
     /// </summary>
-    /// <param name="parent">�e�I�u�W�F�N�g��Transform</param>
+    /// <param name="parent">親オブジェクトのTransform</param>
     public void Initialize(Transform parent)
     {
-        //�L���[�̏�����
+        //キューの初期化
         queue = new Queue<GameObject>();
-        //�e�I�u�W�F�N�g�𐶐����Ă���̉��ɃI�u�W�F�N�g�𐶐�����
+        //親オブジェクトを生成してそれの下にオブジェクトを生成する
         this.parent = parent;
 
-        //�T�C�Y���̃I�u�W�F�N�g���L���[�ɓ����
+        //サイズ分のオブジェクトをキューに入れる
         for (var i = 0; i < size; i++)
         {
             queue.Enqueue(Copy());
@@ -45,66 +45,66 @@ public class Pool
     }
 
     /// <summary>
-    /// �v���n�u����Q�[���I�u�W�F�N�g���쐬���A��A�N�e�B�u��Ԃɂ���
+    /// プレハブからゲームオブジェクトを作成し、非アクティブ状態にする
     /// </summary>
     private GameObject Copy()
     {
-        //�쐬�����I�u�W�F�N�g��parent�̎q�I�u�W�F�N�g�ɂ���
+        //作成したオブジェクトをparentの子オブジェクトにする
         var copy = GameObject.Instantiate(prefab, parent);
-        //������A�N�e�B�u���ɂ���
+        //初期非アクティブ化にする
         copy.SetActive(false);
-        //�쐬�����I�u�W�F�N�g��Ԃ�
+        //作成したオブジェクトを返す
         return copy;
     }
     #endregion
 
-    #region �I�u�W�F�N�g�𐶐�
+    #region オブジェクトを生成
     /// <summary>
-    /// ���p�\�ȃI�u�W�F�N�g���L���[����擾����B
-    /// �����L���[����̏ꍇ�͐V�����I�u�W�F�N�g�𐶐�����B
+    /// 利用可能なオブジェクトをキューから取得する。
+    /// もしキューが空の場合は新しいオブジェクトを生成する。
     /// </summary>
     private GameObject AvailableObject()
     {
         GameObject availableobject = null;
 
-        // �L���[����łȂ��A�擪�̃I�u�W�F�N�g����A�N�e�B�u�ȏꍇ
+        // キューが空でなく、先頭のオブジェクトが非アクティブな場合
         if (queue.Count > 0 && !queue.Peek().activeSelf)
         {
-            //Dequeue�̓L���[�̐擪����I�u�W�F�N�g�����o�����Ƃ��ł��邽��
-            //�擪�̃I�u�W�F�N�g���g���Ă��鎞���o���Ȃ�
+            //Dequeueはキューの先頭からオブジェクトを取り出すことができるため
+            //先頭のオブジェクトが使っている時取り出さない
             availableobject = queue.Dequeue();
         }
         else
         {
-            //���p�\�ȃI�u�W�F�N�g���Ȃ�����
-            //�V�����I�u�W�F�N�g������āA�Ԃ�
+            //利用可能なオブジェクトがないから
+            //新しいオブジェクトを作って、返す
             availableobject = Copy();
         }
         
-        // �I�u�W�F�N�g���ĂуL���[�ɒǉ�����
-        //�擪������o�����I�u�W�F�N�g�𖖂ɒǉ�����
-        //�z�����邽��
+        // オブジェクトを再びキューに追加する
+        //先頭から取り出したオブジェクトを末に追加する
+        //循環させるため
         queue.Enqueue(availableobject);
 
         return availableobject;
     }
-    #region �I�[�o�[���[�h
+    #region オーバーロード
     /// <summary>
-    /// ���p�\�ȃQ�[���I�u�W�F�N�g���擾���ăA�N�e�B�u������
+    /// 利用可能なゲームオブジェクトを取得してアクティブ化する
     /// </summary>
     public GameObject preparedObject()
     {
-        //�I�u�W�F�N�g�𐶐����鎞
+        //オブジェクトを生成する時
         GameObject preparedobject = AvailableObject();
-        //�A�N�e�B�u������
+        //アクティブ化する
         preparedobject.SetActive(true);
         return preparedobject;
     }
     
     /// <summary>
-    /// ����̈ʒu����ɐ���
+    /// 特定の位置を基に生成
     /// </summary>
-    /// <param name="position">����̈ʒu</param>
+    /// <param name="position">特定の位置</param>
     /// <returns></returns>
     public GameObject preparedObject(Vector3 position)
     {
@@ -117,10 +117,10 @@ public class Pool
     }
 
     /// <summary>
-    /// ����̈ʒu�Ɖ�]����ɐ���
+    /// 特定の位置と回転を基に生成
     /// </summary>
-    /// <param name="position">����̈ʒu</param>
-    /// <param name="rotation">����̉�]</param>
+    /// <param name="position">特定の位置</param>
+    /// <param name="rotation">特定の回転</param>
     /// <returns></returns>
     public GameObject preparedObject(Vector3 position,Quaternion rotation)
     {
@@ -134,11 +134,11 @@ public class Pool
     }
 
     /// <summary>
-    /// ����̈ʒu�Ɖ�]�Ɗg�����ɐ���
+    /// 特定の位置と回転と拡大を基に生成
     /// </summary>
-    /// <param name="position">����̈ʒu</param>
-    /// <param name="rotation">����̉�]</param>
-    /// <param name="localScale">����̊g��E�k��</param>
+    /// <param name="position">特定の位置</param>
+    /// <param name="rotation">特定の回転</param>
+    /// <param name="localScale">特定の拡大・縮小</param>
     /// <returns></returns>
     public GameObject preparedObject(Vector3 position, Quaternion rotation,Vector3 localScale)
     {
